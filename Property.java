@@ -5,7 +5,7 @@
 
 import java.awt.Color;
 
-public class Property extends BoardLoc
+public abstract class Property extends BoardLoc
 {
     protected int cost;
     protected Player owner;
@@ -13,37 +13,34 @@ public class Property extends BoardLoc
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public Property()
-    // PRE:  
     // POST: 
     {
         super();
         cost = 0;
         color = Color.WHITE;
-        owner = ;  // what would this be?
+        owner = null;
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public Property(String name, int position, int cost, Color color)
-    // PRE:  
     // POST: 
     {
         super(name, position);
         this.cost = cost;
         this.color = color;
-        this.owner = ; // what would this be
+        this.owner = null; // what would this be
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public void setOwner(Player owner)
-    // PRE:  
-    // POST: 
+    // PRE:  owner is initiallized
+    // POST: propertiy position = "owner"
     {
         this.owner = owner;
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public Player getOwner()
-    // PRE:  
     // POST: 
     {
         return owner;
@@ -51,7 +48,6 @@ public class Property extends BoardLoc
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getCost()
-    // PRE:  
     // POST: 
     {
         return cost;
@@ -59,7 +55,6 @@ public class Property extends BoardLoc
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public Color getColor()
-    // PRE:  
     // POST: 
     {
         return color;

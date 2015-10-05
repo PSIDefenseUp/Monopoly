@@ -5,8 +5,7 @@
 
 public class CornerSquare extends BoardLoc
 {
-    public CornerSquare()
-    // PRE:  
+    public CornerSquare() 
     // POST: 
     {
         super();
@@ -18,5 +17,19 @@ public class CornerSquare extends BoardLoc
     // POST: 
     {
         super(name, position);
+    }
+        
+///////////////////////////////////////////////////////////////////////////////////////////////////
+    public int getRent()
+    // POST: 
+    {
+        return 0;
+    }
+        
+///////////////////////////////////////////////////////////////////////////////////////////////////
+    public void onLand()
+    // POST: 
+    {
+        return;
     }
 }

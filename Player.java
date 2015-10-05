@@ -3,51 +3,48 @@
 // Date:        
 // Description: 
 
+import java.util.ArrayList;
+
 public class Player
 {
     private int money;
     private int position;
-    private Image token  // I don't know how to treat this
-    private Property properties[]  // I don't know how to treat this
+  //  private Image token;  // I don't know how to treat this
+    private ArrayList<Property> properties;  // List of properties owned by this player
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-    public Player()
-    // PRE:  
+    public Player()  
     // POST: 
     {
         money = 1500;
         position = 0;
-        properties = ;
-        token = ;
+        properties = new ArrayList<Property>();
+        //token = null;
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getMoney()
-    // PRE:  
     // POST: 
     {
         return money;
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-    public Image getToken()
-    // PRE:  
+  /*  public Image getToken()
     // POST: 
     {
         return token;
     }
-    
+  */  
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-    public Property[] getProperties()
-    // PRE:  
-    // POST: 
+    public ArrayList<Property> getProperties()
+    // POST: FCTVAL == properties
     {
-        ?
+        return properties;
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getPosition()
-    // PRE:  
     // POST: 
     {
         return position;
@@ -55,64 +52,55 @@ public class Player
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public void move(int moves)
-    // PRE:  
-    // POST: 
+    // PRE:  moves > 0
+    // POST: moves player forward "moves" spaces
     {
-        positions += moves;
-        if(positions >= 40)  // if positions moved outside of the array,
+        position += moves;
+        if(position >= 40)  // if positions moved outside of the array,
         {
-            positions = position - 40;  // put it back on the board
+            position %= 40;  // put it back on the board
 
-            // do we want to add $200 here, or do we want to do it elsewhere
+            money += 200;  // add $200
         }
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public void moveTo(int position)
-    // PRE:  
-    // POST: 
+    // PRE:  0 <= position < 40
+    // POST: players position = position
     {
         this.position = position;
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-    public boolean changeMoney(int money)
-    // PRE:  
-    // POST: 
+    public void changeMoney(int money)
+    // PRE:  money is initialized
+    // POST: players money is changed by "money" 
     {
         this.money += money;
-        if(this.money >= 0)  // if the user has enough funds, return true
-            return true;
-        else  // if the user doesn't have enough funds
-            this.money -= money;  // undo the damage, and return false
-        return false;
             
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public void addProperty(Property property)
-    // PRE:  
-    // POST: 
+    // PRE:  property is initialized
+    // POST: property is added to player property list
     {
-        // is there an easy way of doing this (e.g., Vector class in C++)
-        // or do we need to write all of the neccesay code
-        ?
+        properties.add(property);
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public void removeProperty(Property property)
-    // PRE:  
-    // POST: 
+    // PRE:  property is initialized
+    // POST: property is removed from player property list
     {
-        // Similar issue as addProperty function
-        ?
+        properties.remove(property);
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public String toString()
-    // PRE:  
     // POST: 
     {
-        ?
+        return "";
     }
 }

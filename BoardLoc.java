@@ -3,14 +3,13 @@
 // Date:        
 // Description: 
 
-public class BoardLoc
+public abstract class BoardLoc
 {
     protected int position;
     protected String name;
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public BoardLoc()
-    // PRE:  
     // POST: 
     {
         position = 0;
@@ -19,7 +18,6 @@ public class BoardLoc
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public BoardLoc(String name, int position)
-    // PRE:  
     // POST: 
     {
         this.name = "";
@@ -28,7 +26,6 @@ public class BoardLoc
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public String getName()
-    // PRE:  
     // POST: 
     {
         return name;
@@ -36,9 +33,11 @@ public class BoardLoc
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getPosition()
-    // PRE:  
     // POST: 
     {
         return position;
     }
+    
+    public abstract int getRent();
+    public abstract void onLand();
 }

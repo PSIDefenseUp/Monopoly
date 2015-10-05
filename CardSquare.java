@@ -6,7 +6,6 @@
 public class CardSquare extends BoardLoc
 {
     public CardSquare()
-    // PRE:  
     // POST: 
     {
         super();
@@ -14,9 +13,23 @@ public class CardSquare extends BoardLoc
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public CardSquare(String name, int position)
-    // PRE:  
     // POST: 
     {
         super(name, position);
+    }
+        
+///////////////////////////////////////////////////////////////////////////////////////////////////
+    public int getRent()
+    // POST: 
+    {
+        return 0;
+    }
+        
+///////////////////////////////////////////////////////////////////////////////////////////////////
+    public void onLand()
+    // POST: see below
+    {
+        // get current player
+        // give current player $$$$$
     }
 }

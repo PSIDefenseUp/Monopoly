@@ -8,23 +8,21 @@ import java.awt.Color;
 public class Lot extends Property
 {
     private int upgradeCost;
-    private int rent;
+    private int rent[];
     private int upgradeCount;
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public Lot()
-    // PRE:  
     // POST: 
     {
         super();
         upgradeCost = 0;
-        rent = 0;
+        rent = new int[] { 0, 0, 0, 0, 0, 0};
         upgradeCount = 0;
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-    public Lot(String name, int position, int cost, Color color, int upgradeCost, int rent)
-    // PRE:  
+    public Lot(String name, int position, int cost, Color color, int upgradeCost, int rent[])
     // POST: 
     {
         super(name, position, cost, color);
@@ -35,15 +33,13 @@ public class Lot extends Property
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getRent()
-    // PRE:  
     // POST: 
     {
-        return // requires an algorithm
+        return this.rent[upgradeCount]; // requires an algorithm
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getUpgradeCost()
-    // PRE:  
     // POST: 
     {
         return upgradeCost;
@@ -51,23 +47,31 @@ public class Lot extends Property
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getUpgradeCount()
-    // PRE:  
     // POST: 
     {
         return upgradeCount;
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-    public boolean upgrade()
-    // PRE:  
+    public void upgrade()
+    // PRE:  upgradeCount < 5 
     // POST: 
     {
-        if(owner.changeMoney(-upgradeCost))
-        {
-            ++upgradeCount;
-            return true;
-        }
-        else
-            return false;
+        upgradeCount++;
+    }
+        
+///////////////////////////////////////////////////////////////////////////////////////////////////
+    public void onLand()
+    // POST: see below
+    {
+        // if unowned
+          // if player has enough money
+            // offer purchase
+        
+        // else if owned <by other player> 
+          // if player has enough funds
+             // give owner funds
+          // else player doesn't have enough
+             // give owner all player's money
     }
 }

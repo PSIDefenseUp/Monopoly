@@ -8,7 +8,6 @@ public class Railroad extends Property
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public Railroad()
-    // PRE:  
     // POST: 
     {
         super();
@@ -16,7 +15,6 @@ public class Railroad extends Property
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public Railroad(String name, int position, int cost, Color color)
-    // PRE:  
     // POST: 
     {
         super(name, position, cost, color);
@@ -24,9 +22,25 @@ public class Railroad extends Property
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getRent()
-    // PRE:  
-    // POST: 
+    // POST: FCTVAl == rent amount (based on on how many railroads owned
     {
-        return // don't know the algorithm
+        // find number of railroads owner has
+        // calculate and return appropriate rent
+        return 0; // don't know the algorithm
+    }
+        
+///////////////////////////////////////////////////////////////////////////////////////////////////
+    public void onLand()
+    // POST: see below
+    {
+        // if unowned
+          // if player has enough money
+            // offer purchase
+        
+        // else if owned <by other player> 
+          // if player has enough funds
+             // give owner funds
+          // else player doesn't have enough
+             // give owner all player's money
     }
 }
