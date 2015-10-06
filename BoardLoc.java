@@ -1,7 +1,7 @@
 // Programmer:  Noah Angeles, Dennis McNamara, Tim Werkheiser, & Wenkan Zhu
 // Assignment:  Project: Monopoly
 // Date:        
-// Description: 
+// Description: Base BoardLoc class for Monopoly
 
 public abstract class BoardLoc
 {
@@ -10,7 +10,7 @@ public abstract class BoardLoc
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public BoardLoc()
-    // POST: 
+    // POST: creats a BoardLoc with position = 0 and blank name
     {
         position = 0;
         name = "";
@@ -18,26 +18,35 @@ public abstract class BoardLoc
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public BoardLoc(String name, int position)
-    // POST: 
+    // PRE:  name, position are initialized && 0 < position < 40 
+    // POST: creates a BoardLoc with name and position
     {
-        this.name = "";
+        this.name = name;
         this.position = position;
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public String getName()
-    // POST: 
+    // POST: FCTVAL = name
     {
         return name;
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getPosition()
-    // POST: 
+    // POST: FCTVAL = position
     {
         return position;
     }
     
+    public String toString()
+    // POST: String representation of BoardLoc
+    {
+        return "Name: " + name + " Position: " + position;
+    }
+    
     public abstract int getRent();
+    // POST: FCTVAL = cost of rent when landing on property
     public abstract void onLand();
+    // POST: Takes appropriate actions when players lands
 }
