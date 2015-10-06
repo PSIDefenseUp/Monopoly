@@ -85,7 +85,7 @@ public class Player
     // PRE:  property is initialized
     // POST: property is added to player property list
     {
-        Property[] arr = new Property[properties.length+1]
+        Property[] arr = new Property[properties.length+1];
         for (int i = 0; i < properties.length; i++)
         {
             arr[i] = properties[i];
@@ -103,7 +103,7 @@ public class Player
         int j = 0;
         for (int i = 0; i < properties.length; i++)
         {
-            if (property != properties[i])
+            if (property.getName() != properties[i].getName())
             {
                 arr[j] = properties[i];
                 j++;
