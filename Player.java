@@ -3,28 +3,27 @@
 // Date:        
 // Description: 
 
-import java.util.ArrayList;
 
 public class Player
 {
     private int money;
     private int position;
   //  private Image token;  // I don't know how to treat this
-    private ArrayList<Property> properties;  // List of properties owned by this player
+    private Property[] properties;  // List of properties owned by this player
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public Player()  
-    // POST: 
+    // POST: Creates Player with money = $1500, position = 0, no properties
     {
         money = 1500;
         position = 0;
-        properties = new ArrayList<Property>();
+        properties = new Property[0];
         //token = null;
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getMoney()
-    // POST: 
+    // POST: FCTVAL == money
     {
         return money;
     }
@@ -37,7 +36,7 @@ public class Player
     }
   */  
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-    public ArrayList<Property> getProperties()
+    public Property[] getProperties()
     // POST: FCTVAL == properties
     {
         return properties;
@@ -45,7 +44,7 @@ public class Player
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getPosition()
-    // POST: 
+    // POST: FCTVAL == position
     {
         return position;
     }
@@ -86,7 +85,13 @@ public class Player
     // PRE:  property is initialized
     // POST: property is added to player property list
     {
-        properties.add(property);
+        Property[] arr = new Property[properties.length+1]
+        for (int i = 0; i < properties.length; i++)
+        {
+            arr[i] = properties[i];
+        }
+        arr[properties.length] = property;
+        properties = arr;
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -94,7 +99,17 @@ public class Player
     // PRE:  property is initialized
     // POST: property is removed from player property list
     {
-        properties.remove(property);
+        Property[] arr = new Property[properties.length-1];
+        int j = 0;
+        for (int i = 0; i < properties.length; i++)
+        {
+            if (property != properties[i])
+            {
+                arr[j] = properties[i];
+                j++;
+            }
+        }
+        properties = arr;
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
