@@ -25,8 +25,8 @@ public abstract class Property extends BoardLoc
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public Property(String name, int position, int cost, Color color)
     // PRE:  name initialized && position <= 0 && position > 40 && cost <= 0 && color == Color.CYAN, 
-    //       Color.MAGENTA, Color.ORANGE, Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE,
-    //       or some variation of Brown
+    //       Color.MAGENTA, Color.ORANGE, Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, 
+    //       Color.BLACK, Color.GRAY, or some variation of Brown
     // POST: Creates Property Object with position = "position", cost = "cost", color = "Color",
     //       color set to "Color", & owner set to null
     {
@@ -67,25 +67,8 @@ public abstract class Property extends BoardLoc
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public String toString()
-    // POST: FCTVAL = a String of the name of the loacitons, and it's position from start
+    // POST: FCTVAL = a String of the name, positions, cost, and owner
     {
-        String retStr = super.toString() + ", Cost: " + cost + ", Owner: " + owner + ", Color:, ";
-        
-        if(Color.CYAN.equals(color))          // return string based on color of object
-               return retStr + "Cyan";
-        else if(Color.MAGENTA.equals(color))
-               return retStr + "Magenta";
-        else if(Color.ORANGE.equals(color))
-               return retStr + "Orange";
-        else if(Color.RED.equals(color))
-               return retStr + "Red";
-        else if(Color.YELLOW.equals(color))
-               return retStr + "Yellow";
-        else if(Color.GREEN.equals(color))
-               return retStr + "Green";
-        else if(Color.BLUE.equals(color))
-               return retStr + "Blue";
-        else
-            return retStr + "Brown";
+        return super.toString() + ", Cost: " + cost + ", Owner: " + owner;
     }
 }
