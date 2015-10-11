@@ -35,7 +35,7 @@ public class CardSquare extends BoardLoc
     public void onLand(Player player)
     // POST: automatically charges or gives player appropriate amount of money
     {
-        runActionsMenu(getPossibleActions(player));  // display options to player
+        ActionsMenu.runActionsMenu(getPossibleActions(player));  // display options to player
         player.changeMoney(getRent());  // tax the player
     }
         
