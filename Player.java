@@ -8,6 +8,7 @@ public class Player
 {
     private int money;
     private int position;
+    private int roll;
   //  private Image token;  // I don't know how to treat this
     private Property[] properties;  // List of properties owned by this player
     
@@ -26,6 +27,19 @@ public class Player
     // POST: FCTVAL == money
     {
         return money;
+    }
+///////////////////////////////////////////////////////////////////////////////////////////////////    
+    public int getRoll()
+    // POST: FCTVAL == money
+    {
+        return roll;
+    }
+    
+///////////////////////////////////////////////////////////////////////////////////////////////////
+    public void changeRoll(int rolled)
+    // POST: FCTVAL == money
+    {
+        roll = rolled;
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
