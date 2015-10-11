@@ -61,15 +61,35 @@ public class Monopoly
 		
 		// 
 		while(!gameOver)
-		{
-			// TODO: Implement
-			
+		{			
 			// If current player is still in the game
 			//     Let current player take an action or roll
 			//     After roll, resolve landing on the player's new location
 			//     ?? Check if player is bankrupt ??
 			// Increment currentPlayer to progress to next player's turn
 			
+			if(players[currentPlayer].getMoney() > 0)
+			{
+				// Get player's action of choice until they decide to roll the dice
+				int action = ActionsMenu.runActionsMenu(new String[] {"Roll dice", "Upgrade a property", "Sell a property"});
+				do
+				{
+					switch(action)
+					{
+						case 0: break; // Continue to dice roll
+						case 1: break; // TODO: Give user a list of their properties that they can upgrade (if they have the money and the property is not max upgraded)
+						case 2: break; // TODO: Give user a list of their properties + sell values, ask which is to be sold (handle in its own method)
+					}
+				}
+				while(action != 0);
+
+				// Roll dice for player and continue the turn
+				roll = (int)(Math.random() * 11) + 2; // Roll dice (random 2-12 to simulate 2 dice)
+				players[currentPlayer].move(roll); // Move the player
+				board[players[currentPlayer].getPosition].onLand(players[currentPlayer]); // Run onLand for the player's new position
+			}
+
+			// Move to the next player's turn
 			currentPlayer = (currentPlayer+1)%players.length; 
 		}
 	}
