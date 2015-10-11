@@ -6,30 +6,37 @@
 public class CardSquare extends BoardLoc
 {
     public CardSquare()
-    // POST: 
+    // POST: CardSquare created without name or position
     {
         super();
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public CardSquare(String name, int position)
-    // POST: 
+    // PRE:  name == "Chance" || name == "Community Chest"
+    // POST: CardSquare created with name = "Name" && position = "position"
     {
         super(name, position);
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getRent()
-    // POST: 
+    // POST: FCTVAL >= -200 && FCTVAL <= 200
     {
-        return 0;
+        if(Math.random() >= 0.5)
+            return (int)(Math.random()*201);
+        else
+            return (-1)*(int)(Math.random()*201);
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public void onLand()
-    // POST: see below
+    // POST: automatically charges or gives player appropriate amount of money
     {
-        // get current player
-        // give current player $$$$$
+        Player player;  // used to determine
+        
+        //player = ??;  // get the player
+        
+        //player.changeMoney(getRent());  // tax the player
     }
 }

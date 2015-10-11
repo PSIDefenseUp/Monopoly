@@ -16,7 +16,6 @@ public class TaxSquare extends BoardLoc
     // PRE:  name == "Luxury Tax" || name == "Income Tax", and position is initialized
     // POST: Tax tile has bee created at position "position" with appropriate name
     {
-        super();
         super(name, position);
     }
         
