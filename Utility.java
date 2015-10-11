@@ -11,7 +11,7 @@ public class Utility extends Property
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public  Utility()
     // POST: Creates Utility Object with position = 0, blank name, cost = 0,
-    //       while Color set to Black, & owner set to null 
+    //       while Color set to White, & owner set to null 
     {
         super();
     }
@@ -20,7 +20,7 @@ public class Utility extends Property
     public  Utility(String name, int position, int cost)
     // PRE:  name initialized &&  position >= 0 && position < 40 && cost >= 0
     // POST: creates a Utility Object with the object variables set to the corresponding
-    //       parameters, while Color set to Black, & owner set to null 
+    //       parameters, while Color set to White, & owner set to null 
     {
         super(name, position, cost, Color.WHITE);
     }

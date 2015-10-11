@@ -9,7 +9,7 @@ public class Railroad extends Property
 {
     public Railroad()
     // POST: Creates Railroad Object with position = 0, blank name, cost = 0,
-    //       while Color set to Black, & owner set to null 
+    //       while Color set to White, & owner set to null 
     {
         super();
     }
@@ -18,7 +18,7 @@ public class Railroad extends Property
     public Railroad(String name, int position, int cost)
     // PRE:  name initialized &&  position >= 0 && position < 40 && cost >= 0
     // POST: creates a Railroad Object with the object variables set to the corresponding
-    //       parameters, while Color set to Black, & owner set to null 
+    //       parameters, while Color set to White, & owner set to null 
     {
         super(name, position, cost, Color.WHITE);
     }
