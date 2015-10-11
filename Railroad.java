@@ -53,7 +53,7 @@ public class Railroad extends Property
     {
         int option;  // option the player chooses
         
-        option = runActionsMenu(getPossibleActions(player));  // ask player for option
+        option = ActionsMenu.runActionsMenu(getPossibleActions(player));  // ask player for option
         
         switch(option)  // take appropriate actions 
         {
