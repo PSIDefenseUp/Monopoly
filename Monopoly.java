@@ -1,9 +1,9 @@
-import java.awt.Color;
-
 // Programmer:  Noah Angeles, Dennis McNamara, Tim Werkheiser, & Wenkan Zhu
 // Assignment:  Project: Monopoly
 // Date:        October 2015
 // Description: Main class containing all game elements
+
+import java.awt.Color;
 
 public class Monopoly 
 {
@@ -19,6 +19,7 @@ public class Monopoly
         // Set up board
         setBoard(board);
         
+        // Initialize players
         players = new Player[4];
         for(Player p : players)
         {
@@ -31,12 +32,10 @@ public class Monopoly
     }
     
     public static void setBoard(BoardLoc[] board)
-    {
-        // TODO: For the time being, utilities and railroads Color.WHITE, but they really don't need a color at all.        
+    {       
         // TODO: Put all locations on the board
-        
         board = new BoardLoc[15];
-        
+                
         // Implement first 15 board spaces for Deliverable #2 (Completed)        
         board[0] = new CornerSquare("GO", 0);
         board[1] = new Lot("MEDITERRANEAN AVE", 1, 60, new Color(102, 51, 153), 50, new int[]{2, 10, 30, 90, 160, 230});
@@ -50,7 +49,7 @@ public class Monopoly
         board[9] = new Lot("CONNECTICUT AVE.", 9, 120, Color.CYAN, 50, new int[]{8, 40, 100, 300, 450, 600});
         board[10] = new CornerSquare("Jail", 10);
         board[11] = new Lot("ST. CHARLES PLACE", 11, 140, Color.MAGENTA, 100, new int[]{10, 50, 150, 450, 625, 750});
-        board[12] = new Utility("ELECTRIC COMPANY", 12, 150, Color.WHITE);
+        board[12] = new Utility("ELECTRIC COMPANY", 12, 150);
         board[13] = new Lot("STATES AVE.", 13, 140, Color.MAGENTA, 100, new int[]{10, 50, 150, 450, 625, 750});
         board[14] = new Lot("VIRGINIA AVE.", 14, 160, Color.MAGENTA, 100, new int[]{12, 60, 180, 500, 700, 900});
     }
@@ -89,6 +88,8 @@ public class Monopoly
                 board[players[currentPlayer].getPosition].onLand(players[currentPlayer]); // Run onLand for the player's new position
             }
 
+            // TODO: ?? Check bankruptcy ??
+
             // Move to the next player's turn
             currentPlayer = (currentPlayer+1)%players.length; 
         }
@@ -107,5 +108,10 @@ public class Monopoly
     public static int getBoardLength()
     {
         return board.length;
+    }
+
+    public static int getCurrentRoll()
+    {
+    	return roll;
     }
 }
