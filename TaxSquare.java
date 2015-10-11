@@ -37,7 +37,7 @@ public class TaxSquare extends BoardLoc
     public void onLand(Player player)
     // POST: automatically charges player appropriate amount of money
     {
-        runActionsMenu(getPossibleActions(player));  // display options to player
+        ActionsMenu.runActionsMenu(getPossibleActions(player));  // display options to player
         player.changeMoney(getRent());  // tax the player
     }
         
