@@ -10,16 +10,19 @@ public class Utility extends Property
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public  Utility()
-    // POST: 
+    // POST: Creates Utility Object with position = 0, blank name, cost = 0,
+    //       while Color set to Black, & owner set to null 
     {
         super();
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-    public  Utility(String name, int position, int cost, Color color)
-    // POST: 
+    public  Utility(String name, int position, int cost)
+    // PRE:  name initialized &&  position >= 0 && position < 40 && cost >= 0
+    // POST: creates a Utility Object with the object variables set to the corresponding
+    //       parameters, while Color set to Black, & owner set to null 
     {
-        super(name, position, cost, color);
+        super(name, position, cost, Color.WHITE);
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -34,36 +37,37 @@ public class Utility extends Property
         for (int i = 0; i < property.length; i++)   // counts how many utility is owned
         {
             if (property[i] instanceof Utility)
-            {
                 numberOwned++;
-            }            
         }
         
         if (numberOwned == 2)
-        {
             return owner.getRoll() * 10;
-        }
-        else
-        {
+        else if (numberOwned == 1)
             return owner.getRoll() * 4;
-        }
+        else
+            return 0;
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public void onLand(Player player)
-    // POST: see below
+    // POST: if user buys instance: owner = player, && player loses money equivalent to Object cost
+    //       if user uses instance: owner loses appropriate rent, & owner gains appropriate rent
     {
         int option;  // option the player chooses
+        int rent; // amount to use the Object
         
         option = ActionsMenu.runActionsMenu(getPossibleActions(player));  // ask player for option
         
-        switch(option)  // take appropriate actions 
+        if(owner == null && option == 1)  // if player wants to buy utility
         {
-            case 1:  player.changeMoney(-1 * super.getCost());  // buy utility
-                     super.setOwner(player);
-                     break;
-            default: player.changeMoney(-1 * getRent());  // use utility
-                     owner.changeMoney(getRent());
+            player.changeMoney(-1 * super.getCost());  // take money and buy it
+            super.setOwner(player);
+        }
+        else if (owner != null && option == 0)  // if player has to use utility
+        {
+            rent = getRent();
+            player.changeMoney(-1 * rent);  // take money, and give it to owner
+            owner.changeMoney(rent);
         }
         
         return;
@@ -81,5 +85,12 @@ public class Utility extends Property
             return notOwned;
         else  // else it must be owned
             return owned;
+    }
+        
+///////////////////////////////////////////////////////////////////////////////////////////////////
+    public String toString()
+    // POST: FCTVAL = a String of the name, positions, cost, and owner
+    {
+        return super.toString();
     }
 }

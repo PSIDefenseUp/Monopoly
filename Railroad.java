@@ -12,7 +12,6 @@ public class Railroad extends Property
     //       while Color set to Black, & owner set to null 
     {
         super();
-        color = Color.BLACK;
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,23 +20,23 @@ public class Railroad extends Property
     // POST: creates a Railroad Object with the object variables set to the corresponding
     //       parameters, while Color set to Black, & owner set to null 
     {
-        super(name, position, cost, Color.BLACK);
+        super(name, position, cost, Color.WHITE);
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getRent()
-    // POST: FCTVAl == rent amount (based on on how many railroads owned
+    // POST: FCTVAl == absolute rent (based on on how many railroads owned)
     {
-        int numRailroads = 0;
+        int numOwned = 0;  // keeps track of how many Railroads is owned
         
         // find number of railroads owner has
         for(Property i : owner.getProperties())
         {
-            if(Color.BLACK.equals(i.getColor()))  // Railroads are set to black,
-                ++numRailroads;                   // if the color is black, it must be a railroad
+            if (i instanceof Railroad)  // if this instance is a railroad
+                numOwned++;
         }
         
-        switch(numRailroads)  // return the correct amount
+        switch(numOwned)  // return the correct amount
         {
             case 1:  return 25;
             case 2:  return 50;
@@ -49,19 +48,24 @@ public class Railroad extends Property
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public void onLand(Player player)
-    // POST: see below
+    // POST: if user buys instance: owner = player, && player loses money equivalent to Object cost
+    //       if user uses instance: owner loses appropriate rent, & owner gains appropriate rent
     {
         int option;  // option the player chooses
+        int rent; // amount to use the Object
         
         option = ActionsMenu.runActionsMenu(getPossibleActions(player));  // ask player for option
-        
-        switch(option)  // take appropriate actions 
+
+        if(owner == null && option == 1)  // if player wants to buy railroad
         {
-            case 1:  player.changeMoney(-1 * super.getCost());  // buy railroad
-                     super.setOwner(player);
-                     break;
-            default: player.changeMoney(-1 * getRent());  // use railroad
-                     owner.changeMoney(getRent());
+            player.changeMoney(-1 * super.getCost());  // take money and buy it
+            super.setOwner(player);
+        }
+        else if (owner != null && option == 0)  // if player has to use railroad
+        {
+            rent = getRent();
+            player.changeMoney(-1 * rent);  // take money, and give it to owner
+            owner.changeMoney(rent);
         }
         
         return;
@@ -80,5 +84,12 @@ public class Railroad extends Property
             return notOwned;
         else  // else it must be owned
             return owned;
+    }
+        
+///////////////////////////////////////////////////////////////////////////////////////////////////
+    public String toString()
+    // POST: FCTVAL = a String of the name, positions, cost, and owner
+    {
+        return super.toString();
     }
 }
