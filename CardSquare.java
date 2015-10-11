@@ -1,7 +1,7 @@
 // Programmer:  Noah Angeles, Dennis McNamara, Tim Werkheiser, & Wenkan Zhu
 // Assignment:  Project: Monopoly
-// Date:        
-// Description: Determines Go
+// Date:        October 2015
+// Description: Class to implement the Card Squares in the Fall 2015 CS342 Monopoly project
 
 public class CardSquare extends BoardLoc
 {
@@ -13,7 +13,8 @@ public class CardSquare extends BoardLoc
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public CardSquare(String name, int position)
-    // PRE:  name == "Chance" || name == "Community Chest"
+    // PRE:  name == "Chance" || name == "Community Chest",
+    //       position <= 0 && position > 40
     // POST: CardSquare created with name = "Name" && position = "position"
     {
         super(name, position);
@@ -41,18 +42,19 @@ public class CardSquare extends BoardLoc
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-    public String getPossibleActions(Player player)
+    public String[] getPossibleActions(Player player)
     // PRE:  player is initialized
     // POST: FCTVAL = array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
     {
-        return "Click to continue.";
+        String[] actions = {"Continue"};
+        return actions;
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public String toString()
     // POST: FCTVAL = a String of the name of the loacitons, and it's position from start
     {
-        return name + ", Postion: " + position;
+        return super.toString();
     }
 }

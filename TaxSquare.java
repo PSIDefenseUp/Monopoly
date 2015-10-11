@@ -1,7 +1,7 @@
 // Programmer:  Noah Angeles, Dennis McNamara, Tim Werkheiser, & Wenkan Zhu
 // Assignment:  Project: Monopoly
-// Date:        
-// Description: 
+// Date:        October 2015
+// Description: Class to implement the Tax Squares in the Fall 2015 CS342 Monopoly project
 
 public class TaxSquare extends BoardLoc
 {
@@ -13,7 +13,8 @@ public class TaxSquare extends BoardLoc
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public TaxSquare(String name, int position)
-    // PRE:  name == "Luxury Tax" || name == "Income Tax", and position is initialized
+    // PRE:  name == "Luxury Tax" || name == "Income Tax",
+    //       position <= 0 && position > 40
     // POST: Tax tile has bee created at position "position" with appropriate name
     {
         super(name, position);
@@ -43,18 +44,19 @@ public class TaxSquare extends BoardLoc
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-    public String getPossibleActions(Player player)
+    public String[] getPossibleActions(Player player)
     // PRE:  player is initialized
     // POST: FCTVAL = array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
     {
-        return "Click to continue.";
+        String[] actions = {"Get Tax"};
+        return actions;
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public String toString()
     // POST: FCTVAL = a String of the name of the loacitons, and it's position from start
     {
-        return name + ", Postion: " + position;
+        return super.toString();
     }
 }
