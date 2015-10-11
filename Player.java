@@ -91,8 +91,7 @@ public class Player
     // PRE:  money is initialized
     // POST: players money is changed by "money" 
     {
-        this.money += money;
-            
+        this.money += money;            
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
