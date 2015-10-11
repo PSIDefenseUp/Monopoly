@@ -1,12 +1,23 @@
 // Programmer:  Noah Angeles, Dennis McNamara, Tim Werkheiser, & Wenkan Zhu
 // Assignment:  Project: Monopoly
-// Date:        
-// Description: Base BoardLoc class for Monopoly
+// Date:        October 2015
+// Description: Higher Class to implement Board Locations in the Fall 2015 CS342 Monopoly project
 
 public abstract class BoardLoc
 {
-    protected int position;
-    protected String name;
+    protected int position;  // Board Locations postion from GO
+    protected String name;  // name of the Board Location
+    
+    public abstract int getRent();
+    // POST: FCTVAL = cost of rent when landing on property
+    
+    public abstract void onLand();
+    // POST: Takes appropriate actions when players lands
+    
+    public abstract String[] getPossibleActions(Player player);
+    // PRE:  player is initialized
+    // POST: FCTVAL = array of options player has upon landing on this space, 
+    //       to be used in a menu in a user interface
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public BoardLoc()
@@ -18,8 +29,8 @@ public abstract class BoardLoc
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public BoardLoc(String name, int position)
-    // PRE:  name, position are initialized && 0 < position < 40 
-    // POST: creates a BoardLoc with name and position
+    // PRE:  name initialized &&  position <= 0 && position > 40 
+    // POST: creates a BoardLoc with the object variables set as the incoming parameter variables
     {
         this.name = name;
         this.position = position;
@@ -39,18 +50,10 @@ public abstract class BoardLoc
         return position;
     }
     
+///////////////////////////////////////////////////////////////////////////////////////////////////
     public String toString()
     // POST: String representation of BoardLoc
     {
-        return "Name: " + name + " Position: " + position;
+        return "Name: " + name + ", Position: " + position;
     }
-    
-    public abstract int getRent();
-    // POST: FCTVAL = cost of rent when landing on property
-    public abstract void onLand();
-    // POST: Takes appropriate actions when players lands
-    public abstract String[] getPossibleActions(Player player);
-    // PRE:  player is initialized
-    // POST: FCTVAL = array of options player has upon landing on this space, 
-    //       to be used in a menu in a user interface
 }
