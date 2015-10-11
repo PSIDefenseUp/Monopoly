@@ -32,7 +32,7 @@ public class CornerSquare extends BoardLoc
     public void onLand(Player player)
     // POST: does nothing
     {
-        runActionsMenu(getPossibleActions(player));  // give player option to move on
+        ActionsMenu.runActionsMenu(getPossibleActions(player));  // give player option to move on
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
