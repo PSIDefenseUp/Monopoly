@@ -33,8 +33,8 @@ public class Monopoly
     
     public static void setBoard(BoardLoc[] board)
     {       
-        // TODO: Put all locations on the board
-        board = new BoardLoc[15];
+        // Initialize array of board locations
+        board = new BoardLoc[40];
                 
         // Implement first 15 board spaces for Deliverable #2 (Completed)        
         board[0] = new CornerSquare("GO", 0);
@@ -52,13 +52,40 @@ public class Monopoly
         board[12] = new Utility("ELECTRIC COMPANY", 12, 150);
         board[13] = new Lot("STATES AVE.", 13, 140, Color.MAGENTA, 100, new int[]{10, 50, 150, 450, 625, 750});
         board[14] = new Lot("VIRGINIA AVE.", 14, 160, Color.MAGENTA, 100, new int[]{12, 60, 180, 500, 700, 900});
+        
+        // The rest of the board's locations
+        board[15] = new Railroad("PENNSYLVANIA RAILROAD", 15, 200);
+        board[16] = new Lot("ST. JAMES PLACE", 16, 180, Color.ORANGE, 100, new int[]{14, 70, 200, 550, 750, 950});
+        board[17] = new CardSquare("Community Chest", 17);
+        board[18] = new Lot("TENNESSEE AVE.", 18, 180, Color.ORANGE, 100, new int[]{14, 70, 200, 550, 750, 950});
+        board[19] = new Lot("NEW YORK AVE.", 19, 200, Color.ORANGE, 100, new int[]{16, 80, 220, 600, 800, 1000});
+        board[20] = new CornerSquare("Free Parking", 20);
+        board[21] = new Lot("KENTUCKY AVE.", 21, 220, Color.RED, 150, new int[]{18, 90, 250, 700, 875, 1050});
+        board[22] = new CardSquare("Chance", 22);
+        board[23] = new Lot("INDIANA AVE.", 23, 220, Color.RED, 150, new int[]{18, 90, 250, 700, 875, 1050});
+        board[24] = new Lot("ILLINOIS AVE.", 24, 240, Color.RED, 150, new int[]{20, 100, 300, 750, 925, 1100});
+        board[25] = new Railroad("B & O RAILROAD", 25);
+        board[26] = new Lot("ATLANTIC AVE.", 26, 260, Color.YELLOW, 150, new int[]{22, 110, 330, 800, 975, 1150});
+        board[27] = new Lot("VENTNOR AVE.", 27, 260, Color.YELLOW, 150, new int[]{22, 110, 330, 800, 975, 1150});
+        board[28] = new Utility("WATER WORKS", 28, 150);
+        board[29] = new Lot("MARVIN GARDENS", 29, 280, Color.YELLOW, 150, new int[]{24, 120, 360, 850, 1025, 1200});
+        board[30] = new CornerSquare("Go To Jail", 30);
+        board[31] = new Lot("PACIFIC AVE.", 31, 300, Color.GREEN, 200, new int[]{26, 130, 390, 900, 1100, 1275});
+        board[32] = new Lot("NO. CAROLINA AVE.", 32, 300, Color.GREEN, 200, new int[]{26, 130, 390, 900, 1100, 1275});
+        board[33] = new CardSquare("Community Chest", 33);
+        board[34] = new Lot("PENNSYLVANIA AVE.", 34, 320, Color.GREEN, 200, new int[]{28, 150, 450, 1000, 1200, 1400});
+        board[35] = new Railroad("SHORT LINE RAILROAD", 35, 200);
+        board[36] = new CardSquare("Chance", 36);
+        board[37] = new Lot("PARK PLACE", 37, 350, Color.BLUE, 200, new int[]{35, 175, 500, 1100, 1300, 1500});
+        board[38] = new TaxSquare("Luxury Tax", 38);
+        board[39] = new Lot("BOARDWALK", 39, 400, Color.BLUE, 200, new int[]{50, 200, 600, 1400, 1700, 2000});
     }
     
     public static void main(String[] args)
     {
         init();
         
-        // 
+        // Keep the game going
         while(!gameOver)
         {            
             // If current player is still in the game
@@ -83,7 +110,7 @@ public class Monopoly
                 while(action != 0);
 
                 // Roll dice for player and continue the turn
-                roll = (int)(Math.random() * 11) + 2; // Roll dice (random 2-12 to simulate 2 dice)
+                roll = ((int)(Math.random() * 6) + 1) + ((int)(Math.random() * 6) + 1); // Roll two dice
                 players[currentPlayer].move(roll); // Move the player
                 board[players[currentPlayer].getPosition].onLand(players[currentPlayer]); // Run onLand for the player's new position
             }
