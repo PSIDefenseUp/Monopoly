@@ -1,7 +1,7 @@
 // Programmer:  Noah Angeles, Dennis McNamara, Tim Werkheiser, & Wenkan Zhu
 // Assignment:  Project: Monopoly
 // Date:        October 2015
-// Description: Class to implement the Corner Squares in the Fall 2015 CS342 Monopoly project
+// Description: Class to implement the Corner Squares for the Fall 2015 CS342 Monopoly project
 
 public class CornerSquare extends BoardLoc
 {
@@ -15,7 +15,8 @@ public class CornerSquare extends BoardLoc
     public CornerSquare(String name, int position)
     // PRE:  name == "GO" || name == "Jail" || name == "Free Parking" || name == "Go To Jail",
     //       position <= 0 && position > 40
-    // POST: CornerSquare created with name = "Name" && position = "position"
+    // POST: creates a CornerSquare Object with the object variables set to their corresponding
+    //       parameters
     {
         super(name, position);
     }

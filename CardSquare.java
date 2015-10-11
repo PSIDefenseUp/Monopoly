@@ -1,7 +1,7 @@
 // Programmer:  Noah Angeles, Dennis McNamara, Tim Werkheiser, & Wenkan Zhu
 // Assignment:  Project: Monopoly
 // Date:        October 2015
-// Description: Class to implement the Card Squares in the Fall 2015 CS342 Monopoly project
+// Description: Class to implement the Card Squares for the Fall 2015 CS342 Monopoly project
 
 public class CardSquare extends BoardLoc
 {
@@ -15,7 +15,8 @@ public class CardSquare extends BoardLoc
     public CardSquare(String name, int position)
     // PRE:  name == "Chance" || name == "Community Chest",
     //       position <= 0 && position > 40
-    // POST: CardSquare created with name = "Name" && position = "position"
+    // POST: creates a CardSquare Object with the object variables set to their corresponding
+    //       parameters
     {
         super(name, position);
     }
@@ -53,7 +54,7 @@ public class CardSquare extends BoardLoc
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public String toString()
-    // POST: FCTVAL = a String of the name of the loacitons, and it's position from start
+    // POST: FCTVAL = a String of the name of the locaitons, and it's position from start
     {
         return super.toString();
     }

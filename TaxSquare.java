@@ -1,7 +1,7 @@
 // Programmer:  Noah Angeles, Dennis McNamara, Tim Werkheiser, & Wenkan Zhu
 // Assignment:  Project: Monopoly
 // Date:        October 2015
-// Description: Class to implement the Tax Squares in the Fall 2015 CS342 Monopoly project
+// Description: Class to implement the Tax Squares for the Fall 2015 CS342 Monopoly project
 
 public class TaxSquare extends BoardLoc
 {
@@ -15,7 +15,8 @@ public class TaxSquare extends BoardLoc
     public TaxSquare(String name, int position)
     // PRE:  name == "Luxury Tax" || name == "Income Tax",
     //       position <= 0 && position > 40
-    // POST: Tax tile has bee created at position "position" with appropriate name
+    // POST: creates a TaxSquare Object with the object variables set to their corresponding
+    //       parameters
     {
         super(name, position);
     }
