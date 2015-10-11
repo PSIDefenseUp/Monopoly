@@ -39,4 +39,20 @@ public class CardSquare extends BoardLoc
         
         //player.changeMoney(getRent());  // tax the player
     }
+        
+///////////////////////////////////////////////////////////////////////////////////////////////////
+    public String getPossibleActions(Player player)
+    // PRE:  player is initialized
+    // POST: FCTVAL = array of options player has upon landing on this space, 
+    //       to be used in a menu in a user interface
+    {
+        return "Click to continue.";
+    }
+        
+///////////////////////////////////////////////////////////////////////////////////////////////////
+    public String toString()
+    // POST: FCTVAL = a String of the name of the loacitons, and it's position from start
+    {
+        return name + ", Postion: " + position;
+    }
 }
