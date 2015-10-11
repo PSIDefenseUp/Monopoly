@@ -1,7 +1,7 @@
 // Programmer:  Noah Angeles, Dennis McNamara, Tim Werkheiser, & Wenkan Zhu
 // Assignment:  Project: Monopoly
 // Date:        October 2015
-// Description: Higher Class to implement the Properties in the Fall 2015 CS342 Monopoly project
+// Description: Higher Class to implement the Properties for the Fall 2015 CS342 Monopoly project
 
 import java.awt.Color;
 
@@ -27,8 +27,8 @@ public abstract class Property extends BoardLoc
     // PRE:  name initialized && position <= 0 && position > 40 && cost <= 0 && color == Color.CYAN, 
     //       Color.MAGENTA, Color.ORANGE, Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, 
     //       Color.BLACK, Color.GRAY, or some variation of Brown
-    // POST: Creates Property Object with position = "position", cost = "cost", color = "Color",
-    //       color set to "Color", & owner set to null
+    // POST: creates a Class Object with the object variables set to the corresponding parameters,
+    //       while owner is set to null
     {
         super(name, position);
         this.cost = cost;

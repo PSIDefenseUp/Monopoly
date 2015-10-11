@@ -1,7 +1,7 @@
 // Programmer:  Noah Angeles, Dennis McNamara, Tim Werkheiser, & Wenkan Zhu
 // Assignment:  Project: Monopoly
 // Date:        October 2015
-// Description: Higher Class to implement Board Locations in the Fall 2015 CS342 Monopoly project
+// Description: Higher Class to implement Board Locations for the Fall 2015 CS342 Monopoly project
 
 public abstract class BoardLoc
 {
@@ -30,7 +30,8 @@ public abstract class BoardLoc
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public BoardLoc(String name, int position)
     // PRE:  name initialized &&  position >= 0 && position < 40 
-    // POST: creates a BoardLoc with the object variables set to the incoming parameter variables
+    // POST: creates a BoardLoc Object with the object variables set to their corresponding
+    //       parameters
     {
         this.name = name;
         this.position = position;
