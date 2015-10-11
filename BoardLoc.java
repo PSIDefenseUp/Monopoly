@@ -11,7 +11,8 @@ public abstract class BoardLoc
     public abstract int getRent();
     // POST: FCTVAL = cost of rent when landing on property
     
-    public abstract void onLand();
+    public abstract void onLand(Player player);
+    // PRE:  player is initialized
     // POST: Takes appropriate actions when players lands
     
     public abstract String[] getPossibleActions(Player player);
