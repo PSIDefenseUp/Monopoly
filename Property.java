@@ -27,7 +27,7 @@ public abstract class Property extends BoardLoc
     // PRE:  name initialized && position <= 0 && position > 40 && cost <= 0 && color == Color.CYAN, 
     //       Color.MAGENTA, Color.ORANGE, Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, 
     //       Color.BLACK, Color.GRAY, or some variation of Brown
-    // POST: creates a Class Object with the object variables set to the corresponding parameters,
+    // POST: creates a Property Object with the object variables set to the corresponding parameters,
     //       while owner is set to null
     {
         super(name, position);
