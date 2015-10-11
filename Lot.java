@@ -79,9 +79,11 @@ public class Lot extends Property
     public String toString()
     // POST: FCTVAL = a String of the name of the loacitons, and it's position from start
     {
-        String retStr = super.toString() + ", Rent: " + rent[upgradeCount] + ", Color:, ";
+        String retStr;  // String to be returned
         
-        if(Color.CYAN.equals(color))          // return string based on color of object
+        retStr = super.toString() + ", Rent: " + rent[upgradeCount] + ", Color:, ";
+        
+        if(Color.CYAN.equals(color))        // add correct color of object to return string
             retStr += "Cyan";
         else if(Color.MAGENTA.equals(color))
             retStr += "Magenta";
@@ -98,7 +100,7 @@ public class Lot extends Property
         else
             retStr += "Brown";
         
-        switch(upgradeCount)
+        switch(upgradeCount)  // add upgrade-count and upgrade-cost to return string
         {
             case 1:   retStr += ", One House, Upgrade Cost: " + upgradeCost;
                       break;
