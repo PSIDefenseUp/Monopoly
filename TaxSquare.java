@@ -6,32 +6,40 @@
 public class TaxSquare extends BoardLoc
 {
     public TaxSquare()
-    // PRE:  
-    // POST: 
+    // POST: creates a tax tile with no name, and no position
     {
         super();
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public TaxSquare(String name, int position)
-    // PRE:  
-    // POST: 
+    // PRE:  name == "Luxury Tax" || name == "Income Tax", and position is initialized
+    // POST: Tax tile has bee created at position "position" with appropriate name
     {
+        super();
         super(name, position);
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getRent()
-    // POST: 
+    // POST: FCTVAL = -200 if income tax tile || FCTVAL = -75 if luxury tax tile
     {
-        // calculate something or something aaaaa
-        return 0;
+        if(this.name == "Income Tax")  // if this is the income tax tile
+            return -200;
+        else if(this.name == "Luxury Tax") // else it could be the luxury tax
+            return -75;
+        else  // else the tile has not been initialized
+            return 0;
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public void onLand()
-    // POST: 
+    // POST: automatically charges player appropriate amount of money
     {
-        // choose $200 or 10%
+        Player player;  // used to determine
+        
+        //player = ??;  // get the player
+        
+        //player.changeMoney(getRent());  // tax the player
     }
 }
