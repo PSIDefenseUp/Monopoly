@@ -49,4 +49,8 @@ public abstract class BoardLoc
     // POST: FCTVAL = cost of rent when landing on property
     public abstract void onLand();
     // POST: Takes appropriate actions when players lands
+    public abstract String[] getPossibleActions(Player player);
+    // PRE:  player is initialized
+    // POST: FCTVAL = array of options player has upon landing on this space, 
+    //       to be used in a menu in a user interface
 }
