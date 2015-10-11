@@ -30,14 +30,15 @@ public class Player
     }
 ///////////////////////////////////////////////////////////////////////////////////////////////////    
     public int getRoll()
-    // POST: FCTVAL == money
+    // POST: FCTVAL == roll
     {
         return roll;
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public void changeRoll(int rolled)
-    // POST: FCTVAL == money
+    // PRE:  1 <= rolled <= 12
+    // POST: roll = rolled
     {
         roll = rolled;
     }
