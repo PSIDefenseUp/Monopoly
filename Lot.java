@@ -60,19 +60,37 @@ public class Lot extends Property
         upgradeCount++;
     }
         
-///////////////////////////////////////////////////////////////////////////////////////////////////
-    public void onLand()
+    public void onLand(Player player)
     // POST: see below
     {
-        // if unowned
-          // if player has enough money
-            // offer purchase
+        int option;  // option the player chooses
         
-        // else if owned <by other player> 
-          // if player has enough funds
-             // give owner funds
-          // else player doesn't have enough
-             // give owner all player's money
+        option = ActionsMenu.runActionsMenu(getPossibleActions(player));  // ask player for option
+        
+        switch(option)  // take appropriate actions 
+        {
+            case 1:  player.changeMoney(-1 * super.getCost());  // buy lot
+                     super.setOwner(player);
+                     break;
+            default: player.changeMoney(-1 * getRent());  // use lot
+                     owner.changeMoney(getRent());
+        }
+        
+        return;
+    }
+    
+    public String[] getPossibleActions(Player player)
+    // PRE:  player is initialized
+    // POST: FCTVAL = array of options player has upon landing on this space, 
+    //       to be used in a menu in a user interface
+    {
+        String[] notOwned = {"End Turn", "Buy"};
+        String[] owned = {"Pay Rent"};
+        
+        if(owner == null)  // if the lot isn't owned,
+            return notOwned;
+        else  // else it must be owned
+            return owned;
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
