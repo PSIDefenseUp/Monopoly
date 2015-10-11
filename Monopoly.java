@@ -103,4 +103,9 @@ public class Monopoly
 	{
 		return players[playerID];
 	}
+
+	public static int getBoardLength()
+	{
+		return board.length;
+	}
 }
