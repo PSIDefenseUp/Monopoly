@@ -29,14 +29,10 @@ public class CornerSquare extends BoardLoc
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-    public void onLand()
-    // POST: 
+    public void onLand(Player player)
+    // POST: does nothing
     {
-        Player player;  // used to determine
-        
-        //player = ??;  // get the player
-        
-        //player.changeMoney(getRent());  // tax the player
+        runActionsMenu(getPossibleActions(player));  // give player option to move on
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
