@@ -74,4 +74,45 @@ public class Lot extends Property
           // else player doesn't have enough
              // give owner all player's money
     }
+        
+///////////////////////////////////////////////////////////////////////////////////////////////////
+    public String toString()
+    // POST: FCTVAL = a String of the name of the loacitons, and it's position from start
+    {
+        String retStr = super.toString() + ", Rent: " + rent[upgradeCount] + ", Color:, ";
+        
+        if(Color.CYAN.equals(color))          // return string based on color of object
+            retStr += "Cyan";
+        else if(Color.MAGENTA.equals(color))
+            retStr += "Magenta";
+        else if(Color.ORANGE.equals(color))
+            retStr += "Orange";
+        else if(Color.RED.equals(color))
+            retStr += "Red";
+        else if(Color.YELLOW.equals(color))
+            retStr += "Yellow";
+        else if(Color.GREEN.equals(color))
+            retStr += "Green";
+        else if(Color.BLUE.equals(color))
+            retStr += "Blue";
+        else
+            retStr += "Brown";
+        
+        switch(upgradeCount)
+        {
+            case 1:   retStr += ", One House, Upgrade Cost: " + upgradeCost;
+                      break;
+            case 2:   retStr += ", Two Houses, Upgrade Cost: " + upgradeCost;
+                      break;
+            case 3:   retStr += ", Three Houses, Upgrade Cost: " + upgradeCost;
+                      break;
+            case 4:   retStr += ", Four Houses, Upgrade Cost: " + upgradeCost;
+                      break;
+            case 5:   retStr += ", One Hotel, Cannot Upgrade";
+                      break;
+            default:  retStr += ", No Upgrades, Upgrade Cost: " + upgradeCost;
+        }
+        
+        return retStr;
+    }
 }
