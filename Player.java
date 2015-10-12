@@ -70,9 +70,9 @@ public class Player
     // POST: moves player forward "moves" spaces
     {
         position += moves;
-        if(position >= Monopoly.getBoardLength())  // if positions moved outside of the array,
+        if(position >= 40)  // if positions moved outside of the array,
         {
-            position %= Monopoly.getBoardLength();  // put it back on the board
+            position %= 40;  // put it back on the board
 
             money += 200;  // add $200
         }
