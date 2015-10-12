@@ -128,8 +128,13 @@ public class Player
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public String toString()
-    // POST: 
+    // POST: string representation of money, position, roll, and properties
     {
-        return "";
+        String s = "Money: " + money + " Postition: " + position + " Rolled: " + roll + " Properties: ";
+        for (int i = 0; i < properties.length; i++)
+        {
+            s = s + properties[i] + ", ";
+        }
+        return s;
     }
 }
