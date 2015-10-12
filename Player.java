@@ -133,7 +133,7 @@ public class Player
         String s = "Money: " + money + " Postition: " + position + " Rolled: " + roll + " Properties: ";
         for (int i = 0; i < properties.length; i++)
         {
-            s = s + properties[i] + ", ";
+            s = s + properties[i].getName() + " ";
         }
         return s;
     }
