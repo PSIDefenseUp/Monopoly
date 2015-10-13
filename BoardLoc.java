@@ -1,7 +1,7 @@
 // Programmer:  Noah Angeles, Dennis McNamara, Tim Werkheiser, & Wenkan Zhu
 // Assignment:  Project: Monopoly
 // Date:        October 2015
-// Description: Higher Class to implement Board Locations for the Fall 2015 CS342 Monopoly project
+// Description: Class to implement Board Locations for the Fall 2015 CS342 Monopoly project
 
 public abstract class BoardLoc
 {
@@ -9,15 +9,15 @@ public abstract class BoardLoc
     protected String name;  // name of the Board Location
     
     public abstract int getRent();
-    // POST: FCTVAL = cost of rent when landing on property
+    // POST: FCTVAL == cost of rent when landing on property
     
     public abstract void onLand(Player player);
     // PRE:  player is initialized
-    // POST: Takes appropriate actions when players lands
+    // POST: Takes appropriate actions when players lands on board location
     
     public abstract String[] getPossibleActions(Player player);
     // PRE:  player is initialized
-    // POST: FCTVAL = array of options player has upon landing on this space, 
+    // POST: FCTVAL == array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,21 +40,21 @@ public abstract class BoardLoc
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public String getName()
-    // POST: FCTVAL = name
+    // POST: FCTVAL == name
     {
         return name;
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getPosition()
-    // POST: FCTVAL = position
+    // POST: FCTVAL == position
     {
         return position;
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public String toString()
-    // POST: String representation of BoardLoc
+    // POST: FCTVAL == String representation of BoardLoc
     {
         return "Name: " + name + ", Position: " + position;
     }
