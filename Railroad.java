@@ -1,14 +1,14 @@
 // Programmer:  Noah Angeles, Dennis McNamara, Tim Werkheiser, & Wenkan Zhu
 // Assignment:  Project: Monopoly
-// Date:        
-// Description: 
+// Date:        October 2015
+// Description: Class to implement the Railroad Squares for the Fall 2015 CS342 Monopoly project
 
 import java.awt.Color;
 
 public class Railroad extends Property
 {
     public Railroad()
-    // POST: Creates Railroad Object with position = 0, blank name, cost = 0,
+    // POST: Creates Railroad instance with position = 0, blank name, cost = 0,
     //       while Color set to White, & owner set to null 
     {
         super();
@@ -17,23 +17,28 @@ public class Railroad extends Property
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public Railroad(String name, int position, int cost)
     // PRE:  name initialized &&  position >= 0 && position < 40 && cost >= 0
-    // POST: creates a Railroad Object with the object variables set to the corresponding
-    //       parameters, while Color set to White, & owner set to null 
+    // POST: creates a Railroad Object with each object variable set to the corresponding
+    //       <incoming> parameter, while Color set to White, & owner set to null 
     {
         super(name, position, cost, Color.WHITE);
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getRent()
-    // POST: FCTVAl == absolute rent (based on on how many railroads owned)
+    // POST: FCTVAl == absolute rent (based on how many railroads owned)
     {
-        int numOwned = 0;  // keeps track of how many Railroads is owned
+        int numOwned;  // keeps track of how many Railroads is owned
         
-        // find number of railroads owner has
-        for(Property i : owner.getProperties())
+        numOwned = 0;
+        
+        if(owner != null)  // if railroad has an owner
         {
-            if (i instanceof Railroad)  // if this instance is a railroad
-                numOwned++;
+            // find number of railroads owner has
+            for(Property i : owner.getProperties())
+            {
+                if (i instanceof Railroad)  // if this instance is a railroad
+                    numOwned++;
+            }
         }
         
         switch(numOwned)  // return the correct amount
@@ -77,13 +82,10 @@ public class Railroad extends Property
     // POST: FCTVAL = array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
     {
-        String[] notOwned = {"End Turn", "Buy"};
-        String[] owned = {"Pay for Ticket"};
-        
         if(owner == null)  // if the railroad isn't owned,
-            return notOwned;
+            return new String[] {"End Turn", "Buy"};
         else  // else it must be owned
-            return owned;
+            return new String[] {"Pay for Ticket"};
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////

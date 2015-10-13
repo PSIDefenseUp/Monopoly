@@ -16,7 +16,7 @@ public class CardSquare extends BoardLoc
     // PRE:  name == "Chance" || name == "Community Chest",
     //       position <= 0 && position > 40
     // POST: creates a CardSquare instance with the each object variable set to the corresponding
-    //       <incoming> parameters
+    //       <incoming> parameter
     {
         super(name, position);
     }

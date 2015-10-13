@@ -10,7 +10,7 @@ public class Utility extends Property
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public  Utility()
-    // POST: Creates Utility Object with position = 0, blank name, cost = 0,
+    // POST: Creates Utility instance with position = 0, blank name, cost = 0,
     //       while Color set to White, & owner set to null 
     {
         super();
@@ -19,33 +19,42 @@ public class Utility extends Property
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public  Utility(String name, int position, int cost)
     // PRE:  name initialized &&  position >= 0 && position < 40 && cost >= 0
-    // POST: creates a Utility Object with the object variables set to the corresponding
-    //       parameters, while Color set to White, & owner set to null 
+    // POST: creates a Utility instance with each object variable set to the corresponding
+    //       <incoming> parameter, while Color set to White, & owner set to null 
     {
         super(name, position, cost, Color.WHITE);
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getRent()
-    // PRE:  1 <= diceRoll <= 12 diceRoll is amount player rolled owner = Player who owns Utility
-    //       assumes player has at least 1 utility and player can only have up to 2 utility
+    // PRE:  1 <= diceRoll <= 12
     // POST: FCTVAL == rent player owes 
     {
-        int numberOwned = 0;    // keeps track of how many utility is owned
-        Property[] property = owner.getProperties();  // properties owned by the player
+        int numberOwned;  // keeps track of how many utility is owned
+        Property[] property;  // properties owned by the player
         
-        for (int i = 0; i < property.length; i++)   // counts how many utility is owned
+        numberOwned = 0;
+        
+        if(owner != null)  // if utility is owned
         {
-            if (property[i] instanceof Utility)
-                numberOwned++;
+            property = owner.getProperties();
+        
+            for (int i = 0; i < property.length; i++)   // counts how many utility is owned
+            {
+                if (property[i] instanceof Utility)  // if player owns utility
+                {
+                    numberOwned++;
+                    break;  // there's only two utilities, no sense in searching anything else
+                }
+            }
         }
         
-        if (numberOwned == 2)
-            return owner.getRoll() * 10;
-        else if (numberOwned == 1)
-            return owner.getRoll() * 4;
-        else
-            return 0;
+        switch(numberOwned)
+        {
+            case 2: return owner.getRoll() * 10;  // if owner has both utilities
+            case 1: return owner.getRoll() * 4;  // if owner has one utility
+            default: return 0;  // utility wasn't owned
+        }
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,13 +87,10 @@ public class Utility extends Property
     // POST: FCTVAL = array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
     {
-        String[] notOwned = {"End Turn", "Buy"};
-        String[] owned = {"Pay Rent"};
-        
         if(owner == null)  // if the railroad isn't owned,
-            return notOwned;
+            return new String[] {"End Turn", "Buy"};
         else  // else it must be owned
-            return owned;
+            return new String[] {"Pay Rent"};
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////

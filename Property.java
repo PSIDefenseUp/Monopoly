@@ -13,7 +13,7 @@ public abstract class Property extends BoardLoc
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public Property()
-    // POST: Creates Property Object with position = 0, blank name, cost = 0, Color set to White,
+    // POST: Creates Property instance with position = 0, blank name, cost = 0, Color set to White,
     //       & owner set to null
     {
         super();
@@ -26,9 +26,9 @@ public abstract class Property extends BoardLoc
     public Property(String name, int position, int cost, Color color)
     // PRE:  name initialized && position <= 0 && position > 40 && cost <= 0 && color == Color.CYAN, 
     //       Color.MAGENTA, Color.ORANGE, Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, 
-    //       Color.BLACK, Color.GRAY, or some variation of Brown
-    // POST: creates a Property Object with the object variables set to the corresponding parameters,
-    //       while owner is set to null
+    //       Color.BLACK, Color.GRAY, or some variation of Purple
+    // POST: creates a Property instance with each object variable set to the corresponding 
+    //       <incoming> parameter, while owner is set to null
     {
         super(name, position);
         this.cost = cost;
@@ -38,8 +38,8 @@ public abstract class Property extends BoardLoc
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public void setOwner(Player owner)
-    // PRE:  owner is initiallized
-    // POST: propertiy position = "owner"
+    // PRE:  owner is initialized
+    // POST: property position = "owner"
     {
         this.owner = owner;
     }

@@ -29,7 +29,7 @@ public class Lot extends Property
     //       Color.ORANGE, Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, 
     //       or one variation of Purple
     // POST: creates a Railroad instance with each object variable set to the corresponding
-    //       <incoming> parameters, while owner set to null 
+    //       <incoming> parameter, while owner set to null 
     {
         super(name, position, cost, color);
         this.upgradeCost = upgradeCost;

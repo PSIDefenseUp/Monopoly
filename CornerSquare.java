@@ -16,7 +16,7 @@ public class CornerSquare extends BoardLoc
     // PRE:  name == "GO" || name == "Jail" || name == "Free Parking" || name == "Go To Jail",
     //       position <= 0 && position > 40
     // POST: creates a CornerSquare instance with each object variable set to the corresponding
-    //       <incoming> parameters
+    //       <incoming> parameter
     {
         super(name, position);
     }

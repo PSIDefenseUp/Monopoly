@@ -6,7 +6,7 @@
 public class TaxSquare extends BoardLoc
 {
     public TaxSquare()
-    // POST: creates a tax tile with no name, and no position
+    // POST: creates a TaxSquare instance with no name, and no position
     {
         super();
     }
@@ -15,8 +15,8 @@ public class TaxSquare extends BoardLoc
     public TaxSquare(String name, int position)
     // PRE:  name == "Luxury Tax" || name == "Income Tax",
     //       position <= 0 && position > 40
-    // POST: creates a TaxSquare Object with the object variables set to their corresponding
-    //       parameters
+    // POST: creates a TaxSquare instance with each object variable set to the corresponding
+    //       <incoming> parameter
     {
         super(name, position);
     }
@@ -47,8 +47,7 @@ public class TaxSquare extends BoardLoc
     // POST: FCTVAL = array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
     {
-        String[] actions = {"Get Tax"};
-        return actions;
+        return new String[] {"Get Tax"};
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
