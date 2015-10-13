@@ -7,13 +7,14 @@ import java.awt.Color;
 
 public class Lot extends Property
 {
-    private int upgradeCost;
-    private int rent[];
-    private int upgradeCount;
+    private int upgradeCost;  // cost to upgrade Object (i.e., add house or hotel)
+    private int rent[];  // 6 valued array with cost to rent for each upgrade amount
+    private int upgradeCount;  // value representing amount of upgrades
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public Lot()
-    // POST: 
+    // POST: Creates Lot Object with position = 0, blank name, cost = 0, upgradeCost = 0, 
+    //       upgradeCount = 0, rent = {0,0,0,0,0}. while Color set to White, & owner set to null 
     {
         super();
         upgradeCost = 0;
@@ -23,7 +24,11 @@ public class Lot extends Property
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public Lot(String name, int position, int cost, Color color, int upgradeCost, int rent[])
-    // POST: 
+    // PRE:  name initialized &&  position >= 0 && position < 40 && cost >= 0 && upgradeCount = 0
+    //       upgradeCost > 0 && all rent values > 0 && color == Color.CYAN, Color.MAGENTA,
+    //       Color.ORANGE, Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, or ________________
+    // POST: creates a Railroad Object with the object variables set to the corresponding
+    //       parameters, while owner set to null 
     {
         super(name, position, cost, color);
         this.upgradeCost = upgradeCost;
@@ -33,21 +38,27 @@ public class Lot extends Property
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getRent()
-    // POST: 
+    // POST: FCTVAL == absolute rent (based on upgradeCount)
     {
-        return this.rent[upgradeCount]; // requires an algorithm
+        if(owner == null)
+            return 0;
+        else
+            return this.rent[upgradeCount]; // requires an algorithm
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getUpgradeCost()
-    // POST: 
+    // POST: FCTVAL == absolute cost to upgrade Object
     {
-        return upgradeCost;
+        if(upgradeCount == 5)  // if completely upgraded
+            return 0;
+        else  // if there's room to upgrade
+            return upgradeCost;
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getUpgradeCount()
-    // POST: 
+    // POST: FCTVAL == amount of upgrades on Object
     {
         return upgradeCount;
     }
@@ -57,23 +68,30 @@ public class Lot extends Property
     // PRE:  upgradeCount < 5 
     // POST: 
     {
-        upgradeCount++;
+        if(upgradeCount == 5) // if Object has been completely upgraded
+            return;
+        else  // if there's room to upgrade
+            upgradeCount++;
     }
         
     public void onLand(Player player)
     // POST: see below
     {
         int option;  // option the player chooses
+        int rent; // amount to use the Object
         
         option = ActionsMenu.runActionsMenu(getPossibleActions(player));  // ask player for option
-        
-        switch(option)  // take appropriate actions 
+
+        if(owner == null && option == 1)  // if player wants to buy railroad
         {
-            case 1:  player.changeMoney(-1 * super.getCost());  // buy lot
-                     super.setOwner(player);
-                     break;
-            default: player.changeMoney(-1 * getRent());  // use lot
-                     owner.changeMoney(getRent());
+            player.changeMoney(-1 * super.getCost());  // take money and buy it
+            super.setOwner(player);
+        }
+        else if (owner != null && option == 0)  // if player has to use railroad
+        {
+            rent = getRent();
+            player.changeMoney(-1 * rent);  // take money, and give it to owner
+            owner.changeMoney(rent);
         }
         
         return;
