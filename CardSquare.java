@@ -25,10 +25,7 @@ public class CardSquare extends BoardLoc
     public int getRent()
     // POST: FCTVAL >= -200 && FCTVAL <= 200
     {
-        if(Math.random() >= 0.5)  // randomly choose if value will be positive
-            return (int)(Math.random()*201);  
-        else  // else it must be negative
-            return (-1)*(int)(Math.random()*201);
+        return (int)(Math.random()*401) - 200;
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////

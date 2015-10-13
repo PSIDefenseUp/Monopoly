@@ -64,7 +64,7 @@ public class Monopoly
         board[22] = new CardSquare("Chance", 22);
         board[23] = new Lot("INDIANA AVE.", 23, 220, Color.RED, 150, new int[]{18, 90, 250, 700, 875, 1050});
         board[24] = new Lot("ILLINOIS AVE.", 24, 240, Color.RED, 150, new int[]{20, 100, 300, 750, 925, 1100});
-        board[25] = new Railroad("B & O RAILROAD", 25);
+        board[25] = new Railroad("B & O RAILROAD", 25, 200);
         board[26] = new Lot("ATLANTIC AVE.", 26, 260, Color.YELLOW, 150, new int[]{22, 110, 330, 800, 975, 1150});
         board[27] = new Lot("VENTNOR AVE.", 27, 260, Color.YELLOW, 150, new int[]{22, 110, 330, 800, 975, 1150});
         board[28] = new Utility("WATER WORKS", 28, 150);
@@ -112,7 +112,7 @@ public class Monopoly
                 // Roll dice for player and continue the turn
                 roll = ((int)(Math.random() * 6) + 1) + ((int)(Math.random() * 6) + 1); // Roll two dice
                 players[currentPlayer].move(roll); // Move the player
-                board[players[currentPlayer].getPosition].onLand(players[currentPlayer]); // Run onLand for the player's new position
+                board[players[currentPlayer].getPosition()].onLand(players[currentPlayer]); // Run onLand for the player's new position
             }
 
             // TODO: ?? Check bankruptcy ??
@@ -139,6 +139,6 @@ public class Monopoly
 
     public static int getCurrentRoll()
     {
-    	return roll;
+     return roll;
     }
 }
