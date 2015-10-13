@@ -6,7 +6,7 @@
 public class CornerSquare extends BoardLoc
 {
     public CornerSquare() 
-    // POST: CornerSquare created without name or position
+    // POST: CornerSquare instance created without name or position
     {
         super();
     }
@@ -15,39 +15,38 @@ public class CornerSquare extends BoardLoc
     public CornerSquare(String name, int position)
     // PRE:  name == "GO" || name == "Jail" || name == "Free Parking" || name == "Go To Jail",
     //       position <= 0 && position > 40
-    // POST: creates a CornerSquare Object with the object variables set to their corresponding
-    //       parameters
+    // POST: creates a CornerSquare instance with the object variables set to their corresponding
+    //       <incoming> parameters
     {
         super(name, position);
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getRent()
-    // POST: FCTVAl = 0
+    // POST: FCTVAL == 0
     {
         return 0;
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public void onLand(Player player)
-    // POST: does nothing
+    // POST: Displays users options on landing (which is nothing)
     {
-        ActionsMenu.runActionsMenu(getPossibleActions(player));  // give player option to move on
+        ActionsMenu.runActionsMenu(getPossibleActions(player));  // Allow player to end turn
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public String[] getPossibleActions(Player player)
     // PRE:  player is initialized
-    // POST: FCTVAL = array of options player has upon landing on this space, 
+    // POST: FCTVAL == array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
     {
-        String[] actions = {"Continue"};
-        return actions;
+        return new String[] {"End Turn"};
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public String toString()
-    // POST: FCTVAL = a String of the name of the loacitons, and it's position from start
+    // POST: FCTVAL == a String of the name of the locations, and its position from start
     {
         return super.toString();
     }

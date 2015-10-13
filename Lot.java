@@ -1,7 +1,7 @@
 // Programmer:  Noah Angeles, Dennis McNamara, Tim Werkheiser, & Wenkan Zhu
 // Assignment:  Project: Monopoly
-// Date:        
-// Description: 
+// Date:        October 2015
+// Description: Class to implement the Lot Squares for the Fall 2015 CS342 Monopoly 
 
 import java.awt.Color;
 
@@ -13,7 +13,7 @@ public class Lot extends Property
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public Lot()
-    // POST: Creates Lot Object with position = 0, blank name, cost = 0, upgradeCost = 0, 
+    // POST: Creates Lot instance with position = 0, blank name, cost = 0, upgradeCost = 0, 
     //       upgradeCount = 0, rent = {0,0,0,0,0}. while Color set to White, & owner set to null 
     {
         super();
@@ -28,7 +28,7 @@ public class Lot extends Property
     //       upgradeCost > 0 && all rent values > 0 && color == Color.CYAN, Color.MAGENTA,
     //       Color.ORANGE, Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, 
     //       or one variation of Purple
-    // POST: creates a Railroad Object with the object variables set to the corresponding
+    // POST: creates a Railroad instance with the object variables set to the corresponding
     //       <incoming> parameters, while owner set to null 
     {
         super(name, position, cost, color);
@@ -39,12 +39,12 @@ public class Lot extends Property
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getRent()
-    // POST: FCTVAL == absolute rent (based on upgradeCount)
+    // POST: FCTVAL == absolute rent (based on ownership and upgradeCount)
     {
-        if(owner == null)
-            return 0;
-        else
-            return this.rent[upgradeCount]; // requires an algorithm
+        if(owner == null)  // if the property isn't owned
+            return 0;  // there isn't any rent
+        else  // if the Object is owned
+            return this.rent[upgradeCount];  // return appropriate value
     }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ public class Lot extends Property
     // POST: FCTVAL == absolute cost to upgrade Object
     {
         if(upgradeCount == 5)  // if completely upgraded
-            return 0;
+            return 0;  // player can't upgrade
         else  // if there's room to upgrade
             return upgradeCost;
     }
@@ -74,7 +74,8 @@ public class Lot extends Property
         else  // if there's room to upgrade
             upgradeCount++;
     }
-        
+    
+///////////////////////////////////////////////////////////////////////////////////////////////////
     public void onLand(Player player)
     // POST: see below
     {
@@ -98,23 +99,21 @@ public class Lot extends Property
         return;
     }
     
+///////////////////////////////////////////////////////////////////////////////////////////////////
     public String[] getPossibleActions(Player player)
     // PRE:  player is initialized
     // POST: FCTVAL = array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
     {
-        String[] notOwned = {"End Turn", "Buy"};
-        String[] owned = {"Pay Rent"};
-        
         if(owner == null)  // if the lot isn't owned,
-            return notOwned;
+            return new String[] {"End Turn", "Buy"};
         else  // else it must be owned
-            return owned;
+            return new String[] {"Pay Rent"};
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public String toString()
-    // POST: FCTVAL = a String of the name of the loacitons, and it's position from start
+    // POST: FCTVAL = a String of the name of the locations, and its position from start
     {
         String retStr;  // String to be returned
         

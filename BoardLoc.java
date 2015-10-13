@@ -5,7 +5,7 @@
 
 public abstract class BoardLoc
 {
-    protected int position;  // The Object position on the board from the GO position
+    protected int position;  // The Object's position on the board from the GO position
     protected String name;  // name of the Object
     
     public abstract int getRent();

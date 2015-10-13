@@ -6,7 +6,7 @@
 public class CardSquare extends BoardLoc
 {
     public CardSquare()
-    // POST: CardSquare created without name or position
+    // POST: CardSquare instance created with blank name and no position
     {
         super();
     }
@@ -15,8 +15,8 @@ public class CardSquare extends BoardLoc
     public CardSquare(String name, int position)
     // PRE:  name == "Chance" || name == "Community Chest",
     //       position <= 0 && position > 40
-    // POST: creates a CardSquare Object with the object variables set to their corresponding
-    //       parameters
+    // POST: creates a CardSquare instance with the object variables set to their corresponding
+    //       <incoming> parameters
     {
         super(name, position);
     }
@@ -39,16 +39,15 @@ public class CardSquare extends BoardLoc
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public String[] getPossibleActions(Player player)
     // PRE:  player is initialized
-    // POST: FCTVAL = array of options player has upon landing on this space, 
+    // POST: FCTVAL == array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
     {
-        String[] actions = {"Continue"};
-        return actions;
+        return new String[] {"Continue"};
     }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public String toString()
-    // POST: FCTVAL = a String of the name of the locaitons, and it's position from start
+    // POST: FCTVAL == a String of the name of the locations, and its position from start
     {
         return super.toString();
     }
