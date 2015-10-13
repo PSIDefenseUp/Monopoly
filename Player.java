@@ -6,10 +6,10 @@
 
 public class Player
 {
-    private int money;
-    private int position;
-    private int roll;
-  //  private Image token;  // I don't know how to treat this
+    private int money;  // amount of money a Player Obect has
+    private int position;  // the position <on board> of the Player Object
+    private int roll;  // The total value <on the dice> the player rolled
+  //  private Image token;  // To be implemented when the front end is made
     private Property[] properties;  // List of properties owned by this player
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -45,7 +45,7 @@ public class Player
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
   /*  public Image getToken()
-    // POST: 
+    // POST: FCTVAL == token
     {
         return token;
     }

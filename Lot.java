@@ -26,9 +26,10 @@ public class Lot extends Property
     public Lot(String name, int position, int cost, Color color, int upgradeCost, int rent[])
     // PRE:  name initialized &&  position >= 0 && position < 40 && cost >= 0 && upgradeCount = 0
     //       upgradeCost > 0 && all rent values > 0 && color == Color.CYAN, Color.MAGENTA,
-    //       Color.ORANGE, Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, or ________________
+    //       Color.ORANGE, Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, 
+    //       or one variation of Purple
     // POST: creates a Railroad Object with the object variables set to the corresponding
-    //       parameters, while owner set to null 
+    //       <incoming> parameters, while owner set to null 
     {
         super(name, position, cost, color);
         this.upgradeCost = upgradeCost;
