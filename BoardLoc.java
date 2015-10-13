@@ -31,7 +31,7 @@ public abstract class BoardLoc
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public BoardLoc(String name, int position)
     // PRE:  name initialized &&  position >= 0 && position < 40 
-    // POST: creates a BoardLoc instance with the object variables set to their corresponding
+    // POST: creates a BoardLoc instance with each object variable set to the corresponding
     //       <incoming> parameters
     {
         this.name = name;

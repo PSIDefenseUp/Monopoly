@@ -28,7 +28,7 @@ public class Lot extends Property
     //       upgradeCost > 0 && all rent values > 0 && color == Color.CYAN, Color.MAGENTA,
     //       Color.ORANGE, Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, 
     //       or one variation of Purple
-    // POST: creates a Railroad instance with the object variables set to the corresponding
+    // POST: creates a Railroad instance with each object variable set to the corresponding
     //       <incoming> parameters, while owner set to null 
     {
         super(name, position, cost, color);
@@ -134,7 +134,7 @@ public class Lot extends Property
         else if(Color.BLUE.equals(color))
             retStr += "Blue";
         else
-            retStr += "Brown";
+            retStr += "Purple";
         
         switch(upgradeCount)  // add upgrade-count and upgrade-cost to return string
         {
