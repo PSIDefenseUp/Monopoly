@@ -1,7 +1,7 @@
 // Programmer:  Noah Angeles, Dennis McNamara, Tim Werkheiser, & Wenkan Zhu
 // Assignment:  Project: Monopoly
-// Date:        
-// Description: 
+// Date:        October 2015
+// Description: Class to implement the Utility Squares for the Fall 2015 CS342 Monopoly project
 
 import java.awt.Color;
 

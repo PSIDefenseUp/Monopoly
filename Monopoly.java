@@ -14,6 +14,7 @@ public class Monopoly
                                       // false: game on. true: game over
     private static int roll;  // total value of the dice roll
     
+///////////////////////////////////////////////////////////////////////////////////////////////////
     public static void init()
     // POST: Initializes all game elements, such as the board and players in the game
     {
@@ -32,6 +33,7 @@ public class Monopoly
         gameOver = false;
     }
     
+///////////////////////////////////////////////////////////////////////////////////////////////////
     public static void setBoard(BoardLoc[] board)
     {   
         Color purple; // the color purple
@@ -106,6 +108,7 @@ public class Monopoly
                             200, new int[]{50, 200, 600, 1400, 1700, 2000});
     }
     
+///////////////////////////////////////////////////////////////////////////////////////////////////
     public static void main(String[] args)
     {
         int actionOptions;  //  Actions the player can take during turn
@@ -156,12 +159,14 @@ public class Monopoly
         }
     }
     
+///////////////////////////////////////////////////////////////////////////////////////////////////
     public static Player getCurrentPlayer()
     // POST: FCTVAL = Current Player instance
     {
         return players[currentPlayer];
     }
     
+///////////////////////////////////////////////////////////////////////////////////////////////////
     public static Player getPlayer(int playerID)
     // PRE:  playerID >= 0 
     // POST: FCTVAL = Player instance
@@ -169,12 +174,14 @@ public class Monopoly
         return players[playerID];
     }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
     public static int getBoardLength()
     // POST: FCTVAL = number of positions on board
     {
         return board.length;
     }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
     public static int getCurrentRoll()
     // POST: FCTVAL = amount of dice roll
     {
