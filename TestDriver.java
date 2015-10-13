@@ -46,5 +46,53 @@ public class TestDriver
         System.out.println("toString() after addProperty(new Lot(\"testProperty\", 0, 0, Color.WHITE, 0, new int[]{0})): " + player.toString());
         player.removeProperty(new Lot("testProperty", 0, 0, Color.WHITE, 0, new int[]{0}));
         System.out.println("toString() after removeProperty(new Lot(\"testProperty\", 0, 0, Color.WHITE, 0, new int[]{0})): " + player.toString());
+    
+        // Testing CardSquare using board[2]
+        System.out.println();
+        System.out.println("Testing CardSquare");
+        int rent = board[2].getRent();
+        System.out.println("getRent() for CardSquare: " + rent);
+        Player player2 = new Player();
+        System.out.println("Testing onLand()");
+        board[2].onLand(player2);
+        System.out.println("toString of default player2 after onLand(): " + player2.toString());
+        String[] str = board[2].getPossibleActions(player2);
+        System.out.print("Printing strings givin by getPossibleActiobs(): ");
+        for (int i = 0; i < str.length; i++)
+        {
+            System.out.print(str[i] + " ");
+        }
+        System.out.println();
+        
+        // Testing TaxSquare using board[4]
+        System.out.println();
+        System.out.println("Testing TaxSquare");
+        rent = board[4].getRent();
+        System.out.println("getRent() for TaxSquare: " + rent);
+        System.out.println("Testing onLand()");
+        board[4].onLand(player2);
+        System.out.println("toString of default player2 after onLand(): " + player2.toString());
+        str = board[4].getPossibleActions(player2);
+        System.out.print("Printing strings givin by getPossibleActiobs(): ");
+        for (int i = 0; i < str.length; i++)
+        {
+            System.out.print(str[i] + " ");
+        }
+        System.out.println();
+        
+        // Testing CornerSquare using board[0]
+        System.out.println();
+        System.out.println("Testing CornerSquare");
+        rent = board[0].getRent();
+        System.out.println("getRent() for CornerSquare: " + rent);
+        System.out.println("Testing onLand()");
+        board[0].onLand(player2);
+        System.out.println("toString of default player2 after onLand(): " + player2.toString());
+        str = board[0].getPossibleActions(player2);
+        System.out.print("Printing strings givin by getPossibleActiobs(): ");
+        for (int i = 0; i < str.length; i++)
+        {
+            System.out.print(str[i] + " ");
+        }
     }
 }
