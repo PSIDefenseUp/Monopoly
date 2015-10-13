@@ -5,8 +5,8 @@
 
 public abstract class BoardLoc
 {
-    protected int position;  // Board Locations postion from GO
-    protected String name;  // name of the Board Location
+    protected int position;  // The Object position on the board from the GO position
+    protected String name;  // name of the Object
     
     public abstract int getRent();
     // POST: FCTVAL == cost of rent when landing on property
@@ -22,7 +22,7 @@ public abstract class BoardLoc
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public BoardLoc()
-    // POST: creats a BoardLoc with position = 0 and blank name
+    // POST: creates a BoardLoc instance with position = 0 and blank name
     {
         position = 0;
         name = "";
@@ -31,8 +31,8 @@ public abstract class BoardLoc
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     public BoardLoc(String name, int position)
     // PRE:  name initialized &&  position >= 0 && position < 40 
-    // POST: creates a BoardLoc Object with the object variables set to their corresponding
-    //       parameters
+    // POST: creates a BoardLoc instance with the object variables set to their corresponding
+    //       <incoming> parameters
     {
         this.name = name;
         this.position = position;
