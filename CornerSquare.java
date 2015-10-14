@@ -11,7 +11,6 @@ public class CornerSquare extends BoardLoc
         super();
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public CornerSquare(String name, int position)
     // PRE:  name == "GO" || name == "Jail" || name == "Free Parking" || name == "Go To Jail",
     //       position <= 0 && position > 40
@@ -21,21 +20,18 @@ public class CornerSquare extends BoardLoc
         super(name, position);
     }
         
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getRent()
     // POST: FCTVAL == 0
     {
         return 0;
     }
         
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public void onLand(Player player)
     // POST: Displays users options on landing (which is nothing)
     {
         ActionsMenu.runActionsMenu(getPossibleActions(player));  // Allow player to end turn
     }
         
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public String[] getPossibleActions(Player player)
     // PRE:  player is initialized
     // POST: FCTVAL == array of options player has upon landing on this space, 
@@ -44,7 +40,6 @@ public class CornerSquare extends BoardLoc
         return new String[] {"End Turn"};
     }
         
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public String toString()
     // POST: FCTVAL == a String of the name of the locations, and its position from start
     {

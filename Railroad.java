@@ -9,25 +9,23 @@ public class Railroad extends Property
 {
     public Railroad()
     // POST: Creates Railroad instance with position = 0, blank name, cost = 0,
-    //       while Color set to White, & owner set to null 
+    //       color set to WHITE, and owner set to null (bank)
     {
         super();
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public Railroad(String name, int position, int cost)
-    // PRE:  name initialized &&  position >= 0 && position < 40 && cost >= 0
-    // POST: creates a Railroad Object with each object variable set to the corresponding
-    //       <incoming> parameter, while Color set to White, & owner set to null 
+    // PRE:  name initialized && 0 <= position < 40 && cost >= 0
+    // POST: creates a Railroad instance with each object variable set to the corresponding
+    //       <incoming> parameter, color set to WHITE, and owner set to null (bank)
     {
         super(name, position, cost, Color.WHITE);
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getRent()
-    // POST: FCTVAl == absolute rent (based on how many railroads owned)
+    // POST: FCTVAl == rent (based on how many railroads owned)
     {
-        int numOwned;  // keeps track of how many Railroads is owned
+        int numOwned;  // counter for the number of railroads owned by this railroad's owner
         
         numOwned = 0;
         
@@ -36,12 +34,12 @@ public class Railroad extends Property
             // find number of railroads owner has
             for(Property i : owner.getProperties())
             {
-                if (i instanceof Railroad)  // if this instance is a railroad
+                if (i instanceof Railroad)  // if this instance is a railroad, increment count
                     numOwned++;
             }
         }
         
-        switch(numOwned)  // return the correct amount
+        switch(numOwned)  // return the correct rent based on number of railroads
         {
             case 1:  return 25;
             case 2:  return 50;
@@ -51,10 +49,9 @@ public class Railroad extends Property
         }
     }
         
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public void onLand(Player player)
-    // POST: if user buys instance: owner = player, && player loses money equivalent to Object cost
-    //       if user uses instance: owner loses appropriate rent, & owner gains appropriate rent
+    // POST: if player buys instance: owner = player, && player loses money equivalent to cost
+    //       if player needs pay rent: player loses appropriate rent, & owner gains appropriate rent
     {
         int option;  // option the player chooses
         int rent; // amount to use the Object
@@ -76,19 +73,19 @@ public class Railroad extends Property
         return;
     }
         
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public String[] getPossibleActions(Player player)
     // PRE:  player is initialized
     // POST: FCTVAL = array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
     {
-        if(owner == null)  // if the railroad isn't owned,
+        if(owner == null)                               // the railroad isn't owned,
             return new String[] {"End Turn", "Buy"};
-        else  // else it must be owned
-            return new String[] {"Pay for Ticket"};
+        else if(owner == player)                        // player is the owner
+            return new String[] {"End Turn"};
+        else                                            // it is owned by another player
+            return new String[] {"Pay For Ticket"};
     }
         
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public String toString()
     // POST: FCTVAL = a String of the name, positions, cost, and owner
     {

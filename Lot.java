@@ -7,11 +7,10 @@ import java.awt.Color;
 
 public class Lot extends Property
 {
-    private int upgradeCost;  // cost to upgrade Object (i.e., add house or hotel)
-    private int rent[];  // 6 valued array with cost to rent for each upgrade amount
-    private int upgradeCount;  // value representing amount of upgrades
+    private int upgradeCost;        // cost to upgrade the property (add a house or hotel)
+    private int rent[];             // 6-value array with cost to rent for each upgrade amount
+    private int upgradeCount;       // value representing amount of upgrades
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public Lot()
     // POST: Creates Lot instance with position = 0, blank name, cost = 0, upgradeCost = 0, 
     //       upgradeCount = 0, rent = {0,0,0,0,0}. while Color set to White, & owner set to null 
@@ -22,14 +21,11 @@ public class Lot extends Property
         upgradeCount = 0;
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public Lot(String name, int position, int cost, Color color, int upgradeCost, int rent[])
-    // PRE:  name initialized &&  position >= 0 && position < 40 && cost >= 0 && upgradeCount = 0
-    //       upgradeCost > 0 && all rent values > 0 && color == Color.CYAN, Color.MAGENTA,
-    //       Color.ORANGE, Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, 
-    //       or one variation of Purple
-    // POST: creates a Railroad instance with each object variable set to the corresponding
-    //       <incoming> parameter, while owner set to null 
+    // PRE:  name initialized && 0 <= position < 40 && cost >= 0 && upgradeCost > 0 
+    //       && rent a 6-value array of costs in dollars && color initialized
+    // POST: creates a Lot instance with each object variable set to the corresponding
+    //       <incoming> parameter, and owner set to null (bank)
     {
         super(name, position, cost, color);
         this.upgradeCost = upgradeCost;
@@ -37,19 +33,14 @@ public class Lot extends Property
         this.upgradeCount = 0;
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getRent()
-    // POST: FCTVAL == absolute rent (based on ownership and upgradeCount)
+    // POST: FCTVAL == absolute rent (based on upgradeCount)
     {
-        if(owner == null)  // if the property isn't owned
-            return 0;  // there isn't any rent
-        else  // if the Object is owned
-            return this.rent[upgradeCount];  // return appropriate value
+        return this.rent[upgradeCount];  // return appropriate value
     }
-    
-///////////////////////////////////////////////////////////////////////////////////////////////////
+
     public int getUpgradeCost()
-    // POST: FCTVAL == absolute cost to upgrade Object
+    // POST: FCTVAL == cost to upgrade the lot
     {
         if(upgradeCount == 5)  // if completely upgraded
             return 0;  // player can't upgrade
@@ -57,61 +48,56 @@ public class Lot extends Property
             return upgradeCost;
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getUpgradeCount()
-    // POST: FCTVAL == amount of upgrades on Object
+    // POST: FCTVAL == amount of upgrades on the lot
     {
         return upgradeCount;
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public void upgrade()
     // PRE:  upgradeCount < 5 
-    // POST: 
+    // POST: this lot is upgraded by one level
     {
-        if(upgradeCount == 5) // if Object has been completely upgraded
-            return;
-        else  // if there's room to upgrade
-            upgradeCount++;
+        upgradeCount++;
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public void onLand(Player player)
-    // POST: see below
+    // POST: if player buys instance: owner = player, && player loses money equivalent to cost
+    //       if player needs pay rent: player loses appropriate rent, & owner gains appropriate rent
     {
-        int option;  // option the player chooses
-        int rent; // amount to use the Object
+        int option;     // option the player chooses
+        int rent;       // amount to use the Object
         
         option = ActionsMenu.runActionsMenu(getPossibleActions(player));  // ask player for option
 
-        if(owner == null && option == 1)  // if player wants to buy railroad
+        if(owner == null && option == 1)                // if player wants to buy railroad
         {
-            player.changeMoney(-1 * super.getCost());  // take money and buy it
+            player.changeMoney(-1 * super.getCost());   // take money and buy it
             super.setOwner(player);
         }
-        else if (owner != null && option == 0)  // if player has to use railroad
+        else if (owner != null && option == 0)          // if player has to use railroad
         {
             rent = getRent();
-            player.changeMoney(-1 * rent);  // take money, and give it to owner
+            player.changeMoney(-1 * rent);              // take money, and give it to owner
             owner.changeMoney(rent);
         }
         
         return;
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public String[] getPossibleActions(Player player)
     // PRE:  player is initialized
     // POST: FCTVAL = array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
     {
-        if(owner == null)  // if the lot isn't owned,
+        if(owner == null)                               // the lot isn't owned,
             return new String[] {"End Turn", "Buy"};
-        else  // else it must be owned
+        else if(owner == player)                        // player is the owner
+            return new String[] {"End Turn"};
+        else                                            // The lot is owned by someone else
             return new String[] {"Pay Rent"};
     }
-        
-///////////////////////////////////////////////////////////////////////////////////////////////////
+
     public String toString()
     // POST: FCTVAL = a String of the name of the locations, and its position from start
     {

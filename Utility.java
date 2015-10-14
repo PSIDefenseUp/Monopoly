@@ -6,9 +6,7 @@
 import java.awt.Color;
 
 public class Utility extends Property
-{
-    
-///////////////////////////////////////////////////////////////////////////////////////////////////
+{    
     public  Utility()
     // POST: Creates Utility instance with position = 0, blank name, cost = 0,
     //       while Color set to White, & owner set to null 
@@ -16,24 +14,24 @@ public class Utility extends Property
         super();
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public  Utility(String name, int position, int cost)
-    // PRE:  name initialized &&  position >= 0 && position < 40 && cost >= 0
+    // PRE:  name initialized && 0 <= position < 40 && cost >= 0
     // POST: creates a Utility instance with each object variable set to the corresponding
-    //       <incoming> parameter, while Color set to White, & owner set to null 
+    //       <incoming> parameter, and owner set to null (bank)
     {
         super(name, position, cost, Color.WHITE);
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getRent()
     // PRE:  1 <= diceRoll <= 12
     // POST: FCTVAL == rent player owes 
     {
-        int numberOwned;  // keeps track of how many utility is owned
-        Property[] property;  // properties owned by the player
+        int numberOwned;        // keeps track of how many utility is owned
+        Property[] property;    // properties owned by the player
+        int roll;               // dice roll that landed 
         
         numberOwned = 0;
+        roll = Monopoly.getCurrentRoll();
         
         if(owner != null)  // if utility is owned
         {
@@ -44,20 +42,18 @@ public class Utility extends Property
                 if (property[i] instanceof Utility)  // if player owns utility
                 {
                     numberOwned++;
-                    break;  // there's only two utilities, no sense in searching anything else
                 }
             }
         }
         
         switch(numberOwned)
         {
-            case 2: return owner.getRoll() * 10;  // if owner has both utilities
-            case 1: return owner.getRoll() * 4;  // if owner has one utility
-            default: return 0;  // utility wasn't owned
+            case 2: return roll * 10; // if owner has both utilities
+            case 1: return roll * 4;  // if owner has one utility
+            default: return 0;        // utility wasn't owned
         }
     }
         
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public void onLand(Player player)
     // POST: if user buys instance: owner = player, && player loses money equivalent to Object cost
     //       if user uses instance: owner loses appropriate rent, & owner gains appropriate rent
@@ -86,14 +82,15 @@ public class Utility extends Property
     // PRE:  player is initialized
     // POST: FCTVAL = array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
-    {
-        if(owner == null)  // if the railroad isn't owned,
+    {        
+        if(owner == null)                               // the utility isn't owned,
             return new String[] {"End Turn", "Buy"};
-        else  // else it must be owned
+        else if(owner == player)                        // player is the owner
+            return new String[] {"End Turn"};
+        else                                            // it is owned by another player
             return new String[] {"Pay Rent"};
     }
         
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public String toString()
     // POST: FCTVAL = a String of the name, positions, cost, and owner
     {

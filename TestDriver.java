@@ -10,8 +10,12 @@ public class TestDriver
     public static void main(String[] args)
     {
         Color purple;  // Color variable for purple
+
+        purple = new Color(102, 51, 153);    
         
-        purple = new Color(102, 51, 153);
+        // Set up overarching game    
+        Monopoly.init();
+
         // Initialize array of board locations
         BoardLoc[] board = new BoardLoc[15];
 
@@ -52,11 +56,9 @@ public class TestDriver
         System.out.println("Testing Player class");
         System.out.println("Accessors");
         System.out.println("Money: " + player.getMoney() + " Postition: " 
-                               + player.getPosition() + " Rolled: " 
-                               + player.getRoll() + " Properties: " 
+                               + player.getPosition() + " Properties: " 
                                + player.getProperties());
         System.out.println("Mutators and toString()");
-        player.changeRoll(2);
         player.move(50);
         System.out.println("toString() after player.move(30): " + player.toString());
         player.moveTo(5);
@@ -70,6 +72,10 @@ public class TestDriver
         System.out.println("toString() after removeProperty(new Lot(\"testProperty\","
                                + "0, 0, Color.WHITE, 0, new int[]{0})): " 
                                + player.toString());
+
+
+        // Test board locations
+        //     NOTE: Property, BoardLoc are abstract classes
     
         // Testing CardSquare using board[2]
         System.out.println();
@@ -81,7 +87,7 @@ public class TestDriver
         board[2].onLand(player2);
         System.out.println("toString of default player2 after onLand(): " + player2.toString());
         String[] str = board[2].getPossibleActions(player2);
-        System.out.print("Printing strings givin by getPossibleActiobs(): ");
+        System.out.print("Printing strings given by getPossibleActions(): ");
         for (int i = 0; i < str.length; i++)
         {
             System.out.print(str[i] + " ");
@@ -97,7 +103,7 @@ public class TestDriver
         board[4].onLand(player2);
         System.out.println("toString of default player2 after onLand(): " + player2.toString());
         str = board[4].getPossibleActions(player2);
-        System.out.print("Printing strings givin by getPossibleActiobs(): ");
+        System.out.print("Printing strings given by getPossibleActions(): ");
         for (int i = 0; i < str.length; i++)
         {
             System.out.print(str[i] + " ");
@@ -113,10 +119,63 @@ public class TestDriver
         board[0].onLand(player2);
         System.out.println("toString of default player2 after onLand(): " + player2.toString());
         str = board[0].getPossibleActions(player2);
-        System.out.print("Printing strings givin by getPossibleActiobs(): ");
+        System.out.print("Printing strings given by getPossibleActions(): ");
         for (int i = 0; i < str.length; i++)
         {
             System.out.print(str[i] + " ");
         }
+        System.out.println();
+
+        // Testing Lot using board[1]
+        Lot lot = (Lot)board[1];
+        System.out.println();
+        System.out.println("Testing Lot");
+        System.out.println("getCost(): " + lot.getCost());
+        System.out.println("getRent(): " + lot.getRent());
+        System.out.println("getUpgradeCost(): " + lot.getUpgradeCost());
+        System.out.println("getUpgradeCount(): " + lot.getUpgradeCount());
+        System.out.print("upgrade(): new upgradeCount = ");
+        lot.upgrade();
+        System.out.println(lot.getUpgradeCount());
+        System.out.println("Testing onLand():");
+        lot.onLand(player2);
+        System.out.println("toString of player2 after onLand(): " + player2.toString());
+        str = lot.getPossibleActions(player2);
+        System.out.print("Printing strings given by getPossibleActions(): ");
+        for(int i = 0; i < str.length; i++)
+        {
+            System.out.print(str[i] + " ");
+        }
+        System.out.println();
+
+        // Testing Railroad using board[5]
+        System.out.println();
+        System.out.println("Testing Railroad");
+        System.out.println("getRent(): " + board[5].getRent());
+        System.out.println("Testing onLand()");
+        board[5].onLand(player2);
+        System.out.println("toString of player2 after onLand(): " + player2.toString());
+        str = board[5].getPossibleActions(player2);
+        System.out.print("Printing strings given by getPossibleActions(): ");
+        for(int i = 0; i < str.length; i++)
+        {
+            System.out.print(str[i] + " ");
+        }
+        System.out.println();
+
+        // Testing Utility using board[12]
+        System.out.println();
+        System.out.println("Testing Utility");
+        System.out.println("getRent(): " + board[12].getRent());
+        System.out.println("Testing onLand()");
+        board[12].onLand(player2);
+        System.out.println("toString of player2 after onLand(): " + player2.toString());
+        str = board[12].getPossibleActions(player2);
+        System.out.print("Printing strings given by getPossibleActions(): ");
+        for(int i = 0; i < str.length; i++)
+        {
+            System.out.print(str[i] + " ");
+        }        
+        System.out.println();
     }
 }

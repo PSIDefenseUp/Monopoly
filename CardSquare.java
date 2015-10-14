@@ -11,7 +11,6 @@ public class CardSquare extends BoardLoc
         super();
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public CardSquare(String name, int position)
     // PRE:  name == "Chance" || name == "Community Chest",
     //       position <= 0 && position > 40
@@ -21,14 +20,12 @@ public class CardSquare extends BoardLoc
         super(name, position);
     }
         
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getRent()
     // POST: FCTVAL >= -200 && FCTVAL <= 200
     {
         return (int)(Math.random()*401) - 200;
     }
         
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public void onLand(Player player)
     // POST: automatically charges or gives player appropriate amount of money
     {
@@ -36,7 +33,6 @@ public class CardSquare extends BoardLoc
         player.changeMoney(getRent());  // tax the player
     }
         
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public String[] getPossibleActions(Player player)
     // PRE:  player is initialized
     // POST: FCTVAL == array of options player has upon landing on this space, 
@@ -45,7 +41,6 @@ public class CardSquare extends BoardLoc
         return new String[] {"Continue"};
     }
         
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public String toString()
     // POST: FCTVAL == a String of the name of the locations, and its position from start
     {

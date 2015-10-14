@@ -11,7 +11,6 @@ public abstract class Property extends BoardLoc
     protected Player owner;  // owner of the property
     protected Color color;  // color of the property
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public Property()
     // POST: Creates Property instance with position = 0, blank name, cost = 0, Color set to White,
     //       & owner set to null
@@ -22,13 +21,11 @@ public abstract class Property extends BoardLoc
         owner = null;
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public Property(String name, int position, int cost, Color color)
-    // PRE:  name initialized && position <= 0 && position > 40 && cost <= 0 && color == Color.CYAN, 
-    //       Color.MAGENTA, Color.ORANGE, Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, 
-    //       Color.BLACK, Color.GRAY, or some variation of Purple
-    // POST: creates a Property instance with each object variable set to the corresponding 
-    //       <incoming> parameter, while owner is set to null
+    // PRE:  name initialized && 0 <= position < 40 && cost >= 0 && upgradeCost > 0 
+    //       && rent a 6-value array of costs in dollars && color initialized
+    // POST: creates a Property instance with each object variable set to the corresponding
+    //       <incoming> parameter, and owner set to null (bank)
     {
         super(name, position);
         this.cost = cost;
@@ -36,36 +33,31 @@ public abstract class Property extends BoardLoc
         this.owner = null;
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public void setOwner(Player owner)
     // PRE:  owner is initialized
-    // POST: property position = "owner"
+    // POST: the property is now owned by owner
     {
         this.owner = owner;
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public Player getOwner()
     // POST: FCTVAL = owner
     {
         return owner;
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getCost()
     // POST: FCTVAL = cost
     {
         return cost;
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public Color getColor()
     // POST: FCTVAL = color
     {
         return color;
     }
         
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public String toString()
     // POST: FCTVAL = a String of the name, positions, cost, and owner
     {

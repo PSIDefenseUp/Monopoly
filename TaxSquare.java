@@ -11,7 +11,6 @@ public class TaxSquare extends BoardLoc
         super();
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public TaxSquare(String name, int position)
     // PRE:  name == "Luxury Tax" || name == "Income Tax",
     //       position <= 0 && position > 40
@@ -21,7 +20,6 @@ public class TaxSquare extends BoardLoc
         super(name, position);
     }
         
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getRent()
     // POST: FCTVAL = -200 if income tax tile || FCTVAL = -75 if luxury tax tile
     {
@@ -33,7 +31,6 @@ public class TaxSquare extends BoardLoc
             return 0;
     }
         
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public void onLand(Player player)
     // POST: automatically charges player appropriate amount of money
     {
@@ -41,16 +38,14 @@ public class TaxSquare extends BoardLoc
         player.changeMoney(getRent());  // tax the player
     }
         
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public String[] getPossibleActions(Player player)
     // PRE:  player is initialized
     // POST: FCTVAL = array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
     {
-        return new String[] {"Get Tax"};
+        return new String[] {"Pay Tax"};
     }
         
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public String toString()
     // POST: FCTVAL = a String of the name of the loacitons, and it's position from start
     {

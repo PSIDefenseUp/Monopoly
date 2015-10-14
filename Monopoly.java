@@ -8,13 +8,11 @@ import java.awt.Color;
 public class Monopoly 
 {
     private static Player[] players;  // array of all players in game
-    private static int currentPlayer;  // the current player who has control
+    private static int currentPlayer; // the current player who has control
     private static BoardLoc[] board;  // array of all board locations in the game
     private static boolean gameOver;  // Whether or not the game is over
-                                      // false: game on. true: game over
-    private static int roll;  // total value of the dice roll
+    private static int roll;          // total value of the dice roll
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public static void init()
     // POST: Initializes all game elements, such as the board and players in the game
     {
@@ -31,9 +29,9 @@ public class Monopoly
         // Prepare game for start
         currentPlayer = 0;
         gameOver = false;
+        roll = 1;
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public static void setBoard(BoardLoc[] board)
     {   
         Color purple; // the color purple
@@ -41,7 +39,7 @@ public class Monopoly
         purple = new Color(102, 51, 153);  // Initialize the color of purple
         board = new BoardLoc[40];  // Initialize array of board locations
                 
-        // Implement first 15 board spaces for Deliverable #2 (Completed)        
+        // Implement first 15 board spaces for Deliverable #2      
         board[0] = new CornerSquare("GO", 0);
         board[1] = new Lot("MEDITERRANEAN AVE", 1, 60, purple, 
                            50, new int[]{2, 10, 30, 90, 160, 230});
@@ -108,7 +106,6 @@ public class Monopoly
                             200, new int[]{50, 200, 600, 1400, 1700, 2000});
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public static void main(String[] args)
     {
         int actionOptions;  //  Actions the player can take during turn
@@ -159,14 +156,12 @@ public class Monopoly
         }
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public static Player getCurrentPlayer()
     // POST: FCTVAL = Current Player instance
     {
         return players[currentPlayer];
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public static Player getPlayer(int playerID)
     // PRE:  playerID >= 0 
     // POST: FCTVAL = Player instance
@@ -174,17 +169,15 @@ public class Monopoly
         return players[playerID];
     }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public static int getBoardLength()
     // POST: FCTVAL = number of positions on board
     {
         return board.length;
     }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public static int getCurrentRoll()
     // POST: FCTVAL = amount of dice roll
     {
-     return roll;
+        return roll;
     }
 }

@@ -6,7 +6,7 @@
 public abstract class BoardLoc
 {
     protected int position;  // The Object's position on the board from the GO position
-    protected String name;  // name of the Object
+    protected String name;   // name of the Object
     
     public abstract int getRent();
     // POST: FCTVAL == cost of rent when landing on property
@@ -20,7 +20,6 @@ public abstract class BoardLoc
     // POST: FCTVAL == array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public BoardLoc()
     // POST: creates a BoardLoc instance with position = 0 and blank name
     {
@@ -28,7 +27,6 @@ public abstract class BoardLoc
         name = "";
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public BoardLoc(String name, int position)
     // PRE:  name initialized &&  position >= 0 && position < 40 
     // POST: creates a BoardLoc instance with each object variable set to the corresponding
@@ -38,21 +36,18 @@ public abstract class BoardLoc
         this.position = position;
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public String getName()
     // POST: FCTVAL == name
     {
         return name;
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public int getPosition()
     // POST: FCTVAL == position
     {
         return position;
     }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
     public String toString()
     // POST: FCTVAL == String representation of BoardLoc
     {
