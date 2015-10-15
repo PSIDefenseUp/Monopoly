@@ -52,7 +52,7 @@ public class TestDriver
         System.out.println();
         
         // Testing Player methods
-        Player player = new Player();
+        Player player = new Player("Player X");
         System.out.println("Testing Player class");
         System.out.println("Accessors");
         System.out.println("Money: " + player.getMoney() + " Postition: " 
@@ -82,7 +82,7 @@ public class TestDriver
         System.out.println("Testing CardSquare");
         int rent = board[2].getRent();
         System.out.println("getRent() for CardSquare: " + rent);
-        Player player2 = new Player();
+        Player player2 = new Player("Player Y");
         System.out.println("Testing onLand()");
         board[2].onLand(player2);
         System.out.println("toString of default player2 after onLand(): " + player2.toString());
