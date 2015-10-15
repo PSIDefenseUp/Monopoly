@@ -104,7 +104,14 @@ public class Lot extends Property
     {
         String retStr;  // String to be returned
         
-        retStr = super.toString() + ", Rent: " + rent[upgradeCount] + ", Color:, ";
+        retStr = super.toString();
+        
+        if(owner != null)
+            retStr += ", Rent: " + rent[upgradeCount];
+        else
+            retStr +=  ", Rent: 0";
+            
+        retStr += ", Color: ";
         
         if(Color.CYAN.equals(color))        // add correct color of object to return string
             retStr += "Cyan";
