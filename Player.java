@@ -104,7 +104,7 @@ public class Player
     public String toString()
     // POST: string representation of money, position, and properties
     {
-        String s = "Money: " + money + " Postition: " + position;
+        String s = "Money: " + money + " Postition: " + position + " Properties: ";
         
         for (int i = 0; i < properties.length; i++)
         {
