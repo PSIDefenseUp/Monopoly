@@ -17,14 +17,68 @@ public class Monopoly
     // POST: Initializes all game elements, such as the board and players in the game
     {
         // Set up board
-        setBoard(board);
+        setBoard();
         
         // Initialize players
-        players = new Player[4];
-        for(Player p : players)
+        players = new Player[2];
+        for (int i = 0; i < players.length; i++)
         {
-            p = new Player();
+             players[i] = new Player();
         }
+        // Prepare game for start
+        currentPlayer = 0;
+        gameOver = false;
+        roll = 1;
+    }
+    
+    public static void init2()
+    // POST: Initializes all game elements, such as the board and players in the game
+    {
+        // Set up board
+        setBoard();
+        
+        // Initialize players
+        players = new Player[2];
+        for (int i = 0; i < players.length; i++)
+        {
+             players[i] = new Player();
+        }
+        
+        Color purple; // the color purple          
+        purple = new Color(102, 51, 153);  // Initialize the color of purple
+        
+        // Give player 1 some properties
+        Property prop = new Lot("MEDITERRANEAN AVE", 1, 60, purple, 
+                           50, new int[]{2, 10, 30, 90, 160, 230});
+        Property prop2 = new Lot("BALTIC AVE", 2, 60, purple, 
+                           50, new int[]{4, 20, 60, 180, 320, 460});
+        Property prop3 = new Railroad("READING RAILROAD", 5, 200);
+        prop.setOwner(players[0]);
+        prop2.setOwner(players[0]);
+        prop3.setOwner(players[0]);
+        players[0].addProperty(prop);
+        players[0].addProperty(prop2);
+        players[0].addProperty(prop3);
+        board[1] = prop;
+        board[3] = prop2;
+        board[5] = prop3;
+        
+        // Give player 2 some properties
+        prop = new Lot("VERMONT AVE.", 8, 100, Color.CYAN, 
+                           50, new int[]{6, 30, 90, 270, 400, 550});
+        prop2 = new Lot("CONNECTICUT AVE.", 9, 120, Color.CYAN, 
+                           50, new int[]{8, 40, 100, 300, 450, 600});
+        prop3 = new Lot("ST. CHARLES PLACE", 11, 140, Color.MAGENTA, 
+                            100, new int[]{10, 50, 150, 450, 625, 750});
+        prop.setOwner(players[1]);
+        prop2.setOwner(players[1]);
+        prop3.setOwner(players[1]);
+        players[1].addProperty(prop);
+        players[1].addProperty(prop2);
+        players[1].addProperty(prop3);
+        board[8] = prop;
+        board[9] = prop2;
+        board[11] = prop3;
         
         // Prepare game for start
         currentPlayer = 0;
@@ -32,7 +86,7 @@ public class Monopoly
         roll = 1;
     }
     
-    public static void setBoard(BoardLoc[] board)
+    public static void setBoard()
     {   
         Color purple; // the color purple
             
@@ -110,7 +164,19 @@ public class Monopoly
     {
         int actionOptions;  //  Actions the player can take during turn
 
-        init();
+        //init();  // initiaize new game 
+        init2();  // initialize game with players having properties
+
+        // Checking if board initialized correctly
+        for (int i = 0; i < board.length; i++)
+        {
+            System.out.println(board[i].toString());
+        }
+
+        // Starting game
+        System.out.println();
+        System.out.println("Starting Game...");
+        currentPlayer = (int) Math.random() * players.length;  // Random first player
         
         while(!gameOver)  // continue game while it isn't over
         {            
@@ -119,7 +185,8 @@ public class Monopoly
             //     After roll, resolve landing on the player's new location
             //     ?? Check if player is bankrupt ??
             // Increment currentPlayer to progress to next player's turn
-            
+            System.out.println("Player " + (currentPlayer+1) + "'s turn.");
+            System.out.println(players[currentPlayer].toString());
             if(players[currentPlayer].getMoney() >= 0) // if the player is still in the game
             {
                 String[] performAction;  // string of actions the Player can perform
@@ -143,13 +210,13 @@ public class Monopoly
 
                 // Roll two dice
                 roll = ((int)(Math.random() * 6) + 1) + ((int)(Math.random() * 6) + 1);
-                 // Move the player
+                System.out.println("Roll: " + roll);
+                // Move the player
                 players[currentPlayer].move(roll);
                  // Run onLand for the player's new position
                 board[players[currentPlayer].getPosition()].onLand(players[currentPlayer]);
+                System.out.println();
             }
-
-            // TODO: ?? Check bankruptcy ??
 
             // Move to the next player's turn
             currentPlayer = (currentPlayer + 1) % players.length; 
