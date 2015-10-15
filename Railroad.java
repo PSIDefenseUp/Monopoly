@@ -62,6 +62,7 @@ public class Railroad extends Property
         {
             player.changeMoney(-1 * super.getCost());  // take money and buy it
             super.setOwner(player);
+            player.addProperty(this);
         }
         else if (owner != null && option == 0)  // if player has to use railroad
         {
