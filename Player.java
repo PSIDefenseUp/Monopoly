@@ -9,10 +9,24 @@ public class Player
     private int money;  // amount of money a Player Object has
     private int position;  // Objects position <on board> from GO
     private Property[] properties;  // List of properties owned by this player
+    private String name;  // name of the player
     
-    public Player()  
-    // POST: Creates Player instance with money = $1500, position = 0, no properties
+    public Player()
+    // POST: Creates Player instance with money = $1500, position = 0, no properties,
+    //        and a name set to "Not Named"
     {
+        name = "Not Named";
+        money = 1500;
+        position = 0;
+        properties = new Property[0];
+    }
+    
+    public Player(String name)
+    // PRE:  name must be initialized
+    // POST: Creates Player instance with money = $1500, position = 0, no properties,
+    //        and a name set to "name"
+    {
+        this.name = name;
         money = 1500;
         position = 0;
         properties = new Property[0];
@@ -101,14 +115,23 @@ public class Player
         properties = arr;  // point players properties to new list
     }
     
+    public String getName()
+    // POST: FCTVAL == name of the player
+    {
+        return name;
+    }
+    
     public String toString()
     // POST: string representation of money, position, and properties
     {
-        String s = "Money: " + money + " Postition: " + position + " Properties: ";
+        String s = "Name: " + name + ", Money: " + money + " Postition: " + position;
+        s = s + " Properties: ";
         
         for (int i = 0; i < properties.length; i++)
         {
-            s = s + properties[i].getName() + " ";
+            s = s + properties[i].getName();
+            if(i < (properties.length - 1))  // print a comma between all of the properties
+                s = s + ", ";
         }
         return s;
     }
