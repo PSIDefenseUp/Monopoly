@@ -23,7 +23,7 @@ public class Monopoly
         players = new Player[2];
         for (int i = 0; i < players.length; i++)
         {
-             players[i] = new Player();
+             players[i] = new Player("Player " + (i + 1));
         }
         // Prepare game for start
         currentPlayer = 0;
@@ -41,7 +41,7 @@ public class Monopoly
         players = new Player[2];
         for (int i = 0; i < players.length; i++)
         {
-             players[i] = new Player();
+             players[i] = new Player("Player " + (i + 1));
         }
         
         Color purple; // the color purple          
