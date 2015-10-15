@@ -61,6 +61,9 @@ public abstract class Property extends BoardLoc
     public String toString()
     // POST: FCTVAL = a String of the name, positions, cost, and owner
     {
-        return super.toString() + ", Cost: " + cost + ", Owner: " + owner;
+        if(owner != null)  // if therer is an owner
+            return super.toString() + ", Cost: " + cost + ", Owner: " + owner.getName();
+        else  // if there isn't an owner
+            return super.toString() + ", Cost: " + cost + ", Owner: Not Owned";
     }
 }
