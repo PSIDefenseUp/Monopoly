@@ -90,6 +90,6 @@ public class Railroad extends Property
     public String toString()
     // POST: FCTVAL = a String of the name, positions, cost, and owner
     {
-        return super.toString();
+        return super.toString() + ", Rent: " + getRent();
     }
 }
