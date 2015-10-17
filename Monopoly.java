@@ -183,8 +183,8 @@ public class Monopoly
             //     After roll, resolve landing on the player's new location
             //     ?? Check if player is bankrupt ??
             // Increment currentPlayer to progress to next player's turn
-            System.out.println("Player " + (currentPlayer+1) + "'s turn.");
-            System.out.println(players[currentPlayer].toString());
+           // System.out.println("Player " + (currentPlayer+1) + "'s turn.");
+          //  System.out.println(players[currentPlayer].toString());
             
             if(players[currentPlayer].getMoney() >= 0) // if player is still in game
             {
@@ -195,6 +195,8 @@ public class Monopoly
                 // Get player's action of choice until they decide to roll the dice
                 do
                 {
+                    System.out.println("Player " + (currentPlayer+1) + "'s turn.");
+                    System.out.println(players[currentPlayer].toString());
                     actionOptions = ActionsMenu.runActionsMenu(performAction);
                     switch(actionOptions)
                     {
@@ -249,28 +251,26 @@ public class Monopoly
         else  // if not a property
             owner = null;
         
-        for(int i=0 ; i < properties.length ; ++i)  // hand players properties over to owner
+        for(Property p : current.getProperties()) // hand players properties over to owner
         {
-            if(properties[i] instanceof Lot)  // if the property is a lot, remove the upgrades
+            if(p instanceof Lot)  // if the property is a lot, remove the upgrades
             {
-                for(int j=((Lot)properties[i]).getUpgradeCount() ; j!=0 ; --j)  // remove upgrades
+                for(int j=((Lot)p).getUpgradeCount() ; j!=0 ; --j)  // remove upgrades
                 {
-                    current.changeMoney(((Lot)properties[i]).getUpgradeCost() / 2);
-                    ((Lot)properties[i]).downgrade();
+                    current.changeMoney(((Lot)p).getUpgradeCost() / 2);
+                    ((Lot)p).downgrade();
                 }
             }
             
-            current.removeProperty(properties[i]);
-            properties[i].setOwner(owner);  // transfer ownership
+            current.removeProperty(p);
             if(owner != null)  // if there is any owner
-                owner.addProperty(properties[i]);
+                owner.addProperty(p);
+            p.setOwner(owner);  // transfer ownership
         }
         
         money = current.getMoney();
-        if(money > 0 && owner != null)  // if player has money left, transfer what remains
+        if(owner != null)  // if there is an owner, set his money to what it actually would be
             owner.changeMoney(money);
-        else if (money < 0 && owner != null)  // if owner took too much, remove some
-            owner.changeMoney(-1 * money);
         current.changeMoney((-1 * money) - 1);  // set players money to -1
     }
     
@@ -330,11 +330,11 @@ public class Monopoly
                             ++j;  // let it search for the third color
                         else  // if it's a group of two
                         {
-                            if((min == 5) && (i > 0)) // and they're fully upgraded, and can reduce
-                            {
-                                do
+                            if((min == 5) && (i > 0)) // and they're fully upgraded, 
+                            {                         // and there's room on lots
+                                do  // remove them from lots
                                 {
-                                    --i;
+                                    --i;  
                                 }
                                 while((i > 0) && (((Lot)lots[i]).getUpgradeCount() == 5));
                             }
@@ -359,8 +359,10 @@ public class Monopoly
                     {
                         if(min == max && min > ((Lot)p).getUpgradeCount())  // if new min
                         {
+                            min = ((Lot)p).getUpgradeCount();
                             --i;  // set iterator back one
                             lots[i-1] = p;  // overwrite 1st value
+                            System.out.println("min:" + min);
                         }
                         else if(min == ((Lot)p).getUpgradeCount())  // if equal to min
                         {
@@ -368,11 +370,11 @@ public class Monopoly
                             ++i;
                         }
                         
-                        if((min == 5) && (i > 0)) // and they're fully upgraded, and can reduce
-                            {
-                                do  // reduce i
+                        if((min == 5) && (i > 0)) // and they're fully upgraded,
+                            {                     // and there's room on lots
+                                do  //remove them from lots
                                 {
-                                    --i;
+                                    --i;  
                                 }
                                 while((i > 0) && (((Lot)lots[i]).getUpgradeCount() == 5));
                             }
