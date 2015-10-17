@@ -81,15 +81,74 @@ public class Player
     // POST: property is added to instances' property list
     {
         Property[] arr;  // new list of properties for the player
+        int i;  // iterator for array manipulation
         
         arr = new Property[properties.length + 1];  // initialize list for one more property
+        i = properties.length;
         
-        for (int i = 0; i < properties.length; i++)  // copy over the properties
+        if(property instanceof Lot)  // if property is a Lot
+        {
+            // while the end is a Railroad or Utility, move ahead
+            while((i > 0) && 
+                  ((properties[i-1] instanceof Utility) || (properties[i-1] instanceof Railroad)) )
+            {
+                arr[i] = properties[i-1];
+                --i;
+            }
+            // while the end is a larger position, move ahead
+            while((i > 0) && 
+                  (properties[i-1].getPosition() > property.getPosition()))
+            {
+                arr[i] = properties[i-1];
+                --i;
+            }
+        }
+        else if(property instanceof Railroad)  // if property is a Railroad
+        {
+            // while the end is a Utility, move ahead
+            while((i > 0) && 
+                  (properties[i-1] instanceof Utility))
+            {
+                arr[i] = properties[i-1];
+                --i;
+            }
+            // while the end is a Railroad and is a larger position, move ahead
+            while((i > 0) && 
+                  (properties[i-1] instanceof Railroad) &&
+                  (properties[i-1].getPosition() > property.getPosition()))
+            {
+                arr[i] = properties[i-1];
+                --i;
+            }
+        }
+        else // property must be a Utility
+        {
+            // while the end is a Utility and is a larger postion, move ahead
+            while((i > 0) && 
+                  (properties[i-1] instanceof Utility) &&
+                  (properties[i-1].getPosition() > property.getPosition()))
+            {
+                arr[i] = properties[i-1];
+                --i;
+            }
+        }
+        
+        arr[i] = property;  // put property where it belongs
+        --i;
+       
+        // copy over the rest of the array
+        while(i >= 0)
+        {
+                arr[i] = properties[i];
+                --i;
+        }
+            
+/*        for (int i = 0; i < properties.length; i++)  // copy over the properties
         {
             arr[i] = properties[i];
         }
         arr[properties.length] = property;  // add the newest property
-        
+*/        
         properties = arr;  // point players properties to new list
     }
     
