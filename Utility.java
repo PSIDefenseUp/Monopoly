@@ -83,13 +83,15 @@ public class Utility extends Property
     // PRE:  player is initialized
     // POST: FCTVAL = array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
-    {        
-        if(owner == null)                               // the utility isn't owned,
-            return new String[] {"End Turn", "Buy"};
-        else if(owner == player)                        // player is the owner
-            return new String[] {"End Turn"};
-        else                                            // it is owned by another player
-            return new String[] {"Pay Rent"};
+    {
+         // if tile isn't owned, and player has enough money
+         if(owner == null && player.getMoney() >= cost) 
+             return new String[] {"End Turn", "Buy"};
+         // if player owns tile, or if player can't buy tile
+         else if(owner == player || (owner == null && player.getMoney() < cost)) 
+             return new String[] {"End Turn"};
+         else                                            // it is owned by another player
+             return new String[] {"Pay Rent"};
     }
         
     public String toString()

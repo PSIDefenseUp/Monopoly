@@ -79,12 +79,14 @@ public class Railroad extends Property
     // POST: FCTVAL = array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
     {
-        if(owner == null)                               // the railroad isn't owned,
-            return new String[] {"End Turn", "Buy"};
-        else if(owner == player)                        // player is the owner
-            return new String[] {"End Turn"};
-        else                                            // it is owned by another player
-            return new String[] {"Pay For Ticket"};
+         // if tile isn't owned, and player has enough money
+         if(owner == null && player.getMoney() >= cost) 
+             return new String[] {"End Turn", "Buy"};
+         // if player owns tile, or if player can't buy tile
+         else if(owner == player || (owner == null && player.getMoney() < cost)) 
+             return new String[] {"End Turn"};
+         else
+             return new String[] {"Pay For Ticket"};
     }
         
     public String toString()
