@@ -215,12 +215,60 @@ public class Monopoly
                 players[currentPlayer].move(roll);
                  // Run onLand for the player's new position
                 board[players[currentPlayer].getPosition()].onLand(players[currentPlayer]);
+
+                if(players[currentPlayer].getMoney() < 0)
+                    bankruptcy();
+                
                 System.out.println();
             }
 
             // Move to the next player's turn
             currentPlayer = (currentPlayer + 1) % players.length; 
         }
+    }
+    
+    public static void bankruptcy()
+    // PRE:  player must have spent too much money, and have lost the game
+    // POST: the current player's property is handed over the the owner of the position, 
+    //       and all of their money is handed over the the owner
+    {
+        Player current;  // current player
+        Player owner;  // owner of the position the player is on
+        int money;  // self explainatory
+        
+        current = players[currentPlayer];  // set the current player
+        
+        // set the owner
+        if(board[players[currentPlayer].getPosition()] instanceof Property)  // if a property
+            owner = ((Property) board[players[currentPlayer].getPosition()]).getOwner();  
+        else
+            owner = null;
+        
+        for(Property p : current.getProperties())  // hand players properties over to owner
+        {
+            if(p instanceof Lot)  // if the property is a lot, remove the upgrades
+            {
+                Lot lot = (Lot) p;
+                
+                for(int i=lot.getUpgradeCount() ; i!=0 ; --i)  // remove upgrades
+                {
+                    current.changeMoney(lot.getUpgradeCost() / 2);
+                    lot.downgrade();
+                }
+            }
+            
+            p.setOwner(owner);  // transfer ownership
+            current.removeProperty(p);
+            if(owner!= null)
+                owner.addProperty(p);
+        }
+        
+        money = current.getMoney();
+        if(money > 0 && owner != null)  // if player has money left, remove it all
+            owner.changeMoney(money);
+        else if (money < 0 && owner != null)  // if owner took too much, remove some
+            owner.changeMoney(-1 * money);
+        current.changeMoney(-1 * money);  // set players money to zero
     }
     
     public static Player getCurrentPlayer()
