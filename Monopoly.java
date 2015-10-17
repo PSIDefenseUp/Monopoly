@@ -197,12 +197,12 @@ public class Monopoly
                 {
                     System.out.println("Player " + (currentPlayer+1) + "'s turn.");
                     System.out.println(players[currentPlayer].toString());
+                    
                     actionOptions = ActionsMenu.runActionsMenu(performAction);
                     switch(actionOptions)
                     {
                         case 1: upgrade();
-                                break; // TODO: Give user a list of their properties to updgrade 
-                                       // (if they have the money and the property cab be upgraded)
+                                break; 
                         case 2: break; // TODO: Give user a list of their properties + sell values,
                                        // ask which is to be sold (handle in its own method)
                         default: // Continue to dice roll
@@ -230,6 +230,182 @@ public class Monopoly
             // Move to the next player's turn
             currentPlayer = (currentPlayer + 1) % players.length; 
         }
+    }
+    
+    public static Lot[] limitProps(Property[] properties)
+    // PRE:  properties is intialized, and owned by a single owner
+    // POST: FCTVAL a list of properties <owned by player> that can be upgraded
+    {
+        Lot[] retVal;  // the value to return;1
+        Property[] lots;  // the lots the play can upgrade
+        int i;  // iterator for the previous variable
+        int j;  // iterator for the color
+        int max;  // maximum upgarde count for color-group
+        int min;  // minimum upgarde count for color-group
+        
+        lots = new Property[22];
+        i = 0;
+        j = 0;
+        min = 0;
+        max = 0;
+        
+        for(Property p : properties)
+        {
+            if(p instanceof Lot)  // if instance is a Lot
+            {
+                if(j == 0) // if no colors have been found
+                {
+                    if(p.getOwner().getMoney() >= ((Lot)p).getUpgradeCost())  // if player can afford upgrade
+                    {
+                        lots[i] = p;  // add to lots
+                        ++i;  //incriment pointers
+                        ++j;
+                        min = ((Lot)p).getUpgradeCount();  // set max and min upgrade counts
+                        max = min;
+                    }
+                    else  // if owner can't afford upgrade
+                    {
+                        break;  // they won't be able to afford anything else
+                    }
+                }
+                else if(j == 1)  // if one color has been found
+                {
+                    if(p.getColor().equals(lots[i-1].getColor()))  // if current color matches previous color
+                    {
+                        if(min > ((Lot)p).getUpgradeCount())  // if there's a new minimum <upgarde count>
+                        {
+                            min = ((Lot)p).getUpgradeCount();  // set the new minimum
+                            lots[i-1] = p;  // prev lot position can't be upgraded until this one is
+                        }
+                        else if (max < ((Lot)p).getUpgradeCount())  // if there's a new max <upgarde count>
+                        {
+                            max = ((Lot)p).getUpgradeCount();  // set it, but don't push value onto lots
+                        }
+                        else  // if there are no new max or min <upgarde counts>
+                        {
+                            lots[i] = p;  // add to lots
+                            ++i;  // incriment pointers
+                        }
+                        
+                        // check if group has 3 or 2 members
+                        if ((p.getPosition() > 3) && (p.getPosition() < 37))  // if a group of 3
+                            ++j;  // let it search for the third color
+                        else  // if it's a group of two
+                        {
+                            if((min == 5) && (i > 0)) // if they're fully upgraded, and still on lots
+                            {
+                                do  // remove them from lots
+                                {
+                                    --i;  
+                                }
+                                while((i > 0) && (((Lot)lots[i]).getUpgradeCount() == 5));
+                            }
+                            j = 0; // start search for new color
+                        }
+                    }
+                    else  // if color didn't match prev
+                    {
+                        if(p.getOwner().getMoney() >= ((Lot)p).getUpgradeCost())  // if player can afford upgrade
+                        {
+                            lots[i-1] = p;  // prev lot wasn't complete group, overwrite it
+                            min = ((Lot)p).getUpgradeCount();  // set the min and max <upgarde counts>
+                            max = min;
+                        }
+                        else  // if the player can't afford an upgrade
+                        {
+                            break;  // they won't be able to afford anything else
+                        }
+                    }
+                }
+                else  //  (j == 2) if two colors have been found 
+                {
+                    if(p.getColor().equals(lots[i-1].getColor()))  // if current color matches prev color
+                    {
+                        if(min == max && min > ((Lot)p).getUpgradeCount())  // if current lot has a lower minimu <upgarde count>
+                        {
+                            min = ((Lot)p).getUpgradeCount();  // set the minimu
+                            --i;  // decrease lots size by one
+                            lots[i-1] = p;  // overwrite 1st of the group to be found
+                        }
+                        else if(min == ((Lot)p).getUpgradeCount())  // if current upgrade count equal to min
+                        {
+                            lots[i] = p;  // put on lots
+                            ++i;  // increase lots size
+                        }
+                        
+                        if((min == 5) && (i > 0)) // and group is fully upgraded, and still on lots
+                            {
+                                do  //remove them from lots
+                                {
+                                    --i;  
+                                }
+                                while((i > 0) && (((Lot)lots[i]).getUpgradeCount() == 5));
+                            }
+                        j = 0;  // start search for new color
+                    }
+                    else  // if color didn't match prev
+                    {
+                        if(p.getOwner().getMoney() >= ((Lot)p).getUpgradeCost())  // if player can afford upgrade
+                        {
+                            lots[i-2] = p;  // push it onto lots
+                            --i;  // reduce lots size
+                            j = 1;  // search with on color already found
+                            min = ((Lot)p).getUpgradeCount();  // set min and max <upgarde count> values
+                            max = min;
+                        }
+                        else  // if player can't afford upgrade
+                        {
+                            break;  // they won't be able to afford anything else
+                        }
+                    }
+                }
+            }
+        }
+        
+        if(j == 1)  // if the last lot onto lots wasn't complete group
+            --i;
+        else if(j==2)  // if last lot onot lots wasn't complete group
+            i -= 2;
+        
+        retVal = new Lot[i]; // create an exact size return array
+        for(j=0 ; j<i ; ++j)  // copy values over
+        {
+            retVal[j] = (Lot)lots[j];
+        }
+        
+        return retVal;
+    }
+    
+    public static void upgrade()
+    // PRE:  player must be willing to upgrade his lot(s)
+    // POST: 
+    {
+        Player current;  // the current player
+        Lot[] lots;  // the lots the play can upgrade
+        int option;  // variable for choosing what to do
+        String[] options;  // string of options
+        
+        current = players[currentPlayer];
+        
+        do
+        {
+            lots = limitProps(current.getProperties());  // get a list of possible choice
+            options = new String[lots.length + 1];  // get array of possible upgardes
+            options[0] = "Return to game";
+            for(int i=1 ; i<=lots.length ; ++i)  // add upgardes to options array
+            {
+                options[i] = "Upgrade " + lots[i-1].getName();
+            }
+            
+            option = ActionsMenu.runActionsMenu(options);  // ask user for upgrade
+            
+            if(option != 0) // if player chose to upgrade
+            {
+                current.changeMoney(-1 * lots[option-1].getUpgradeCost());  // take their money
+                lots[option-1].upgrade();
+            }
+        }
+        while(option != 0);
     }
     
     public static void bankruptcy()
@@ -272,178 +448,6 @@ public class Monopoly
         if(owner != null)  // if there is an owner, set his money to what it actually would be
             owner.changeMoney(money);
         current.changeMoney((-1 * money) - 1);  // set players money to -1
-    }
-    
-    public static Lot[] limitProps(Property[] properties)
-    // PRE:  properties is intialized, and owned by a single owner
-    // POST: FCTVAL a list of properties <owned by player> that can be upgraded
-    {
-        Lot[] retVal;  // the value to return;1
-        Property[] lots;  // the lots the play can upgrade
-        int i;  // iterator for the previous variable
-        int j;  // iterator for the color
-        int max;
-        int min;
-        
-        lots = new Property[22];
-        i = 0;
-        j = 0;
-        min = 0;
-        max = 0;
-        
-        for(Property p : properties)
-        {
-            if(p instanceof Lot)
-            {
-                if(j == 0) // if first color found
-                {
-                    if(p.getOwner().getMoney() >= ((Lot)p).getUpgradeCost())  // if player can afford upgrade
-                    {
-                        lots[i] = p;  // add to lots, and incriment pointers
-                        ++i;
-                        ++j;
-                        min = ((Lot)p).getUpgradeCount();
-                        max = min;
-                    }
-                    else
-                        break;  // they won't be able to afford anything else
-                }
-                else if(j == 1)  // if the second color found
-                {
-                    if(p.getColor().equals(lots[i-1].getColor()))  // if it matches prev color
-                    {
-                        if(min > ((Lot)p).getUpgradeCount())  // if there's a new minimum
-                        {
-                            min = ((Lot)p).getUpgradeCount();  // set the new minimum
-                            lots[i-1] = p;  // overwrite old minimum with new
-                        }
-                        else if (max < ((Lot)p).getUpgradeCount())  // if there's a new max
-                        {
-                            max = ((Lot)p).getUpgradeCount();  // set it
-                        }
-                        else
-                        {
-                            lots[i] = p;  // add to lots, and incriment pointers
-                            ++i;
-                        }
-                        if ((p.getPosition() > 3) && (p.getPosition() < 37))  // if a group of 3
-                            ++j;  // let it search for the third color
-                        else  // if it's a group of two
-                        {
-                            if((min == 5) && (i > 0)) // and they're fully upgraded, 
-                            {                         // and there's room on lots
-                                do  // remove them from lots
-                                {
-                                    --i;  
-                                }
-                                while((i > 0) && (((Lot)lots[i]).getUpgradeCount() == 5));
-                            }
-                            j = 0; // start new search
-                        }
-                    }
-                    else  // if it didn't match prev
-                    {
-                        if(p.getOwner().getMoney() >= ((Lot)p).getUpgradeCost())  // if playercan afford upgrade
-                        {
-                            lots[i-1] = p;
-                            min = ((Lot)p).getUpgradeCount();
-                            max = min;
-                        }
-                        else
-                            break;  // they won't be able to afford anything else
-                    }
-                }
-                else  // if third color found
-                {
-                    if(p.getColor().equals(lots[i-1].getColor()))  // if color matches prev
-                    {
-                        if(min == max && min > ((Lot)p).getUpgradeCount())  // if new min
-                        {
-                            min = ((Lot)p).getUpgradeCount();
-                            --i;  // set iterator back one
-                            lots[i-1] = p;  // overwrite 1st value
-                            System.out.println("min:" + min);
-                        }
-                        else if(min == ((Lot)p).getUpgradeCount())  // if equal to min
-                        {
-                            lots[i] = p;  // mark it and inriment pointer,
-                            ++i;
-                        }
-                        
-                        if((min == 5) && (i > 0)) // and they're fully upgraded,
-                            {                     // and there's room on lots
-                                do  //remove them from lots
-                                {
-                                    --i;  
-                                }
-                                while((i > 0) && (((Lot)lots[i]).getUpgradeCount() == 5));
-                            }
-                        j = 0;  // start search for new color
-                    }
-                    else  // if color didn't match prev
-                    {
-                        if(p.getOwner().getMoney() >= ((Lot)p).getUpgradeCost())  // if player can afford upgrade
-                        {
-                            lots[i-2] = p;
-                            --i;  // start new search
-                            j = 1;
-                            min = ((Lot)p).getUpgradeCount();
-                            max = min;
-                        }
-                        else
-                            break;  // they won't be able to afford anything else
-                    }
-                }
-                    
-            }
-        }
-        if(j == 1)
-            --i;
-        else if(j==2)
-            i -= 2;
-        
-        retVal = new Lot[i]; // create an exact size return array
-        for(j=0 ; j<i ; ++j)  // copy values over
-        {
-            retVal[j] = (Lot)lots[j];
-        }
-        
-        return retVal;
-    }
-    
-    public static void upgrade()
-    // PRE:  player must be willing to upgrade his lot(s)
-    // POST: 
-    {
-        Player current;  // the current player
-        Lot[] lots;  // the lots the play can upgrade
-        int option;  // variable for choosing what to do
-        String[] options;  // string of options
-        
-        current = players[currentPlayer];
-        
-        option = 0;  // not needed when following is implemented
-        do
-        {
-            lots = limitProps(current.getProperties());  // get a list of possible choices
-            
-            // make an option string
-            options = new String[lots.length + 1];
-            options[0] = "Return";
-            for(int i=1 ; i<=lots.length ; ++i)
-            {
-                options[i] = "Upgrade " + lots[i-1].getName();
-            }
-            
-            option = ActionsMenu.runActionsMenu(options);
-            
-            if(option != 0) // if player chose to upgrade
-            {
-                current.changeMoney(-1 * lots[option-1].getUpgradeCost());  // take their money
-                lots[option-1].upgrade();
-            }
-        }
-        while(option != 0);
     }
    
     public static Player getCurrentPlayer()
