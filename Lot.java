@@ -61,6 +61,13 @@ public class Lot extends Property
         upgradeCount++;
     }
     
+    public void downgrade()
+    // PRE:  upgradeCount > 0 
+    // POST: this lot is downgraded by one level
+    {
+        upgradeCount--;
+    }
+    
     public void onLand(Player player)
     // POST: if player buys instance: owner = player, && player loses money equivalent to cost
     //       if player needs pay rent: player loses appropriate rent, & owner gains appropriate rent
