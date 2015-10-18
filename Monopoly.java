@@ -203,8 +203,8 @@ public class Monopoly
                     {
                         case 1: upgrade();
                                 break; 
-                        case 2: break; // TODO: Give user a list of their properties + sell values,
-                                       // ask which is to be sold (handle in its own method)
+                        case 2: sell();
+                                break;
                         default: // Continue to dice roll
                     }
                 }
@@ -232,7 +232,7 @@ public class Monopoly
         }
     }
     
-    public static Lot[] limitProps(Property[] properties)
+    public static Lot[] getUpgradeableLots(Property[] properties)
     // PRE:  properties is intialized, and owned by a single owner
     // POST: FCTVAL a list of properties <owned by player> that can be upgraded
     {
@@ -389,9 +389,9 @@ public class Monopoly
         
         do
         {
-            lots = limitProps(current.getProperties());  // get a list of possible choice
+            lots = getUpgradeableLots(current.getProperties());  // get a list of possible choice
             options = new String[lots.length + 1];  // get array of possible upgardes
-            options[0] = "Return to game";
+            options[0] = "Return";
             for(int i=1 ; i<=lots.length ; ++i)  // add upgardes to options array
             {
                 options[i] = "Upgrade " + lots[i-1].getName();
@@ -406,6 +406,202 @@ public class Monopoly
             }
         }
         while(option != 0);
+    }
+    
+    public static Lot[] getDowngradeable(Property[] sellable)
+    // PRE:  
+    // POST: 
+    {
+        Property[] temp1;  // temporary array to find elements that aren't sellable
+        int iT1;  // iterater for temp1  
+        Property[] temp2;  // remporary array to find elements that aren't downgradable
+        int iT2;  // iterater for temp2
+        Color color;  // Color of the current group
+        Lot[] retVal;  // returnable array
+        int iS;  // iterator for the <incoming> sellable array
+        int max;  // max and min upgrade counts
+        int min;
+        
+        temp1 = new Property[players[currentPlayer].getProperties().length];
+        iT1 = 0;
+        iS = 0;
+            
+        //if the players property isn't sellable, it must be downgradeable
+        for(Property p : players[currentPlayer].getProperties())
+        {
+            if(sellable[iS].getName() == p.getName())  // if an element of the sellable array, skip it
+            {
+                ++iS;
+            }
+            else
+            {
+                if(p instanceof Lot)  // there should only be Lots, but it doesn't hurt to make sure
+                {
+                    temp1[iT1] = p;
+                    ++iT1;
+                }
+            }
+        }
+        
+        temp2 = new Property[iT1];  // create 2nd temp array
+        iT2 = 0;  // initialize needed elements
+        min = 0;
+        max = 0;
+        color = Color.WHITE;  // set 
+        
+        for(int i=0 ; i<iT1 ; ++i)
+        {
+            if( !(color.equals(temp1[i].getColor())) )  // if we're in a new group
+            {
+                temp2[iT2] = temp1[i];
+                ++iT2;
+                color = temp1[i].getColor();
+                max = ((Lot)temp1[i]).getUpgradeCount();
+                min = max;
+            }
+            else if(min == max && max < ((Lot)temp1[i]).getUpgradeCount())  // if there's a new maximum upgrade count
+            {
+                max = ((Lot)temp1[i]).getUpgradeCount();  // set the new max value
+                while(iT2 > 0 && color.equals(temp2[iT2].getColor()))  // remove any of the same group (they must have too low of an upgrade count)
+                {
+                    --iT2;
+                }
+                temp2[iT2] = temp1[i];  // push element onto temp2
+                ++iT2;
+            }
+            else if(min == max && min > ((Lot)temp1[i]).getUpgradeCount())  // if there's a new minimum
+            {
+                min = ((Lot)temp1[i]).getUpgradeCount();  // set minimum
+            }
+            else if(max == ((Lot)temp1[i]).getUpgradeCount())  // if p has a high enough upgrade count
+            {
+                temp2[iT2] = temp1[i];
+                ++iT2;
+            }
+            // else the element must have too high of an upgrade count (so don't include it)
+        }
+        
+        retVal = new Lot[iT2];  // create the return array
+        
+        for(int j=0 ; j<iT2 ; ++j)  // fill the return array
+        {
+            retVal[j] = (Lot)temp2[j];
+        }
+        
+        return retVal;
+    }
+    
+    public static Property[] getSellable()
+    // PRE:  
+    // POST: 
+    {
+        Property[] temp;  // temporary array to save properties to
+        Property[] retVal;  // array to return
+        Color bad;  // color of the group that isn't to be saved
+        int i; // iterater for an array
+        
+        temp = new Property[players[currentPlayer].getProperties().length];
+        i = 0;
+        bad = Color.WHITE;
+        
+        for(Property p : players[currentPlayer].getProperties())  // go through players properties
+        {
+            if( !(p instanceof Lot) ) // if the property isn't a lot, include it
+            {
+                temp[i] = p;
+                ++i;
+            }
+            else if(((Lot)p).getUpgradeCount() == 0)  // if the lot hasn't been upgrded, include it
+            {
+                if( !bad.equals(p.getColor()) )  // if one of the lot's group has been upgraded, don't include it
+                {
+                    temp[i] = p;
+                    ++i;
+                }
+            }
+            else  // else it's upgraded, 
+            {
+                bad = p.getColor();  // save off the color of the upgraded 
+                
+                while(i > 0 && bad.equals(temp[i].getColor()))  // remove any lots of the same color
+                {
+                    --i;
+                }
+            }
+        }
+        
+        retVal = new Property[i];  // create an exact sized array
+        for(int j=0 ; j<i ; ++j)  // copy over properties
+        {
+            retVal[j] = temp[j];
+        }
+        
+        return retVal;
+    }
+        
+    public static void sell()
+    // PRE:  
+    // POST: 
+    {
+        Property[] sellable;  // array for sellable properties
+        Lot[] downgradeable;  // array for downgradeable properties
+        String[] options;  // array of options
+        int option;  // flag that shows which option the user chose
+        
+        sellable = getSellable();
+        downgradeable = getDowngradeable(sellable);
+        
+        do
+        {
+            options = new String[] {"Return", "Sell Improvements", "Sell Properties"};
+            option = ActionsMenu.runActionsMenu(options);
+            
+            if(option == 0)
+                return;
+            else if(option == 1)
+            {
+                do
+                {
+                    options = new String[downgradeable.length + 1];
+                    options[0] = "Return";
+                    for(int i=0 ; i<downgradeable.length ; ++i)
+                    {
+                        options[i+1] = "Downgrade " + downgradeable[i].getName();
+                    }
+                    option = ActionsMenu.runActionsMenu(options);
+                    if( option != 0)
+                    {
+                        downgradeable[option-1].downgrade();
+                        players[currentPlayer].changeMoney(downgradeable[option-1].getUpgradeCost()/2);
+                        sellable = getSellable();
+                        downgradeable = getDowngradeable(sellable);
+                    }
+                }
+                while(option != 0);
+            }
+            else if (option == 2)
+            {
+                do
+                {
+                    options = new String[sellable.length + 1];
+                    options[0] = "Return";
+                    for(int i=0 ; i<sellable.length ; ++i)
+                    {
+                        options[i+1] = "Sell " + sellable[i].getName();
+                    }
+                    option = ActionsMenu.runActionsMenu(options);
+                    if( option != 0)
+                    {
+                        players[currentPlayer].changeMoney(sellable[option-1].getCost());
+                        players[currentPlayer].removeProperty(sellable[option-1]);
+                        sellable[option-1].setOwner(null);
+                        sellable = getSellable();
+                    }
+                }
+                while(option != 0);
+            }
+        }
+        while(true);
     }
     
     public static void bankruptcy()
