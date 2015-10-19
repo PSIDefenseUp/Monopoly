@@ -4,6 +4,9 @@
 // Description: Main class containing all game elements
 
 import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import javax.swing.*;
 
 public class Monopoly extends JApplet
 {
@@ -12,10 +15,14 @@ public class Monopoly extends JApplet
     private static BoardLoc[] board;  // array of all board locations in the game
     private static boolean gameOver;  // Whether or not the game is over
     private static int roll;          // total value of the dice roll
+    private JButton[] buttons;        // buttons for choices
+    private JPanel panel;             // panels for buttons
     
     public void init()
     // POST: Initializes all game elements, such as the board and players in the game
     {
+        setLayout(new FlowLayout());
+        
         // Set up board
         setBoard();
         
@@ -29,6 +36,11 @@ public class Monopoly extends JApplet
         currentPlayer = 0;
         gameOver = false;
         roll = 1;
+        buttons = new JButton[1];
+        buttons[0] = new JButton("Start");
+        panel = new JPanel();
+        panel.add(buttons[0]);
+        add(panel);
     }
     
         @Override
@@ -36,6 +48,20 @@ public class Monopoly extends JApplet
     {
         super.paint(g);
         drawBoard(g);
+    }
+    
+        public void addButtons(String[] options)
+    {
+        remove(panel);
+        panel = new JPanel();
+        buttons = new JButton[options.length];
+        for (int i = 0; i < options.length; i++)
+        {
+            buttons[i] = new JButton(options[i]);
+            panel.add(buttons[i]);
+        }
+        add(panel);
+        validate();
     }
     
     public void drawBoard(Graphics g)
