@@ -5,7 +5,7 @@
 
 import java.awt.Color;
 
-public class Monopoly 
+public class Monopoly extends JApplet
 {
     private static Player[] players;  // array of all players in game
     private static int currentPlayer; // the current player who has control
@@ -13,7 +13,7 @@ public class Monopoly
     private static boolean gameOver;  // Whether or not the game is over
     private static int roll;          // total value of the dice roll
     
-    public static void init()
+    public void init()
     // POST: Initializes all game elements, such as the board and players in the game
     {
         // Set up board
@@ -29,6 +29,117 @@ public class Monopoly
         currentPlayer = 0;
         gameOver = false;
         roll = 1;
+    }
+    
+        @Override
+    public void paint(Graphics g)                 // Display results
+    {
+        super.paint(g);
+        drawBoard(g);
+    }
+    
+    public void drawBoard(Graphics g)
+    //PRE:  Applet size >= 580x550 must be a square with +30 in height for buttons
+    //      g = object to draw on
+    //POST: Draw a board representing the game
+    {
+        int width = getWidth();         // Width of applet
+        int height = getHeight()-30;    // Height of applet - 30 for button space
+        int startX = 0;                 // Start of board x
+        int startY = 30;                // Start of board y
+        int sizeSqr = width/11;         // Size of each square
+
+        for (int i = 0; i < 40; i++)    // Drawing the board
+        {
+            if (i >= 0 && i < 10)
+            {
+                if (board[i] instanceof Lot)
+                {
+                    g.setColor(((Lot)board[i]).getColor());
+                }
+                g.drawRect(startX, startY, sizeSqr, sizeSqr);
+                if (board[i].getName().length() > 5)
+                {
+                    g.drawString(board[i].getName().substring(0,5), startX+1, startY+sizeSqr/2);
+                }
+                else
+                {
+                    g.drawString(board[i].getName(), startX+1, startY+sizeSqr/2);
+                }
+                if (board[i] instanceof Property)
+                {
+                    g.drawString("$"+((Property)board[i]).getCost()+"", startX+1, startY+sizeSqr/4*3);
+                }
+                startX = startX + sizeSqr;
+                g.setColor(Color.BLACK);
+            }
+            if (i >= 10 && i < 20)
+            {
+                if (board[i] instanceof Lot)
+                {
+                    g.setColor(((Lot)board[i]).getColor());
+                }
+                g.drawRect(startX, startY, sizeSqr, sizeSqr);
+                if (board[i].getName().length() > 5)
+                {
+                    g.drawString(board[i].getName().substring(0,5), startX+1, startY+sizeSqr/2);
+                }
+                else
+                {
+                    g.drawString(board[i].getName(), startX+1, startY+sizeSqr/2);
+                }
+                if (board[i] instanceof Property)
+                {
+                    g.drawString("$"+((Property)board[i]).getCost()+"", startX+1, startY+sizeSqr/4*3);
+                }
+                startY = startY + sizeSqr;
+                g.setColor(Color.BLACK);
+            }
+            if (i >= 20 && i < 30)
+            {
+                if (board[i] instanceof Lot)
+                {
+                    g.setColor(((Lot)board[i]).getColor());
+                }
+                g.drawRect(startX, startY, sizeSqr, sizeSqr);
+                if (board[i].getName().length() > 5)
+                {
+                    g.drawString(board[i].getName().substring(0,5), startX+1, startY+sizeSqr/2);
+                }
+                else
+                {
+                    g.drawString(board[i].getName(), startX+1, startY+sizeSqr/2);
+                }
+                if (board[i] instanceof Property)
+                {
+                    g.drawString("$"+((Property)board[i]).getCost()+"", startX+1, startY+sizeSqr/4*3);
+                }
+                startX = startX - sizeSqr;
+                g.setColor(Color.BLACK);
+            }
+            if (i >= 30 && i < 40)
+            {
+                if (board[i] instanceof Lot)
+                {
+                    g.setColor(((Lot)board[i]).getColor());
+                }
+                g.drawRect(startX, startY, sizeSqr, sizeSqr);
+                if (board[i].getName().length() > 5)
+                {
+                    g.drawString(board[i].getName().substring(0,5), startX+1, startY+sizeSqr/2);
+                }
+                else
+                {
+                    g.drawString(board[i].getName(), startX+1, startY+sizeSqr/2);
+                }
+                if (board[i] instanceof Property)
+                {
+                    g.drawString("$"+((Property)board[i]).getCost()+"", startX+1, startY+sizeSqr/4*3);
+                }
+                startY = startY - sizeSqr;
+                g.setColor(Color.BLACK);
+            }
+        }
     }
     
     public static void init2()
