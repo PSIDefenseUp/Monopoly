@@ -65,14 +65,14 @@ public class Monopoly extends JApplet
     }
     
     public void drawBoard(Graphics g)
-    //PRE:  Applet size >= 580x550 must be a square with +30 in height for buttons
+    //PRE:  Applet size >= 600x550 must be a square with +50 in height for buttons
     //      g = object to draw on
     //POST: Draw a board representing the game
     {
         int width = getWidth();         // Width of applet
-        int height = getHeight()-30;    // Height of applet - 30 for button space
+        int height = getHeight()-50;    // Height of applet - 30 for button space
         int startX = 0;                 // Start of board x
-        int startY = 30;                // Start of board y
+        int startY = 50;                // Start of board y
         int sizeSqr = width/11;         // Size of each square
 
         for (int i = 0; i < 40; i++)    // Drawing the board
