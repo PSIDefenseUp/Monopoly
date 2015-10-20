@@ -47,10 +47,26 @@ public class Monopoly extends JApplet
     public void paint(Graphics g)                 // Display results
     {
         super.paint(g);
+        if (players.length == 2)    // assumes there are at least 2 players
+        {
+            g.drawString("Player 1 is blue. Player 2 is red.", getWidth()/3, (getHeight()+50)/2);
+        }
+        if (players.length == 3)
+        {
+            g.drawString("Player 1 is blue. Player 2 is red.", getWidth()/3, (getHeight()+50)/2);
+            g.drawString("Player 3 is green.", getWidth()/3, (getHeight()+50)/2+15);
+        }
+        if (players.length == 4)    // at most 4
+        {
+            g.drawString("Player 1 is blue. Player 2 is red.", getWidth()/3, (getHeight()+50)/2);
+            g.drawString("Player 3 is green. Player 4 is black.", getWidth()/3, (getHeight()+50)/2+15);
+        }
         drawBoard(g);
     }
     
-        public void addButtons(String[] options)
+    public void addButtons(String[] options)
+    // PRE:  options = string[] of options to be turned into buttons
+    // POST: replace previous buttons and puts new buttons
     {
         remove(panel);
         panel = new JPanel();
@@ -64,18 +80,48 @@ public class Monopoly extends JApplet
         validate();
     }
     
+    public void drawPlayer(Graphics g, int size, int x, int y, int index)
+    //PRE:  g = object this, size = size of oval, x = x postition, y = y position, 0 < index < 4
+    //POST: player 1 as blue oval, player 2 as red oval, player 3 as green, player 4 as black
+    //      at specific position in square
+    {
+        if (index == 0) // player 1 
+        {
+            g.setColor(Color.BLUE);
+            g.fillOval(x+size, y+size, size, size);
+        }
+        if (index == 1) // player 2
+        {
+            g.setColor(Color.RED);
+            g.fillOval(x+size*2, y+size, size, size);
+        }
+        if (index == 2) // player 3
+        {
+            g.setColor(Color.GREEN);
+            g.fillOval(x+size, y+size*2, size, size);
+        }
+        if (index == 3) // player 4
+        {
+            g.setColor(Color.BLACK);
+            g.fillOval(x+size*2, y+size*2, size, size);
+        }
+        g.setColor(Color.BLACK);    // setting color back to default
+    }
+    
     public void drawBoard(Graphics g)
     //PRE:  Applet size >= 600x550 must be a square with +50 in height for buttons
     //      g = object to draw on
-    //POST: Draw a board representing the game
+    //POST: Draw a board representing the game and players
     {
-        int width = getWidth();         // Width of applet
-        int height = getHeight()-50;    // Height of applet - 30 for button space
-        int startX = 0;                 // Start of board x
-        int startY = 50;                // Start of board y
-        int sizeSqr = width/11;         // Size of each square
-
-        for (int i = 0; i < 40; i++)    // Drawing the board
+        int width = getWidth();         // width of board
+        int height = getHeight()-50;    // height of board
+        int startX = 0;                 // start x of board
+        int startY = 50;                // start y of board
+        int sizeSqr = width/11;         // size of each square
+        int numChar = sizeSqr/10;       // number of characters for name of square
+        int sizePlay = sizeSqr/4;       // size of player tokens
+        
+        for (int i = 0; i < 40; i++)
         {
             if (i >= 0 && i < 10)
             {
@@ -84,9 +130,9 @@ public class Monopoly extends JApplet
                     g.setColor(((Lot)board[i]).getColor());
                 }
                 g.drawRect(startX, startY, sizeSqr, sizeSqr);
-                if (board[i].getName().length() > 5)
+                if (board[i].getName().length() > numChar)
                 {
-                    g.drawString(board[i].getName().substring(0,5), startX+1, startY+sizeSqr/2);
+                    g.drawString(board[i].getName().substring(0,numChar), startX+1, startY+sizeSqr/2);
                 }
                 else
                 {
@@ -95,6 +141,13 @@ public class Monopoly extends JApplet
                 if (board[i] instanceof Property)
                 {
                     g.drawString("$"+((Property)board[i]).getCost()+"", startX+1, startY+sizeSqr/4*3);
+                }
+                for (int j = 0; j < players.length; j++)
+                {
+                    if (players[j].getPosition() == i)
+                    {
+                        drawPlayer(g, sizePlay, startX, startY, j);
+                    }
                 }
                 startX = startX + sizeSqr;
                 g.setColor(Color.BLACK);
@@ -106,9 +159,9 @@ public class Monopoly extends JApplet
                     g.setColor(((Lot)board[i]).getColor());
                 }
                 g.drawRect(startX, startY, sizeSqr, sizeSqr);
-                if (board[i].getName().length() > 5)
+                if (board[i].getName().length() > numChar)
                 {
-                    g.drawString(board[i].getName().substring(0,5), startX+1, startY+sizeSqr/2);
+                    g.drawString(board[i].getName().substring(0,numChar), startX+1, startY+sizeSqr/2);
                 }
                 else
                 {
@@ -117,6 +170,13 @@ public class Monopoly extends JApplet
                 if (board[i] instanceof Property)
                 {
                     g.drawString("$"+((Property)board[i]).getCost()+"", startX+1, startY+sizeSqr/4*3);
+                }
+                for (int j = 0; j < players.length; j++)
+                {
+                    if (players[j].getPosition() == i)
+                    {
+                        drawPlayer(g, sizePlay, startX, startY, j);
+                    }
                 }
                 startY = startY + sizeSqr;
                 g.setColor(Color.BLACK);
@@ -128,9 +188,9 @@ public class Monopoly extends JApplet
                     g.setColor(((Lot)board[i]).getColor());
                 }
                 g.drawRect(startX, startY, sizeSqr, sizeSqr);
-                if (board[i].getName().length() > 5)
+                if (board[i].getName().length() > numChar)
                 {
-                    g.drawString(board[i].getName().substring(0,5), startX+1, startY+sizeSqr/2);
+                    g.drawString(board[i].getName().substring(0,numChar), startX+1, startY+sizeSqr/2);
                 }
                 else
                 {
@@ -139,6 +199,13 @@ public class Monopoly extends JApplet
                 if (board[i] instanceof Property)
                 {
                     g.drawString("$"+((Property)board[i]).getCost()+"", startX+1, startY+sizeSqr/4*3);
+                }
+                for (int j = 0; j < players.length; j++)
+                {
+                    if (players[j].getPosition() == i)
+                    {
+                        drawPlayer(g, sizePlay, startX, startY, j);
+                    }
                 }
                 startX = startX - sizeSqr;
                 g.setColor(Color.BLACK);
@@ -150,9 +217,9 @@ public class Monopoly extends JApplet
                     g.setColor(((Lot)board[i]).getColor());
                 }
                 g.drawRect(startX, startY, sizeSqr, sizeSqr);
-                if (board[i].getName().length() > 5)
+                if (board[i].getName().length() > numChar)
                 {
-                    g.drawString(board[i].getName().substring(0,5), startX+1, startY+sizeSqr/2);
+                    g.drawString(board[i].getName().substring(0,numChar), startX+1, startY+sizeSqr/2);
                 }
                 else
                 {
@@ -161,6 +228,13 @@ public class Monopoly extends JApplet
                 if (board[i] instanceof Property)
                 {
                     g.drawString("$"+((Property)board[i]).getCost()+"", startX+1, startY+sizeSqr/4*3);
+                }
+                for (int j = 0; j < players.length; j++)
+                {
+                    if (players[j].getPosition() == i)
+                    {
+                        drawPlayer(g, sizePlay, startX, startY, j);
+                    }
                 }
                 startY = startY - sizeSqr;
                 g.setColor(Color.BLACK);
