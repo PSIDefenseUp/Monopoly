@@ -65,12 +65,13 @@ public abstract class BoardLoc
         g.fillRect(x, y, width, height);
 
         g.setColor(Color.BLACK);
-        charcount = width/9;
-        g.drawRect(x, y, width, height);
+        charcount = this.name.length();
+        while(g.getFontMetrics().stringWidth(this.name.substring(0, charcount)) >= width - 4)
+        {
+            charcount--;
+        }
 
-        if(this.getName().length() > charcount)
-            g.drawString(this.getName().substring(0, charcount), x + 2, y + height/2);
-        else
-            g.drawString(this.getName(), x + 2, y + height/2);
+        g.drawRect(x, y, width, height);
+        g.drawString(this.name.substring(0, charcount), x + 2, y + height/2);            
     }
 }
