@@ -159,15 +159,7 @@ public class Lot extends Property
     @Override
     public void render(Graphics g, int x, int y, int width, int height)
     {
-        int charcount; // Number of characters that can be fit into this tile
-
-        charcount = width/9;
-        g.drawRect(x, y, width, height);
-
-        if(this.getName().length() > charcount)
-            g.drawString(this.getName().substring(0, charcount), x + 2, y + height/2);
-        else
-            g.drawString(this.getName(), x + 2, y + height/2);
+        super.render(g, x, y, width, height);
 
         g.setColor(this.color);
         g.fillRect(x + 1, y + 1, width - 1, height/4);

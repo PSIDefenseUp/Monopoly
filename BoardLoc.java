@@ -4,6 +4,7 @@
 // Description: Class to implement Board Locations for the Fall 2015 CS342 Monopoly project
 
 import java.awt.Graphics;
+import java.awt.Color;
 
 public abstract class BoardLoc
 {
@@ -60,6 +61,10 @@ public abstract class BoardLoc
     {
         int charcount; // Number of characters that can be fit into this tile
 
+        g.setColor(Color.WHITE);
+        g.fillRect(x, y, width, height);
+
+        g.setColor(Color.BLACK);
         charcount = width/9;
         g.drawRect(x, y, width, height);
 
