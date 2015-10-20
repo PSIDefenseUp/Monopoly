@@ -4,13 +4,18 @@
 // Description: Class to represent the players in a Monopoly game
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.File;
 
 public class Player
 {
-    private int money;  // amount of money a Player Object has
-    private int position;  // Objects position <on board> from GO
-    private Property[] properties;  // List of properties owned by this player
-    private String name;  // name of the player
+    private int money;                      // amount of money a Player Object has
+    private int position;                   // Objects position <on board> from GO
+    private Property[] properties;          // List of properties owned by this player
+    private String name;                    // name of the player
+    private BufferedImage token;            // the token the player appears as
     
     public Player()
     // POST: Creates Player instance with money = $1500, position = 0, no properties,
@@ -143,13 +148,7 @@ public class Player
                 arr[i] = properties[i];
                 --i;
         }
-            
-/*        for (int i = 0; i < properties.length; i++)  // copy over the properties
-        {
-            arr[i] = properties[i];
-        }
-        arr[properties.length] = property;  // add the newest property
-*/        
+
         properties = arr;  // point players properties to new list
     }
     
@@ -195,17 +194,46 @@ public class Player
         }
         return s;
     }
+
+    public void setToken(String name)
+    {
+        try
+        {
+            this.token = ImageIO.read(new File(name));
+        }
+        catch(Exception e){}
+    }
+
+    public void renderInfoPanel(Graphics g, int x, int y, int width, int height)
+    {
+        // Draw background
+        g.setColor(Color.WHITE);
+        g.fillRect(x, y, width, height);
+
+        // Draw token
+        g.drawImage(this.token, x, y, height, height, null);
+
+        // Draw name
+        g.setColor(Color.BLACK);
+        g.drawString(this.name, x + height + 5, y + 20);
+
+        // Draw current money
+        g.drawString("$" + this.money, x + height + 5, y + 40);
+
+        // Draw outline        
+        g.drawRect(x, y, width, height);        
+    }
     
     public Lot[] getUpgradeableLots(Property[] properties)
     // PRE:  properties is intialized, and owned by a single owner
     // POST: FCTVAL a list of properties <owned by player> that can be upgraded
     {
-        Lot[] retVal;  // the value to return;1
-        Property[] lots;  // the lots the play can upgrade
-        int i;  // iterator for the previous variable
-        int j;  // iterator for the color
-        int max;  // maximum upgarde count for color-group
-        int min;  // minimum upgarde count for color-group
+        Lot[] retVal;       // the value to return;1
+        Property[] lots;    // the lots the play can upgrade
+        int i;              // iterator for the previous variable
+        int j;              // iterator for the color
+        int max;            // maximum upgarde count for color-group
+        int min;            // minimum upgarde count for color-group
         
         lots = new Property[22];
         i = 0;

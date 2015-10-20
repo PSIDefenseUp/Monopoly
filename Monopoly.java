@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import javax.swing.*;
+import java.awt.event.*;
 
 public class Monopoly extends JApplet
 {
@@ -17,6 +18,8 @@ public class Monopoly extends JApplet
     private static int roll;          // total value of the dice roll
     private JButton[] buttons;        // buttons for choices
     private JPanel panel;             // panels for buttons
+
+    public static final int UIPADDING = 100; // Padding for upper UI area
     
     public void init()
     // POST: Initializes all game elements, such as the board and players in the game
@@ -32,6 +35,11 @@ public class Monopoly extends JApplet
         {
              players[i] = new Player("Player " + (i + 1));
         }
+
+        // Set player tokens
+        players[0].setToken("token1.png");
+        players[1].setToken("token2.png");
+
         // Prepare game for start
         currentPlayer = 0;
         gameOver = false;
@@ -43,25 +51,12 @@ public class Monopoly extends JApplet
         add(panel);
     }
     
-        @Override
+    @Override
     public void paint(Graphics g)                 // Display results
     {
-        super.paint(g);
-        if (players.length == 2)    // assumes there are at least 2 players
-        {
-            g.drawString("Player 1 is blue. Player 2 is red.", getWidth()/3, (getHeight()+50)/2);
-        }
-        if (players.length == 3)
-        {
-            g.drawString("Player 1 is blue. Player 2 is red.", getWidth()/3, (getHeight()+50)/2);
-            g.drawString("Player 3 is green.", getWidth()/3, (getHeight()+50)/2+15);
-        }
-        if (players.length == 4)    // at most 4
-        {
-            g.drawString("Player 1 is blue. Player 2 is red.", getWidth()/3, (getHeight()+50)/2);
-            g.drawString("Player 3 is green. Player 4 is black.", getWidth()/3, (getHeight()+50)/2+15);
-        }
+        super.paint(g);        
         drawBoard(g);
+        drawPlayerPanels(g);
     }
     
     public void addButtons(String[] options)
@@ -78,6 +73,27 @@ public class Monopoly extends JApplet
         }
         add(panel);
         validate();
+    }
+
+    public void drawPlayerPanels(Graphics g)
+    {
+        int padding;
+        int width;
+        int height;        
+        int x;
+        int y;        
+
+        padding = 10;
+        width = (UIPADDING - 50) * 3;
+        height = UIPADDING - 50;
+        x = this.getWidth()/2 - (players.length * width + (players.length - 1) * padding)/2;
+        y = 25;
+
+        for(int i = 0; i < players.length; i++)
+        {
+            players[i].renderInfoPanel(g, x, y, width, height);
+            x += width + padding;
+        }
     }
     
     public void drawPlayer(Graphics g, int size, int x, int y, int index)
@@ -114,7 +130,7 @@ public class Monopoly extends JApplet
     //POST: Draw a board representing the game and players
     {
         int startX = 0;                       // start x of board
-        int startY = 50;                      // start y of board
+        int startY = UIPADDING;                      // start y of board
         int width = getWidth();               // width of board
         int height = getHeight() - startY;    // height of board        
         int tileWidth = width/11;             // width of each tile
@@ -155,6 +171,10 @@ public class Monopoly extends JApplet
         {
              players[i] = new Player("Player " + (i + 1));
         }
+
+        // Set player tokens
+        players[0].setToken("purge.png");
+        players[1].setToken("test.png");
         
         Color purple; // the color purple          
         purple = new Color(102, 51, 153);  // Initialize the color of purple
