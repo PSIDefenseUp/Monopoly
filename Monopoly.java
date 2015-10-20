@@ -113,131 +113,32 @@ public class Monopoly extends JApplet
     //      g = object to draw on
     //POST: Draw a board representing the game and players
     {
-        int width = getWidth();         // width of board
-        int height = getHeight()-50;    // height of board
-        int startX = 0;                 // start x of board
-        int startY = 50;                // start y of board
-        int sizeSqr = width/11;         // size of each square
-        int numChar = sizeSqr/10;       // number of characters for name of square
-        int sizePlay = sizeSqr/4;       // size of player tokens
+        int startX = 0;                       // start x of board
+        int startY = 50;                      // start y of board
+        int width = getWidth();               // width of board
+        int height = getHeight() - startY;    // height of board        
+        int tileWidth = width/11;             // width of each tile
+        int tileHeight = height/11;           // height of each tile
         
         for (int i = 0; i < 40; i++)
         {
+            board[i].render(g, startX, startY, tileWidth, tileHeight);
+
             if (i >= 0 && i < 10)
-            {
-                if (board[i] instanceof Lot)
-                {
-                    g.setColor(((Lot)board[i]).getColor());
-                }
-                g.drawRect(startX, startY, sizeSqr, sizeSqr);
-                if (board[i].getName().length() > numChar)
-                {
-                    g.drawString(board[i].getName().substring(0,numChar), startX+1, startY+sizeSqr/2);
-                }
-                else
-                {
-                    g.drawString(board[i].getName(), startX+1, startY+sizeSqr/2);
-                }
-                if (board[i] instanceof Property)
-                {
-                    g.drawString("$"+((Property)board[i]).getCost()+"", startX+1, startY+sizeSqr/4*3);
-                }
-                for (int j = 0; j < players.length; j++)
-                {
-                    if (players[j].getPosition() == i)
-                    {
-                        drawPlayer(g, sizePlay, startX, startY, j);
-                    }
-                }
-                startX = startX + sizeSqr;
-                g.setColor(Color.BLACK);
+            {                
+                startX = startX + tileWidth;
             }
             if (i >= 10 && i < 20)
-            {
-                if (board[i] instanceof Lot)
-                {
-                    g.setColor(((Lot)board[i]).getColor());
-                }
-                g.drawRect(startX, startY, sizeSqr, sizeSqr);
-                if (board[i].getName().length() > numChar)
-                {
-                    g.drawString(board[i].getName().substring(0,numChar), startX+1, startY+sizeSqr/2);
-                }
-                else
-                {
-                    g.drawString(board[i].getName(), startX+1, startY+sizeSqr/2);
-                }
-                if (board[i] instanceof Property)
-                {
-                    g.drawString("$"+((Property)board[i]).getCost()+"", startX+1, startY+sizeSqr/4*3);
-                }
-                for (int j = 0; j < players.length; j++)
-                {
-                    if (players[j].getPosition() == i)
-                    {
-                        drawPlayer(g, sizePlay, startX, startY, j);
-                    }
-                }
-                startY = startY + sizeSqr;
-                g.setColor(Color.BLACK);
+            {                
+                startY = startY + tileHeight;
             }
             if (i >= 20 && i < 30)
-            {
-                if (board[i] instanceof Lot)
-                {
-                    g.setColor(((Lot)board[i]).getColor());
-                }
-                g.drawRect(startX, startY, sizeSqr, sizeSqr);
-                if (board[i].getName().length() > numChar)
-                {
-                    g.drawString(board[i].getName().substring(0,numChar), startX+1, startY+sizeSqr/2);
-                }
-                else
-                {
-                    g.drawString(board[i].getName(), startX+1, startY+sizeSqr/2);
-                }
-                if (board[i] instanceof Property)
-                {
-                    g.drawString("$"+((Property)board[i]).getCost()+"", startX+1, startY+sizeSqr/4*3);
-                }
-                for (int j = 0; j < players.length; j++)
-                {
-                    if (players[j].getPosition() == i)
-                    {
-                        drawPlayer(g, sizePlay, startX, startY, j);
-                    }
-                }
-                startX = startX - sizeSqr;
-                g.setColor(Color.BLACK);
+            {                
+                startX = startX - tileWidth;
             }
             if (i >= 30 && i < 40)
-            {
-                if (board[i] instanceof Lot)
-                {
-                    g.setColor(((Lot)board[i]).getColor());
-                }
-                g.drawRect(startX, startY, sizeSqr, sizeSqr);
-                if (board[i].getName().length() > numChar)
-                {
-                    g.drawString(board[i].getName().substring(0,numChar), startX+1, startY+sizeSqr/2);
-                }
-                else
-                {
-                    g.drawString(board[i].getName(), startX+1, startY+sizeSqr/2);
-                }
-                if (board[i] instanceof Property)
-                {
-                    g.drawString("$"+((Property)board[i]).getCost()+"", startX+1, startY+sizeSqr/4*3);
-                }
-                for (int j = 0; j < players.length; j++)
-                {
-                    if (players[j].getPosition() == i)
-                    {
-                        drawPlayer(g, sizePlay, startX, startY, j);
-                    }
-                }
-                startY = startY - sizeSqr;
-                g.setColor(Color.BLACK);
+            {                
+                startY = startY - tileHeight;
             }
         }
     }

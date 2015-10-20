@@ -3,6 +3,8 @@
 // Date:        October 2015
 // Description: Class to implement Board Locations for the Fall 2015 CS342 Monopoly project
 
+import java.awt.Graphics;
+
 public abstract class BoardLoc
 {
     protected int position;  // The Object's position on the board from the GO position
@@ -52,5 +54,18 @@ public abstract class BoardLoc
     // POST: FCTVAL == String representation of BoardLoc
     {
         return "Name: " + name + ", Position: " + position;
+    }
+
+    public void render(Graphics g, int x, int y, int width, int height)
+    {
+        int charcount; // Number of characters that can be fit into this tile
+
+        charcount = width/9;
+        g.drawRect(x, y, width, height);
+
+        if(this.getName().length() > charcount)
+            g.drawString(this.getName().substring(0, charcount), x + 2, y + height/2);
+        else
+            g.drawString(this.getName(), x + 2, y + height/2);
     }
 }

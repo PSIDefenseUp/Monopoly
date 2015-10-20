@@ -3,6 +3,7 @@
 // Date:        October 2015
 // Description: Class to implement the Lot Squares for the Fall 2015 CS342 Monopoly 
 
+import java.awt.Graphics;
 import java.awt.Color;
 
 public class Lot extends Property
@@ -153,5 +154,23 @@ public class Lot extends Property
         }
         
         return retStr;
+    }
+
+    @Override
+    public void render(Graphics g, int x, int y, int width, int height)
+    {
+        int charcount; // Number of characters that can be fit into this tile
+
+        charcount = width/9;
+        g.drawRect(x, y, width, height);
+
+        if(this.getName().length() > charcount)
+            g.drawString(this.getName().substring(0, charcount), x + 2, y + height/2);
+        else
+            g.drawString(this.getName(), x + 2, y + height/2);
+
+        g.setColor(this.color);
+        g.fillRect(x + 1, y + 1, width - 1, height/4);
+        g.setColor(Color.BLACK);
     }
 }
