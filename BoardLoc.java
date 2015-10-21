@@ -15,6 +15,8 @@ public abstract class BoardLoc
     // POST: FCTVAL == cost of rent when landing on property
     
     public abstract void onLand(Player player, int option);
+    // PRE:  Player must be initialized, and option must be one of the options from 
+    //       the following getPossibleActions() function
     // PRE:  player is initialized
     // POST: Takes appropriate actions when players lands on board location
     

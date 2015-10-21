@@ -50,6 +50,8 @@ public class Railroad extends Property
     }
         
     public void onLand(Player player, int option)
+    // PRE:  Player must be initialized, and option must be one of the options from 
+    //       the following getPossibleActions() function
     // POST: if player buys instance: owner = player, && player loses money equivalent to cost
     //       if player needs pay rent: player loses appropriate rent, & owner gains appropriate rent
     {
@@ -76,9 +78,10 @@ public class Railroad extends Property
     // POST: FCTVAL = array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
     {
-         if(owner == null && player.getMoney() > cost) // if tile isn't owned, and player has enough money
+         if(owner == null && player.getMoney() > cost) // if tile isn't owned, & player has enough money
              return new String[] {"End Turn", "Buy"};
-         else if(owner == player || (owner == null && player.getMoney() <= cost)) // if player owns tile, or if player can't buy tile
+         else if(owner == player ||                            // if player owns tile, or
+                 (owner == null && player.getMoney() <= cost)) // if player can't buy tile
              return new String[] {"End Turn"};
          else
              return new String[] {"Pay For Ticket"};

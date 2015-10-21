@@ -55,6 +55,8 @@ public class Utility extends Property
     }
         
     public void onLand(Player player, int option)
+    // PRE:  Player must be initialized, and option must be one of the options from 
+    //       the following getPossibleActions() function
     // POST: if user buys instance: owner = player, && player loses money equivalent to Object cost
     //       if user uses instance: owner loses appropriate rent, & owner gains appropriate rent
     {
@@ -76,14 +78,15 @@ public class Utility extends Property
         return;
     }
     
-     public String[] getPossibleActions(Player player)
+    public String[] getPossibleActions(Player player)
     // PRE:  player is initialized
     // POST: FCTVAL = array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
     {
-         if(owner == null && player.getMoney() > cost) // if tile isn't owned, and player has enough money
+         if(owner == null && player.getMoney() > cost) // if tile isn't owned, & player has enough money
              return new String[] {"End Turn", "Buy"};
-         else if(owner == player || (owner == null && player.getMoney() <= cost)) // if player owns tile, or if player can't buy tile
+         else if(owner == player ||                            // if player owns tile, or
+                 (owner == null && player.getMoney() <= cost)) // if player can't buy tile
              return new String[] {"End Turn"};
          else                                            // it is owned by another player
              return new String[] {"Pay Rent"};

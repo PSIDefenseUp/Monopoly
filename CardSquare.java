@@ -27,6 +27,8 @@ public class CardSquare extends BoardLoc
     }
         
     public void onLand(Player player, int option)
+    // PRE:  Player must be initialized, and option must be one of the options from 
+    //       the following getPossibleActions() function
     // POST: automatically charges or gives player appropriate amount of money
     {
         player.changeMoney(getRent());  // tax the player

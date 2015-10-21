@@ -32,6 +32,8 @@ public class TaxSquare extends BoardLoc
     }
         
     public void onLand(Player player, int option)
+    // PRE:  Player must be initialized, and option must be one of the options from 
+    //       the following getPossibleActions() function
     // POST: automatically charges player appropriate amount of money
     {
         player.changeMoney(getRent());  // tax the player
