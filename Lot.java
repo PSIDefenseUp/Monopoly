@@ -78,18 +78,24 @@ public class Lot extends Property
     // POST: if player buys instance: owner = player, && player loses money equivalent to cost
     //       if player needs pay rent: player loses appropriate rent, & owner gains appropriate rent
     {
-        int rent;       // amount to use the Object
+        int rent;       // the amount to be paid by a non-owner for landing on this lot
         
-        if(owner == null && option == 1)                // if player wants to buy railroad
+        if(owner == null && option == 1)                // if player wants to buy lot
         {
             player.changeMoney(-1 * super.getCost());   // take money and buy it
             super.setOwner(player);
             player.addProperty(this);
         }
-        else if (owner != null && option == 0)          // if player has to use railroad
+        else if (owner != null && option == 0)          // if player has to pay rent
         {
             rent = getRent();
-            player.changeMoney(-1 * rent);              // take money, and give it to owner
+
+            if(player.getMoney() < rent)                // if the player doesn't have enough money,
+            {                                           //   pay what they've got
+                rent = player.getMoney();
+            }
+            
+            player.changeMoney(-1 * rent);   
             owner.changeMoney(rent);
         }
         
@@ -101,9 +107,9 @@ public class Lot extends Property
     // POST: FCTVAL = array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
     {
-         if(owner == null && player.getMoney() >= cost) // if tile isn't owned, and player has enough money
+         if(owner == null && player.getMoney() > cost) // if tile isn't owned, and player has enough money
              return new String[] {"End Turn", "Buy"};
-         else if(owner == player || (owner == null && player.getMoney() < cost)) // if player owns tile, or if player can't buy tile
+         else if(owner == player || (owner == null && player.getMoney() <= cost)) // if player owns tile, or if player can't buy tile
              return new String[] {"End Turn"};
          else  // The lot is owned by someone else
              return new String[] {"Pay Rent"};

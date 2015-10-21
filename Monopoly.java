@@ -261,9 +261,12 @@ public class Monopoly extends JApplet implements ActionListener
     public void endTurn()
     {
         // Check bankruptcy for current player
-        if(players[currentPlayer].getMoney() <= 0 && board[players[currentPlayer].getPosition()] instanceof Property)
+        if(players[currentPlayer].getMoney() <= 0)
         {
-            players[currentPlayer].bankrupt(((Property)board[players[currentPlayer].getPosition()]).getOwner());
+            if(board[players[currentPlayer].getPosition()] instanceof Property)
+                players[currentPlayer].bankrupt(((Property)board[players[currentPlayer].getPosition()]).getOwner());
+            else
+                players[currentPlayer].bankrupt(null);
         }
 
         // Move to the next player's turn
