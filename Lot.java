@@ -54,6 +54,11 @@ public class Lot extends Property
     {
         return upgradeCount;
     }
+
+    public void setUpgradeCount(int i)
+    {
+        this.upgradeCount = i;
+    }
     
     public void upgrade()
     // PRE:  upgradeCount < 5 
@@ -69,15 +74,12 @@ public class Lot extends Property
         upgradeCount--;
     }
     
-    public void onLand(Player player)
+    public void onLand(Player player, int option)
     // POST: if player buys instance: owner = player, && player loses money equivalent to cost
     //       if player needs pay rent: player loses appropriate rent, & owner gains appropriate rent
     {
-        int option;     // option the player chooses
         int rent;       // amount to use the Object
         
-        option = ActionsMenu.runActionsMenu(getPossibleActions(player));  // ask player for option
-
         if(owner == null && option == 1)                // if player wants to buy railroad
         {
             player.changeMoney(-1 * super.getCost());   // take money and buy it
@@ -159,10 +161,28 @@ public class Lot extends Property
     @Override
     public void render(Graphics g, int x, int y, int width, int height)
     {
+        String costString; // The string containing the cost or rent of this lot
+
         super.render(g, x, y, width, height);
 
         g.setColor(this.color);
         g.fillRect(x + 1, y + 1, width - 1, height/4);
         g.setColor(Color.BLACK);
+
+        if(owner == null)
+        {
+            // Draw cost
+            costString = "$" + this.cost;
+            g.drawString(costString, x + 2, y + height - height/4);
+        }
+        else
+        {
+            // Draw owner            
+            g.drawImage(owner.getToken(), x + 1, y + 1, height/4, height/4, null);
+
+            // Draw rent
+            costString = "$" + this.getRent();
+            g.drawString(costString, x + 2, y + height - height/4);
+        }
     }
 }

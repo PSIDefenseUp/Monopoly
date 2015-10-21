@@ -26,10 +26,11 @@ public class CornerSquare extends BoardLoc
         return 0;
     }
         
-    public void onLand(Player player)
+    public void onLand(Player player, int option)
     // POST: Displays users options on landing (which is nothing)
     {
-        ActionsMenu.runActionsMenu(getPossibleActions(player));  // Allow player to end turn
+        // Nothing happens here
+        // TODO: FREE PARKING
     }
         
     public String[] getPossibleActions(Player player)

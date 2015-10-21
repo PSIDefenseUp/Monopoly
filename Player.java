@@ -85,10 +85,11 @@ public class Player
     public void addProperty(Property property)
     // PRE:  property is initialized
     // POST: property is added to instances' property list
-    {
+    {        
         Property[] arr;  // new list of properties for the player
         int i;  // iterator for array manipulation
         
+        property.setOwner(this);
         arr = new Property[properties.length + 1];  // initialize list for one more property
         i = properties.length;
         
@@ -154,11 +155,16 @@ public class Player
     
     public void removeProperty(Property property)
     // PRE:  property is initialized
-    // POST: property is removed from instances' property list
+    // POST: property is removed from instances' property list and its owner is set to null
     {
         int j;  // iterator for next element
         Property[] arr;  // new list of poperties for player
+
+        // Don't try to remove properties that this player doesn't own
+        if(property.getOwner() != this)
+            return;
         
+        property.setOwner(null); // reset the owner of the property
         arr = new Property[properties.length - 1];  // initialize list for one less property
         
         j = 0;
@@ -193,6 +199,11 @@ public class Player
                 s = s + ", ";
         }
         return s;
+    }
+
+    public BufferedImage getToken()
+    {
+        return this.token;
     }
 
     public void setToken(String name)
@@ -242,7 +253,6 @@ public class Player
             g.drawString("$" + this.money, x + height + 5, y + 40);
 
             // Draw outline        
-            g.setColor(Color.BLACK);
             g.drawRect(x, y, width, height);    
         }
     }
@@ -614,6 +624,39 @@ public class Player
             }
         }
         while(true);
+    }
+
+    public void bankrupt(Player other)
+    // PRE:  player must have spent too much money, and have lost the game
+    // POST: the current player's property is handed over to other (the bank if other is null) 
+    //       all of their money is handed over to other, and their money is set to 0
+    {
+        int money;  // self explainatory
+                
+        for(Property p : properties) // hand players properties over to owner
+        {
+            if(other != null)
+            {
+                other.addProperty(p);
+            }
+            else
+            {
+                p.setOwner(null);
+            }
+
+            if(p instanceof Lot)  // if the property is a lot, remove the upgrades
+            {
+                if(other != null)
+                {
+                    other.changeMoney(((Lot)p).getUpgradeCount() * ((Lot)p).getUpgradeCost());
+                }
+
+                ((Lot)p).setUpgradeCount(0);
+            }
+        }
+
+        this.properties = new Property[0];
+        this.money = 0;
     }
 }
 

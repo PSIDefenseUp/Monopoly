@@ -26,10 +26,9 @@ public class CardSquare extends BoardLoc
         return (int)(Math.random()*401) - 200;
     }
         
-    public void onLand(Player player)
+    public void onLand(Player player, int option)
     // POST: automatically charges or gives player appropriate amount of money
     {
-        ActionsMenu.runActionsMenu(getPossibleActions(player));  // display options to player
         player.changeMoney(getRent());  // tax the player
     }
         

@@ -54,15 +54,12 @@ public class Utility extends Property
         }
     }
         
-    public void onLand(Player player)
+    public void onLand(Player player, int option)
     // POST: if user buys instance: owner = player, && player loses money equivalent to Object cost
     //       if user uses instance: owner loses appropriate rent, & owner gains appropriate rent
     {
-        int option;  // option the player chooses
         int rent; // amount to use the Object
-        
-        option = ActionsMenu.runActionsMenu(getPossibleActions(player));  // ask player for option
-        
+                
         if(owner == null && option == 1)  // if player wants to buy utility
         {
             player.changeMoney(-1 * super.getCost());  // take money and buy it

@@ -7,6 +7,7 @@ import java.awt.Color;
 
 public class TestDriver
 {
+    /*
     public static void main(String[] args)
     {
         Color purple;  // Color variable for purple
@@ -14,7 +15,7 @@ public class TestDriver
         purple = new Color(102, 51, 153);    
         
         // Set up overarching game    
-        Monopoly.init();
+        //Monopoly.init();
 
         // Initialize array of board locations
         BoardLoc[] board = new BoardLoc[15];
@@ -178,4 +179,5 @@ public class TestDriver
         }        
         System.out.println();
     }
+    */
 }

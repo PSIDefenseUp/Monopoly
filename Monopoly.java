@@ -9,7 +9,7 @@ import java.awt.Graphics;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class Monopoly extends JApplet
+public class Monopoly extends JApplet implements ActionListener
 {
     private static Player[] players;  // array of all players in game
     private static int currentPlayer; // the current player who has control
@@ -18,10 +18,11 @@ public class Monopoly extends JApplet
     private static int roll;          // total value of the dice roll
     private JButton[] buttons;        // buttons for choices
     private JPanel panel;             // panels for buttons
+    private boolean rolled;           // has the player rolled this turn?
 
-    public static final int UIPADDING = 100; // Padding for upper UI area
+    public static final int UIPADDING = 150; // Padding for upper UI area
     
-    public void init1()
+    public void init()
     // POST: Initializes all game elements, such as the board and players in the game
     {
         setLayout(new FlowLayout());
@@ -30,7 +31,7 @@ public class Monopoly extends JApplet
         setBoard();
         
         // Initialize players
-        players = new Player[2];
+        players = new Player[4];
         for (int i = 0; i < players.length; i++)
         {
              players[i] = new Player("Player " + (i + 1));
@@ -39,21 +40,36 @@ public class Monopoly extends JApplet
         // Set player tokens
         players[0].setToken("token1.png");
         players[1].setToken("token2.png");
-        players[0].changeMoney(-2000);
+        players[2].setToken("token3.png");
+        players[3].setToken("token4.png");
+
+        players[1].changeMoney(-1300);
+        players[2].changeMoney(-1100);
+        players[3].changeMoney(-1499);
 
         // Prepare game for start
         currentPlayer = 0;
         gameOver = false;
         roll = 1;
+
+        /*
         buttons = new JButton[1];
         buttons[0] = new JButton("Start");
         panel = new JPanel();
         panel.add(buttons[0]);
         add(panel);
+        */
+
+        //addButtons(new String[]{"Start"});
+
+        panel = new JPanel();
+        add(panel);
+
+        play();
     }
     
     @Override
-    public void paint(Graphics g)                 // Display results
+    public void paint(Graphics g)
     {
         super.paint(g);        
         drawBoard(g);
@@ -64,16 +80,17 @@ public class Monopoly extends JApplet
     // PRE:  options = string[] of options to be turned into buttons
     // POST: replace previous buttons and puts new buttons
     {
-        remove(panel);
+        this.remove(panel);
         panel = new JPanel();
         buttons = new JButton[options.length];
         for (int i = 0; i < options.length; i++)
         {
             buttons[i] = new JButton(options[i]);
+            buttons[i].addActionListener(this);
             panel.add(buttons[i]);
         }
-        add(panel);
-        validate();
+        this.add(panel);
+        this.validate();
     }
 
     public void drawPlayerPanels(Graphics g)
@@ -85,44 +102,24 @@ public class Monopoly extends JApplet
         int y;        
 
         padding = 10;
-        width = (UIPADDING - 50) * 3;
-        height = UIPADDING - 50;
+        width = (UIPADDING - 100) * 3;
+        height = UIPADDING - 100;
         x = this.getWidth()/2 - (players.length * width + (players.length - 1) * padding)/2;
-        y = 25;
+        y = 75;
 
         for(int i = 0; i < players.length; i++)
         {
+            // Indicate current player
+            if(i == currentPlayer)
+            {
+                g.setColor(Color.GREEN);
+                g.fillRect(x - padding/2, y - padding/2, width + padding, height + padding);
+            }
+
+            // Draw info panel
             players[i].renderInfoPanel(g, x, y, width, height);
             x += width + padding;
         }
-    }
-    
-    public void drawPlayer(Graphics g, int size, int x, int y, int index)
-    //PRE:  g = object this, size = size of oval, x = x postition, y = y position, 0 < index < 4
-    //POST: player 1 as blue oval, player 2 as red oval, player 3 as green, player 4 as black
-    //      at specific position in square
-    {
-        if (index == 0) // player 1 
-        {
-            g.setColor(Color.BLUE);
-            g.fillOval(x+size, y+size, size, size);
-        }
-        if (index == 1) // player 2
-        {
-            g.setColor(Color.RED);
-            g.fillOval(x+size*2, y+size, size, size);
-        }
-        if (index == 2) // player 3
-        {
-            g.setColor(Color.GREEN);
-            g.fillOval(x+size, y+size*2, size, size);
-        }
-        if (index == 3) // player 4
-        {
-            g.setColor(Color.BLACK);
-            g.fillOval(x+size*2, y+size*2, size, size);
-        }
-        g.setColor(Color.BLACK);    // setting color back to default
     }
     
     public void drawBoard(Graphics g)
@@ -160,65 +157,6 @@ public class Monopoly extends JApplet
         }
     }
     
-    public void init()
-    // POST: Initializes all game elements, such as the board and players in the game
-    {
-        // Set up board
-        setBoard();
-        
-        // Initialize players
-        players = new Player[2];
-        for (int i = 0; i < players.length; i++)
-        {
-             players[i] = new Player("Player " + (i + 1));
-        }
-
-        // Set player tokens
-        players[0].setToken("token1.png");
-        players[1].setToken("token2.png");
-        
-        Color purple; // the color purple          
-        purple = new Color(102, 51, 153);  // Initialize the color of purple
-        
-        // Give player 1 some properties
-        Property prop = new Lot("MEDITERRANEAN AVE", 1, 60, purple, 
-                           50, new int[]{2, 10, 30, 90, 160, 230});
-        Property prop2 = new Lot("BALTIC AVE", 2, 60, purple, 
-                           50, new int[]{4, 20, 60, 180, 320, 460});
-        Property prop3 = new Railroad("READING RAILROAD", 5, 200);
-        prop.setOwner(players[0]);
-        prop2.setOwner(players[0]);
-        prop3.setOwner(players[0]);
-        players[0].addProperty(prop);
-        players[0].addProperty(prop2);
-        players[0].addProperty(prop3);
-        board[1] = prop;
-        board[3] = prop2;
-        board[5] = prop3;
-        
-        // Give player 2 some properties
-        prop = new Lot("VERMONT AVE.", 8, 100, Color.CYAN, 
-                           50, new int[]{6, 30, 90, 270, 400, 550});
-        prop2 = new Lot("CONNECTICUT AVE.", 9, 120, Color.CYAN, 
-                           50, new int[]{8, 40, 100, 300, 450, 600});
-        prop3 = new Lot("ST. CHARLES PLACE", 11, 140, Color.MAGENTA, 
-                            100, new int[]{10, 50, 150, 450, 625, 750});
-        prop.setOwner(players[1]);
-        prop2.setOwner(players[1]);
-        prop3.setOwner(players[1]);
-        players[1].addProperty(prop);
-        players[1].addProperty(prop2);
-        players[1].addProperty(prop3);
-        board[8] = prop;
-        board[9] = prop2;
-        board[11] = prop3;
-        
-        // Prepare game for start
-        currentPlayer = 0;
-        gameOver = false;
-        roll = 1;
-    }
-    
     public static void setBoard()
     {   
         Color purple; // the color purple
@@ -231,7 +169,7 @@ public class Monopoly extends JApplet
         board[1] = new Lot("MEDITERRANEAN AVE", 1, 60, purple, 
                            50, new int[]{2, 10, 30, 90, 160, 230});
         board[2] = new CardSquare("Community Chest", 2);
-        board[3] = new Lot("BALTIC AVE", 2, 60, purple, 
+        board[3] = new Lot("BALTIC AVE", 3, 60, purple, 
                            50, new int[]{4, 20, 60, 180, 320, 460});
         board[4] = new TaxSquare("Income Tax", 4);
         board[5] = new Railroad("READING RAILROAD", 5, 200);
@@ -291,12 +229,8 @@ public class Monopoly extends JApplet
                             200, new int[]{50, 200, 600, 1400, 1700, 2000});
     }
     
-    public static void main(String[] args)
+    public void play()
     {
-        int actionOptions;  //  Actions the player can take during turn
-
-        while(!gameOver)  // continue game while it isn't over
-        {            
             // If current player is still in the game
             //     Let current player take an action or roll
             //     After roll, resolve landing on the player's new location
@@ -305,105 +239,79 @@ public class Monopoly extends JApplet
            // System.out.println("Player " + (currentPlayer+1) + "'s turn.");
           //  System.out.println(players[currentPlayer].toString());
             
-            if(players[currentPlayer].getMoney() > 0) // if player is still in game
-            {
-                String[] performAction;  // string of actions the Player can perform
-                
-                performAction = new String[] {"Roll dice", "Upgrade a property", "Sell a property"};
-                
-                // Get player's action of choice until they decide to roll the dice
-                do
-                {
-                    System.out.println("Player " + (currentPlayer+1) + "'s turn.");
-                    System.out.println(players[currentPlayer].toString());
-                    
-                    actionOptions = ActionsMenu.runActionsMenu(performAction);
-                    switch(actionOptions)
-                    {
-                        case 1: players[currentPlayer].upgrade();
-                                break; 
-                        case 2: players[currentPlayer].sell();
-                                break;
-                        default: // Continue to dice roll
-                    }
-                }
-                while(actionOptions != 0);
-
-                // Roll two dice
-                roll = ((int)(Math.random() * 6) + 1) + ((int)(Math.random() * 6) + 1);
-                System.out.println("Roll: " + roll);
-                // Move the player
-                players[currentPlayer].move(roll);
-                 // Run onLand for the player's new position
-                board[players[currentPlayer].getPosition()].onLand(players[currentPlayer]);
-
-                if(players[currentPlayer].getMoney() < 0)
-                {
-                    bankruptcy();
-                    System.out.println(" You've lost the game, you're bankrupt");
-                }
-                
-                System.out.println();
-            }
-
-            // Move to the next player's turn
-            currentPlayer = (currentPlayer + 1) % players.length; 
+        if(players[currentPlayer].getMoney() > 0) // if player is still in game
+        {   
+            addButtons(new String[] {"Roll dice", "Upgrade a property", "Sell a property"});              
         }
+        else
+            endTurn();
+    }
+
+    public void rollDice()
+    {
+        roll = ((int)(Math.random() * 6) + 1) + ((int)(Math.random() * 6) + 1);
+
+        // Move the player
+        players[currentPlayer].move(roll);
+
+        // Get actions for current player's new location and display them
+        addButtons(board[players[currentPlayer].getPosition()].getPossibleActions(players[currentPlayer]));      
+    }
+
+    public void endTurn()
+    {
+        // Check bankruptcy for current player
+        if(players[currentPlayer].getMoney() <= 0 && board[players[currentPlayer].getPosition()] instanceof Property)
+        {
+            players[currentPlayer].bankrupt(((Property)board[players[currentPlayer].getPosition()]).getOwner());
+        }
+
+        // Move to the next player's turn
+        currentPlayer = (currentPlayer + 1) % players.length; 
+        rolled = false;
+        play();
     }
     
-    public static void bankruptcy()
-    // PRE:  player must have spent too much money, and have lost the game
-    // POST: the current player's property is handed over the the owner of the position, 
-    //       and all of their money is handed over the the owner, and their money is set to -1
+    public void actionPerformed(ActionEvent e)
     {
-        Player current;  // current player
-        Player owner;  // owner of the position <that the player is located on>
-        Property[] properties; // list of properties owned by current;
-        int money;  // self explainatory
-        
-        current = players[currentPlayer];  // set the current player
-        properties = current.getProperties();
-        
-        // set the owner
-        if(board[current.getPosition()] instanceof Property)  // if a property
-            owner = ((Property) board[current.getPosition()]).getOwner();  
-        else  // if not a property
-            owner = null;
-        
-        for(Property p : current.getProperties()) // hand players properties over to owner
+        for(int i = 0; i < buttons.length; i++)
         {
-            if(p instanceof Lot)  // if the property is a lot, remove the upgrades
+            if(e.getSource() == buttons[i])
             {
-                for(int j=((Lot)p).getUpgradeCount() ; j!=0 ; --j)  // remove upgrades
+                if(!rolled)
                 {
-                    current.changeMoney(((Lot)p).getUpgradeCost() / 2);
-                    ((Lot)p).downgrade();
+                    switch(i)
+                    {
+                        case 0: rolled = true; rollDice(); break;
+                        case 1: players[currentPlayer].upgrade(); break;
+                        case 2: players[currentPlayer].sell(); break;
+                        default: break;
+                    }                    
+                }
+                else
+                {
+                    board[players[currentPlayer].getPosition()].onLand(players[currentPlayer], i);
+                    endTurn();
                 }
             }
-            
-            current.removeProperty(p);
-            if(owner != null)  // if there is any owner
-                owner.addProperty(p);
-            p.setOwner(owner);  // transfer ownership
-        }
-        
-        money = current.getMoney();
-        if(owner != null)  // if there is an owner, set his money to what it actually would be
-            owner.changeMoney(money);
-        current.changeMoney((-1 * money) - 1);  // set players money to -1
-    }
+        }        
+        repaint();
+    }    
    
     public static Player getCurrentPlayer()
     // POST: FCTVAL = Current Player instance
     {
         return players[currentPlayer];
     }
-    
-    public static Player getPlayer(int playerID)
-    // PRE:  playerID >= 0 
-    // POST: FCTVAL = Player instance
+
+    public static Player getPlayer(int playerIndex)
     {
-        return players[playerID];
+        return players[playerIndex];
+    }
+
+    public static Player[] getPlayers()
+    {
+        return players;
     }
 
     public static int getBoardLength()

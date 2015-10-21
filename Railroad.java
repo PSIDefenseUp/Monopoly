@@ -49,15 +49,12 @@ public class Railroad extends Property
         }
     }
         
-    public void onLand(Player player)
+    public void onLand(Player player, int option)
     // POST: if player buys instance: owner = player, && player loses money equivalent to cost
     //       if player needs pay rent: player loses appropriate rent, & owner gains appropriate rent
     {
-        int option;  // option the player chooses
         int rent; // amount to use the Object
         
-        option = ActionsMenu.runActionsMenu(getPossibleActions(player));  // ask player for option
-
         if(owner == null && option == 1)  // if player wants to buy railroad
         {
             player.changeMoney(-1 * super.getCost());  // take money and buy it

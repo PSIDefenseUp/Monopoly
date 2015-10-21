@@ -4,6 +4,7 @@
 // Description: Higher Class to implement the Properties for the Fall 2015 CS342 Monopoly project
 
 import java.awt.Color;
+import java.awt.Graphics;
 
 public abstract class Property extends BoardLoc
 {
@@ -65,5 +66,24 @@ public abstract class Property extends BoardLoc
             return super.toString() + ", Cost: " + cost + ", Owner: " + owner.getName();
         else  // if there isn't an owner
             return super.toString() + ", Cost: " + cost + ", Owner: Not Owned";
+    }
+
+    public void render(Graphics g, int x, int y, int width, int height)
+    {
+        String costString; // String containing the cost of this property
+
+        super.render(g, x, y, width, height);
+
+        if(owner == null)
+        {
+            // Draw cost
+            costString = "$" + this.cost;
+            g.drawString(costString, x + 2, y + height - height/4);
+        }
+        else
+        {
+            // Draw owner
+            g.drawImage(owner.getToken(), x + 1, y + 1, height/4, height/4, null);
+        }
     }
 }

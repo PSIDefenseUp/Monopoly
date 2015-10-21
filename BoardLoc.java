@@ -14,7 +14,7 @@ public abstract class BoardLoc
     public abstract int getRent();
     // POST: FCTVAL == cost of rent when landing on property
     
-    public abstract void onLand(Player player);
+    public abstract void onLand(Player player, int option);
     // PRE:  player is initialized
     // POST: Takes appropriate actions when players lands on board location
     
@@ -60,18 +60,33 @@ public abstract class BoardLoc
     public void render(Graphics g, int x, int y, int width, int height)
     {
         int charcount; // Number of characters that can be fit into this tile
+        int playerSize; // Width + height to draw a player at on this space
 
+        // Draw background
         g.setColor(Color.WHITE);
         g.fillRect(x, y, width, height);
 
+        // Draw name
         g.setColor(Color.BLACK);
         charcount = this.name.length();
         while(g.getFontMetrics().stringWidth(this.name.substring(0, charcount)) >= width - 4)
         {
             charcount--;
         }
+        g.drawString(this.name.substring(0, charcount), x + 2, y + height/2);
 
-        g.drawRect(x, y, width, height);
-        g.drawString(this.name.substring(0, charcount), x + 2, y + height/2);            
+        // Draw any players on this space
+        playerSize = height / 3;
+        for(int i = 0; i < Monopoly.getPlayers().length; i++)
+        {
+            if(Monopoly.getPlayer(i).getPosition() == this.position)
+            {
+                g.drawImage(Monopoly.getPlayer(i).getToken(), x + 1 + (i * playerSize), 
+                    y + 1 + height - playerSize, playerSize, playerSize, null);
+            }
+        }
+
+        // Draw outline
+        g.drawRect(x, y, width, height);         
     }
 }
