@@ -21,7 +21,7 @@ public class Monopoly extends JApplet
 
     public static final int UIPADDING = 100; // Padding for upper UI area
     
-    public void init()
+    public void init1()
     // POST: Initializes all game elements, such as the board and players in the game
     {
         setLayout(new FlowLayout());
@@ -39,6 +39,7 @@ public class Monopoly extends JApplet
         // Set player tokens
         players[0].setToken("token1.png");
         players[1].setToken("token2.png");
+        players[0].changeMoney(-2000);
 
         // Prepare game for start
         currentPlayer = 0;
@@ -159,7 +160,7 @@ public class Monopoly extends JApplet
         }
     }
     
-    public static void init2()
+    public void init()
     // POST: Initializes all game elements, such as the board and players in the game
     {
         // Set up board
@@ -173,8 +174,8 @@ public class Monopoly extends JApplet
         }
 
         // Set player tokens
-        players[0].setToken("purge.png");
-        players[1].setToken("test.png");
+        players[0].setToken("token1.png");
+        players[1].setToken("token2.png");
         
         Color purple; // the color purple          
         purple = new Color(102, 51, 153);  // Initialize the color of purple
@@ -294,20 +295,6 @@ public class Monopoly extends JApplet
     {
         int actionOptions;  //  Actions the player can take during turn
 
-        //init();  // initiaize new game 
-        init2();  // initialize game with players having properties
-
-        // Checking if board initialized correctly
-        for (int i = 0; i < board.length; i++)
-        {
-            System.out.println(board[i].toString());
-        }
-
-        // Starting game
-        System.out.println();
-        System.out.println("Starting Game...");
-        currentPlayer = (int) Math.random() * players.length;  // Random first player
-        
         while(!gameOver)  // continue game while it isn't over
         {            
             // If current player is still in the game
@@ -318,7 +305,7 @@ public class Monopoly extends JApplet
            // System.out.println("Player " + (currentPlayer+1) + "'s turn.");
           //  System.out.println(players[currentPlayer].toString());
             
-            if(players[currentPlayer].getMoney() >= 0) // if player is still in game
+            if(players[currentPlayer].getMoney() > 0) // if player is still in game
             {
                 String[] performAction;  // string of actions the Player can perform
                 

@@ -206,22 +206,45 @@ public class Player
 
     public void renderInfoPanel(Graphics g, int x, int y, int width, int height)
     {
-        // Draw background
-        g.setColor(Color.WHITE);
-        g.fillRect(x, y, width, height);
+        if(this.money > 0)
+        {
+            // Draw background
+            g.setColor(Color.WHITE);
+            g.fillRect(x, y, width, height);
 
-        // Draw token
-        g.drawImage(this.token, x, y, height, height, null);
+            // Draw token
+            g.drawImage(this.token, x, y, height, height, null);
 
-        // Draw name
-        g.setColor(Color.BLACK);
-        g.drawString(this.name, x + height + 5, y + 20);
+            // Draw name
+            g.setColor(Color.BLACK);
+            g.drawString(this.name, x + height + 5, y + 20);
 
-        // Draw current money
-        g.drawString("$" + this.money, x + height + 5, y + 40);
+            // Draw current money
+            g.drawString("$" + this.money, x + height + 5, y + 40);
 
-        // Draw outline        
-        g.drawRect(x, y, width, height);        
+            // Draw outline        
+            g.drawRect(x, y, width, height);     
+        }   
+        else
+        {
+            // Draw background
+            g.setColor(Color.BLACK);
+            g.fillRect(x, y, width, height);
+
+            // Draw token
+            g.drawImage(this.token, x, y, height, height, null);
+
+            // Draw name
+            g.setColor(Color.RED);
+            g.drawString(this.name, x + height + 5, y + 20);
+
+            // Draw current money
+            g.drawString("$" + this.money, x + height + 5, y + 40);
+
+            // Draw outline        
+            g.setColor(Color.BLACK);
+            g.drawRect(x, y, width, height);    
+        }
     }
     
     public Lot[] getUpgradeableLots(Property[] properties)
