@@ -26,8 +26,6 @@ public class Monopoly extends JApplet implements ActionListener
     private JButton[] gameMode;                        // buttons for demo or fresh start
     private JPanel panel;                              // panel for buttons that take player actions
     private boolean rolled;                            // has the player rolled this turn?
-    private boolean upgrade;                           // is upgrading    
-    private boolean gameOver;                          // is the game over?
 
     @Override
     public void init()
@@ -43,9 +41,6 @@ public class Monopoly extends JApplet implements ActionListener
 
         // Set up board
         setBoard();
-
-        // Set gameOver to true while game has yet to start
-        gameOver = true;
 
         // Adding UI elements
         showProperty = new JButton("Show Player Properties");
@@ -141,7 +136,6 @@ public class Monopoly extends JApplet implements ActionListener
             if(option == 0)
             {
                 // END THE GAME
-                gameOver = true;
                 this.remove(panel);
                 panel = new JPanel();
                 this.remove(end);
@@ -276,9 +270,6 @@ public class Monopoly extends JApplet implements ActionListener
         int chosenToken;                // The number of the token chosen by a player
         String choice;                  // The option chosen by the user
 
-        // Start game
-        gameOver = false;
-
         // Change base UI
         remove(gameMode[0]);
         remove(gameMode[1]);
@@ -340,9 +331,6 @@ public class Monopoly extends JApplet implements ActionListener
     public void setupDemo()
     // POST: The game is started in a demo mode, with 2 players that already own various properties on the board
     {
-        // Start game
-        gameOver = false;
-
         // Change base UI
         remove(gameMode[0]);
         remove(gameMode[1]);
