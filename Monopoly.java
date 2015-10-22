@@ -76,8 +76,15 @@ public class Monopoly extends JApplet implements ActionListener
     // POST: draws the board, players, player info, and free parking pot size on the screen
     {
         super.paint(g);   
+
+        // Draw board and players
         drawBoard(g);
+
+        // Draw player info panels
         drawPlayerPanels(g);
+
+        // Draw free parking pot
+        g.setColor(Color.BLACK);
         String potString = "Free Parking Pot: $" + TaxSquare.getPot();
         int i = g.getFontMetrics().stringWidth(potString);
         g.drawString(potString, (getWidth()/2) - i/2, getHeight()/2);
