@@ -17,8 +17,8 @@ public abstract class BoardLoc
     public abstract void onLand(Player player, int option);
     // PRE:  Player must be initialized, and option must be one of the options from 
     //       the following getPossibleActions() function
-    // PRE:  player is initialized
-    // POST: Takes appropriate actions when players lands on board location
+    // POST: Takes appropriate actions when players land on the board location, 
+    //       given the selected option
     
     public abstract String[] getPossibleActions(Player player);
     // PRE:  player is initialized
@@ -60,9 +60,11 @@ public abstract class BoardLoc
     }
 
     public void render(Graphics g, int x, int y, int width, int height)
+    // PRE: g is initialized
+    // POST: A board space is drawn for this boardloc at (x, y) with dimensions width x height 
     {
-        int charcount; // Number of characters that can be fit into this tile
-        int playerSize; // Width + height to draw a player at on this space
+        int charcount;                      // Number of characters that can be fit into this tile
+        int playerSize;                     // Width + height to draw a player at on this space
 
         // Draw background
         g.setColor(Color.WHITE);
@@ -77,14 +79,17 @@ public abstract class BoardLoc
         }
         g.drawString(this.name.substring(0, charcount), x + 2, y + height/2);
 
-        // Draw any players on this space
-        playerSize = height / 3;
-        for(int i = 0; i < Monopoly.getPlayers().length; i++)
+        if(Monopoly.getPlayers() != null)
         {
-            if(Monopoly.getPlayer(i).getPosition() == this.position)
+            // Draw any players on this space
+            playerSize = height / 3;
+            for(int i = 0; i < Monopoly.getPlayers().length; i++)
             {
-                g.drawImage(Monopoly.getPlayer(i).getToken(), x + 1 + (i * playerSize), 
-                    y + 1 + height - playerSize, playerSize, playerSize, null);
+                if(Monopoly.getPlayer(i).getPosition() == this.position)
+                {
+                    g.drawImage(Monopoly.getPlayer(i).getToken(), x + 1 + (i * playerSize), 
+                        y + 1 + height - playerSize, playerSize, playerSize, null);
+                }
             }
         }
 

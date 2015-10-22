@@ -25,27 +25,49 @@ public class Railroad extends Property
     public int getRent()
     // POST: FCTVAl == rent (based on how many railroads owned)
     {
-        int numOwned;  // counter for the number of railroads owned by this railroad's owner
+        int numOwned;           // counter for the number of railroads owned by this railroad's owner
         
         numOwned = 0;
         
-        if(owner != null)  // if railroad has an owner
+        // if railroad has an owner
+        if(owner != null)       
         {
             // find number of railroads owner has
             for(Property i : owner.getProperties())
             {
-                if (i instanceof Railroad)  // if this instance is a railroad, increment count
+                // if this instance is a railroad, increment count
+                if (i instanceof Railroad)  
                     numOwned++;
             }
         }
         
-        switch(numOwned)  // return the correct rent based on number of railroads
+        switch(numOwned)                    // return the correct rent based on number of railroads
         {
-            case 1:  return 25;
-            case 2:  return 50;
-            case 3:  return 100;
-            case 4:  return 200;
-            default: return 0;
+            case 1:  return 25;             // owner owns only one railroad
+            case 2:  return 50;             // owner owns two railroads
+            case 3:  return 100;            // owner owns three railroads
+            case 4:  return 200;            // owner owns all four railroads
+            default: return 0;              // no railroads owned
+        }
+    }
+
+    public String[] getPossibleActions(Player player)
+    // PRE:  player is initialized
+    // POST: FCTVAL = array of options player has upon landing on this space, 
+    //       to be used in a menu in a user interface
+    {
+        if(owner == null && player.getMoney() > cost)         // if tile isn't owned, 
+        {                                                     //   & player has enough money
+           return new String[] {"End Turn", "Buy"};
+        }
+        else if(owner == player ||                            // if player owns tile, or
+                (owner == null && player.getMoney() <= cost)) //   if player can't buy tile
+        {
+           return new String[] {"End Turn"};
+        }
+        else                                                  // it is owned by another player
+        {
+            return new String[] {"Pay For Ticket"};
         }
     }
         
@@ -55,37 +77,23 @@ public class Railroad extends Property
     // POST: if player buys instance: owner = player, && player loses money equivalent to cost
     //       if player needs pay rent: player loses appropriate rent, & owner gains appropriate rent
     {
-        int rent; // amount to use the Object
+        int rent;                                             // rent for landing on this railroad
         
-        if(owner == null && option == 1)  // if player wants to buy railroad
+        if(owner == null && option == 1)                      // if player wants to buy railroad
         {
-            player.changeMoney(-1 * super.getCost());  // take money and buy it
+            player.changeMoney(-1 * super.getCost());         // take money and buy it
             super.setOwner(player);
             player.addProperty(this);
         }
-        else if (owner != null && option == 0)  // if player has to use railroad
+        else if (owner != null && option == 0)                // if player has to use railroad
         {
             rent = getRent();
-            player.changeMoney(-1 * rent);  // take money, and give it to owner
+            player.changeMoney(-1 * rent);                    // take money, and give it to owner
             owner.changeMoney(rent);
         }
         
         return;
-    }
-        
-    public String[] getPossibleActions(Player player)
-    // PRE:  player is initialized
-    // POST: FCTVAL = array of options player has upon landing on this space, 
-    //       to be used in a menu in a user interface
-    {
-         if(owner == null && player.getMoney() > cost) // if tile isn't owned, & player has enough money
-             return new String[] {"End Turn", "Buy"};
-         else if(owner == player ||                            // if player owns tile, or
-                 (owner == null && player.getMoney() <= cost)) // if player can't buy tile
-             return new String[] {"End Turn"};
-         else
-             return new String[] {"Pay For Ticket"};
-    }
+    }        
         
     public String toString()
     // POST: FCTVAL = a String of the name, positions, cost, and owner

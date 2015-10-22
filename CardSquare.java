@@ -31,7 +31,8 @@ public class CardSquare extends BoardLoc
     //       the following getPossibleActions() function
     // POST: automatically charges or gives player appropriate amount of money
     {
-        player.changeMoney(getRent());  // tax the player
+        // give or take a random amount from the player (up to $200)
+        player.changeMoney(getRent());  
     }
         
     public String[] getPossibleActions(Player player)

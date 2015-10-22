@@ -29,10 +29,14 @@ public class CornerSquare extends BoardLoc
     public void onLand(Player player, int option)
     // PRE:  Player must be initialized, and option must be one of the options from 
     //       the following getPossibleActions() function
-    // POST: Displays users options on landing (which is nothing)
+    // POST: Displays user's options on landing (which is nothing)
     {
-        // Nothing happens here
-        // TODO: FREE PARKING
+        // If this is free parking, give the player their money and reset the pot
+        if (this.name.equals("Free Parking"))
+        {
+            player.changeMoney(TaxSquare.getPot());
+            TaxSquare.resetPot();
+        }
     }
         
     public String[] getPossibleActions(Player player)

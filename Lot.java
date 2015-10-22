@@ -37,16 +37,16 @@ public class Lot extends Property
     public int getRent()
     // POST: FCTVAL == absolute rent (based on upgradeCount)
     {
-        return this.rent[upgradeCount];  // return appropriate value
+        return this.rent[upgradeCount];         // return appropriate value
     }
 
     public int getUpgradeCost()
     // POST: FCTVAL == cost to upgrade the lot
     {
-        if(upgradeCount == 5)  // if completely upgraded
-            return 0;  // player can't upgrade
-        else  // if there's room to upgrade
-            return upgradeCost;
+        if(upgradeCount == 5)                   // if completely upgraded
+            return 0;                           // player can't upgrade
+        else                                    // if there's room to upgrade
+            return upgradeCost;                 // return cost of upgrade
     }
     
     public int getUpgradeCount()
@@ -109,19 +109,25 @@ public class Lot extends Property
     // POST: FCTVAL = array of options player has upon landing on this space, 
     //       to be used in a menu in a user interface
     {
-         if(owner == null && player.getMoney() > cost) // if tile isn't owned, & player has enough money
+         if(owner == null && player.getMoney() > cost)             // if tile isn't owned, 
+         {                                                         //   & player has enough money
              return new String[] {"End Turn", "Buy"};
-         else if(owner == player ||                            // if player owns tile, or
-                 (owner == null && player.getMoney() <= cost)) // if player can't buy tile
+         }
+         else if(owner == player ||                                // if player owns tile, or
+                 (owner == null && player.getMoney() <= cost))     //   if player can't buy tile
+         {
              return new String[] {"End Turn"};
-         else  // The lot is owned by someone else
+         }
+         else                                                      // The lot is owned by someone else
+         {
              return new String[] {"Pay Rent"};
+         }
     }
 
     public String toString()
     // POST: FCTVAL = a String of the name of the locations, and its position from start
     {
-        String retStr;  // String to be returned
+        String retStr;                          // String to be returned
         
         retStr = super.toString();
         
@@ -132,7 +138,7 @@ public class Lot extends Property
             
         retStr += ", Color: ";
         
-        if(Color.CYAN.equals(color))        // add correct color of object to return string
+        if(Color.CYAN.equals(color))            // add correct color of object to return string
             retStr += "Cyan";
         else if(Color.MAGENTA.equals(color))
             retStr += "Magenta";
@@ -149,7 +155,7 @@ public class Lot extends Property
         else
             retStr += "Purple";
         
-        switch(upgradeCount)  // add upgrade-count and upgrade-cost to return string
+        switch(upgradeCount)                    // add upgrade-count and upgrade-cost to return string
         {
             case 1:   retStr += ", One House, Upgrade Cost: " + upgradeCost;
                       break;
@@ -169,15 +175,55 @@ public class Lot extends Property
 
     @Override
     public void render(Graphics g, int x, int y, int width, int height)
+    // PRE: g is initialized
+    // POST: A board space is drawn for this lot at (x, y) with dimensions width x height
     {
-        String costString; // The string containing the cost or rent of this lot
+        int charcount;                      // Number of characters that can be fit into this tile
+        int playerSize;                     // Width + height to draw a player at on this space
+        int upgradeWidth;                   // Width to draw upgrades at on this space
+        int upgradeHeight;                  // Height to draw upgrades at on this space
+        String costString;                  // The string containing the cost or rent of this lot
 
-        super.render(g, x, y, width, height);
+        // Draw background
+        g.setColor(Color.WHITE);
+        g.fillRect(x, y, width, height);               
 
+        // Draw color strip
         g.setColor(this.color);
         g.fillRect(x + 1, y + 1, width - 1, height/4);
-        g.setColor(Color.BLACK);
 
+        // Draw upgrades
+        g.setColor(new Color(255 - this.color.getRed(), 255 - this.color.getBlue(),
+            255 - this.color.getGreen()));
+
+        upgradeWidth = width/6;
+        upgradeHeight = height/4;
+        for(int i = 0; i < upgradeCount; i++)
+        {            
+            g.fillOval(x + width - 1 - (upgradeWidth * (i+1)), y + 1, upgradeWidth, upgradeHeight);
+        }
+
+        // Draw any players on this space
+        playerSize = height / 3;
+        for(int i = 0; i < Monopoly.getPlayers().length; i++)
+        {
+            if(Monopoly.getPlayer(i).getPosition() == this.position)
+            {
+                g.drawImage(Monopoly.getPlayer(i).getToken(), x + 1 + (i * playerSize), 
+                    y + 1 + height - playerSize, playerSize, playerSize, null);
+            }
+        }
+
+        // Draw name
+        g.setColor(Color.BLACK);
+        charcount = this.name.length();
+        while(g.getFontMetrics().stringWidth(this.name.substring(0, charcount)) >= width - 4)
+        {
+            charcount--;
+        }
+        g.drawString(this.name.substring(0, charcount), x + 2, y + height/2); 
+
+        // Draw cost or rent + owner
         if(owner == null)
         {
             // Draw cost
@@ -192,6 +238,9 @@ public class Lot extends Property
             // Draw rent
             costString = "$" + this.getRent();
             g.drawString(costString, x + 2, y + height - height/4);
-        }
+        }                  
+
+        // Draw outline
+        g.drawRect(x, y, width, height);
     }
 }

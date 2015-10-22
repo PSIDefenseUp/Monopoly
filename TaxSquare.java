@@ -5,13 +5,12 @@
 
 public class TaxSquare extends BoardLoc
 {
-    public static int pot;  // Pot for free parking
+    public static int pot = 0;                          // Pot for free parking in dollars
     
     public TaxSquare()
     // POST: creates a TaxSquare instance with no name, and no position
     {
         super();
-        pot = 0;
     }
     
     public TaxSquare(String name, int position)
@@ -21,15 +20,16 @@ public class TaxSquare extends BoardLoc
     //       <incoming> parameter
     {
         super(name, position);
-        pot = 0;
     }
     
     public static int getPot()
+    // POST: FCTVAL = Amount of money in the free parking pot (in dollars)
     {
         return pot;
     }
     
     public static void resetPot()
+    // POST: The free parking pot is emptied
     {
         pot = 0;
     }
@@ -37,24 +37,26 @@ public class TaxSquare extends BoardLoc
     public int getRent()
     // POST: FCTVAL = -200 if income tax tile || FCTVAL = -75 if luxury tax tile
     {
-        if(this.name == "Income Tax")  // if this is the income tax tile
+        if(this.name == "Income Tax")               // if this is the income tax tile
         {    
             pot = pot + 200;
             return -200;
         }
-        else if(this.name == "Luxury Tax") // else it could be the luxury tax
+        else if(this.name == "Luxury Tax")          // else it could be the luxury tax
         {
             pot = pot + 75;
             return -75;
         }
-        else  // else the tile has not been initialized
+        else                                        // else there is no defined tax amount
+        {
             return 0;
+        }
     }
         
     public void onLand(Player player, int option)
     // POST: automatically charges player appropriate amount of money
     {
-        player.changeMoney(getRent());  // tax the player
+        player.changeMoney(getRent());              // tax the player
     }
         
     public String[] getPossibleActions(Player player)

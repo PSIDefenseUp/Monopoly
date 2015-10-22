@@ -11,39 +11,51 @@ import java.awt.event.*;
 
 public class Monopoly extends JApplet implements ActionListener
 {
-    private static Player[] players;  // array of all players in game
-    private static int currentPlayer; // the current player who has control
-    private static BoardLoc[] board;  // array of all board locations in the game
-    private static boolean gameOver;  // Whether or not the game is over
-    private static int roll;          // total value of the dice roll
-    private JButton[] buttons;        // buttons for choices
-    private JButton showProperty;     // button for properties of each player
-    private JButton[] gameMode;       // buttons for demo or fresh start
-    private JPanel panel;             // panels for buttons
-    private boolean rolled;           // has the player rolled this turn?
-    private boolean upgrade;          // is upgrading
+    public static final int UIPADDING = 150;           // Padding for upper UI area
 
-    public static final int UIPADDING = 150; // Padding for upper UI area
+    private static Player[] players;                   // array of all players in game
+    private static int currentPlayer;                  // the current player who has control
+    private static BoardLoc[] board;                   // array of all board locations in the game
+    private static int roll;                           // total value of the dice roll
 
+    private int die1;                                  // the value rolled on the first die
+    private int die2;                                  // the value rolled on the second die    
+    private JButton[] buttons;                         // buttons for choices
+    private JButton showProperty;                      // button for properties of each player
+    private JButton end;                               // Ends the game
+    private JButton[] gameMode;                        // buttons for demo or fresh start
+    private JPanel panel;                              // panel for buttons that take player actions
+    private boolean rolled;                            // has the player rolled this turn?
+    private boolean upgrade;                           // is upgrading    
+    private boolean gameOver;                          // is the game over?
+
+    @Override
     public void init()
-    // POST: Initializes all game elements, such as the board and players in the game
     {
         setLayout(new FlowLayout());
+
+        // Set up players
+        players = new Player[4];
+        for(int i = 0; i < players.length; i++)
+        {
+            players[i] = new Player("Player " + (i + 1));
+        }
 
         // Set up board
         setBoard();
 
-        // Initialize players
-        players = new Player[4];
-        for (int i = 0; i < players.length; i++)
-        {
-            players[i] = new Player("Player " + (i + 1));
-        }
+        // Set gameOver to true while game has yet to start
+        gameOver = true;
 
         // Adding UI elements
         showProperty = new JButton("Show Player Properties");
         showProperty.addActionListener(this);
 
+        // Add end button
+        end = new JButton("End Game");
+        end.addActionListener(this);
+
+        // Add mode selection buttons
         gameMode = new JButton[2];
         gameMode[0] = new JButton("Start New Game");
         gameMode[1] = new JButton("Demo Mode");
@@ -55,16 +67,15 @@ public class Monopoly extends JApplet implements ActionListener
         // Adding UI
         add(gameMode[0]);
         add(gameMode[1]);
-        //add(showProperty);
         add(panel);
-
-        //play();
     }
 
     @Override
     public void paint(Graphics g)
+    // PRE: g is initiialized, Applet dimensions >= 600x550
+    // POST: draws the board, players, player info, and free parking pot size on the screen
     {
-        super.paint(g);        
+        super.paint(g);   
         drawBoard(g);
         drawPlayerPanels(g);
         String potString = "Free Parking Pot: $" + TaxSquare.getPot();
@@ -72,9 +83,97 @@ public class Monopoly extends JApplet implements ActionListener
         g.drawString(potString, (getWidth()/2) - i/2, getHeight()/2);
     }
 
+    public void actionPerformed(ActionEvent e)
+    {
+        int option;                              // The user's chosen option in a pop-up window
+        String[] options;                        // The options to display in a pop-up window
+
+        if(e.getSource() == gameMode[0])         // Start button lets players choose tokens
+        {                                        //   and amount of players with error checking
+            setup();
+        }
+
+        if(e.getSource() == gameMode[1])         // Demo Button loads a game with players
+        {                                        //   that already own some properties
+            setupDemo();
+        }
+
+        if(e.getSource() == showProperty)        // Button for showing players' properties
+        {
+            // Select a player to view the properties of
+            options = new String[players.length];
+            for(int i = 0; i < options.length; i++)
+            {
+                options[i] = players[i].getName();
+            }
+
+            option = JOptionPane.showOptionDialog(this, "Choose a player", "VIEWING PROPERTIES",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            
+            // If a player was selected, show their properties
+            if(option >= 0)
+            {
+                // Load string array of the player's properties
+                options = new String[players[option].getProperties().length];
+                for(int i = 0; i < options.length; i++)
+                {
+                    options[i] = players[option].getProperties()[i].getName();
+                }
+
+                // Display this player's properties
+                JOptionPane.showMessageDialog(this, new JList(options));            
+            }
+        }
+
+        // If the END button is pressed, end the game
+        if(e.getSource() == end)
+        {            
+            // Make sure we want to end the game
+            option = JOptionPane.showConfirmDialog(this, "Do you really want to end the game?");
+
+            if(option == 0)
+            {
+                // END THE GAME
+                gameOver = true;
+                this.remove(panel);
+                panel = new JPanel();
+                this.remove(end);
+                this.validate();        
+            }
+        }
+
+        for(int i = 0; i < buttons.length; i++) // Handles buttons that deal with player turn options
+        {
+            if(e.getSource() == buttons[i])
+            {
+                if(!rolled)                     // If the player hasn't rolled yet, let them
+                {
+                    switch(i)
+                    {
+                        case 0: rolled = true; rollDice(); 
+                        break;
+                        case 1: players[currentPlayer].upgrade(); 
+                        break;
+                        case 2: players[currentPlayer].sell(); 
+                        break;
+                        default: break;
+                    }                    
+                }                                
+                else                            // If the player has rolled, give them their options
+                {                               //   for the space they are on.
+
+                    board[players[currentPlayer].getPosition()].onLand(players[currentPlayer], i);                    
+                    endTurn();
+                }
+            }
+        } 
+
+        repaint();
+    }
+
     public void addButtons(String[] options)
     // PRE:  options = string[] of options to be turned into buttons
-    // POST: replace previous buttons and puts new buttons
+    // POST: replaces previous buttons on UI and puts new buttons
     {
         this.remove(panel);
         panel = new JPanel();
@@ -89,83 +188,20 @@ public class Monopoly extends JApplet implements ActionListener
         this.validate();
     }
 
-    public void drawPlayerPanels(Graphics g)
-    {
-        int padding;
-        int width;
-        int height;        
-        int x;
-        int y;        
-
-        padding = 10;
-        width = (UIPADDING - 100) * 3;
-        height = UIPADDING - 100;
-        x = this.getWidth()/2 - (players.length * width + (players.length - 1) * padding)/2;
-        y = 75;
-
-        for(int i = 0; i < players.length; i++)
-        {
-            // Indicate current player
-            if(i == currentPlayer)
-            {
-                g.setColor(Color.GREEN);
-                g.fillRect(x - padding/2, y - padding/2, width + padding, height + padding);
-            }
-
-            // Draw info panel
-            players[i].renderInfoPanel(g, x, y, width, height);
-            x += width + padding;
-        }
-    }
-
-    public void drawBoard(Graphics g)
-    //PRE:  Applet size >= 600x550 must be a square with +50 in height for buttons
-    //      g = object to draw on
-    //POST: Draw a board representing the game and players
-    {
-        int startX = 0;                       // start x of board
-        int startY = UIPADDING;                      // start y of board
-        int width = getWidth();               // width of board
-        int height = getHeight() - startY;    // height of board        
-        int tileWidth = width/11;             // width of each tile
-        int tileHeight = height/11;           // height of each tile
-
-        for (int i = 0; i < 40; i++)
-        {
-            board[i].render(g, startX, startY, tileWidth, tileHeight);
-
-            if (i >= 0 && i < 10)
-            {                
-                startX = startX + tileWidth;
-            }
-            if (i >= 10 && i < 20)
-            {                
-                startY = startY + tileHeight;
-            }
-            if (i >= 20 && i < 30)
-            {                
-                startX = startX - tileWidth;
-            }
-            if (i >= 30 && i < 40)
-            {                
-                startY = startY - tileHeight;
-            }
-        }
-    }
-
-    public static void setBoard()
+    public void setBoard()
+    // POST: The board is filled out with the 40 board locations of a standard Monopoly game
     {   
-        Color purple; // the color purple
+        Color purple;                      // the color purple
 
         purple = new Color(102, 51, 153);  // Initialize the color of purple
-        board = new BoardLoc[40];  // Initialize array of board locations
+        board = new BoardLoc[40];          // Initialize array of board locations
 
-        // Implement board spaces      
+        // Implement board locations    
         board[0] = new CornerSquare("GO", 0);
-        board[1] = new Lot("MEDITERRANEAN AVE", 1, 60, purple, 
+        board[1] = new Lot("MEDITERRANEAN AVE.", 1, 60, purple, 
             50, new int[]{2, 10, 30, 90, 160, 230});
         board[2] = new CardSquare("Community Chest", 2);
-        board[3] = new Lot("BALTIC AVE", 3, 60, purple, 
+        board[3] = new Lot("BALTIC AVE.", 3, 60, purple, 
             50, new int[]{4, 20, 60, 180, 320, 460});
         board[4] = new TaxSquare("Income Tax", 4);
         board[5] = new Railroad("READING RAILROAD", 5, 200);
@@ -225,204 +261,243 @@ public class Monopoly extends JApplet implements ActionListener
             200, new int[]{50, 200, 600, 1400, 1700, 2000});
     }
 
-    public void play()
+    public void setup()
+    // POST: A normal game is started with the specified player count, 
+    //   with all players starting evenly-matched and ready at GO
     {
-        // If current player is still in the game
-        //     Let current player take an action or roll
-        //     After roll, resolve landing on the player's new location
-        //     ?? Check if player is bankrupt ??
-        // Increment currentPlayer to progress to next player's turn
-        // System.out.println("Player " + (currentPlayer+1) + "'s turn.");
-        //  System.out.println(players[currentPlayer].toString());
+        int playerCount;                // The amount of players in the game
+        int chosenToken;                // The number of the token chosen by a player
+        String choice;                  // The option chosen by the user
 
-        if(players[currentPlayer].getMoney() > 0) // if player is still in game
+        // Start game
+        gameOver = false;
+
+        // Change base UI
+        remove(gameMode[0]);
+        remove(gameMode[1]);
+        add(end);
+        add(showProperty);
+        
+        // Get player count
+        playerCount = 0;
+
+        do 
+        {
+            choice = JOptionPane.showInputDialog(this, "How many players?" +
+                " (Between 2 to 4)");
+
+            if(choice != null)
+            {
+                playerCount = Integer.parseInt(choice);
+            }
+        } 
+        while (playerCount > 4 || playerCount < 2);
+
+        // Initialize players
+        players = new Player[playerCount];
+        for (int i = 0; i < playerCount; i++)
+        {
+            players[i] = new Player("Player " + (i + 1));
+
+            // Get the player's chosen token
+            chosenToken = 0;
+
+            do 
+            {
+                choice = JOptionPane.showInputDialog(this, "Pick a token for "
+                    + "Player " + (i+1) + " : (Between 1 to 4)");
+
+                if(choice != null)
+                {
+                    chosenToken = Integer.parseInt(choice);
+
+                    switch(chosenToken)
+                    {
+                        case 1: players[i].setToken("token1.png"); break;       // token 1
+                        case 2: players[i].setToken("token2.png"); break;       // token 2
+                        case 3: players[i].setToken("token3.png"); break;       // token 3
+                        case 4: players[i].setToken("token4.png"); break;       // token 4
+                        default: break;
+                    }
+                }                
+            }
+            while (chosenToken > 4 || chosenToken < 1);
+        }
+
+        // Start the game
+        currentPlayer = (int)Math.random()*players.length;
+        roll = 1;
+        play();
+    }
+
+    public void setupDemo()
+    // POST: The game is started in a demo mode, with 2 players that already own various properties on the board
+    {
+        // Start game
+        gameOver = false;
+
+        // Change base UI
+        remove(gameMode[0]);
+        remove(gameMode[1]);
+        add(end);
+        add(showProperty);
+
+        // Initialize players
+        players = new Player[2];
+        for (int i = 0; i < players.length; i++)
+        {
+            players[i] = new Player("Player " + (i + 1));
+        }
+        players[0].setToken("token1.png");
+        players[1].setToken("token2.png");
+
+        // Give players some properties
+        players[0].addProperty((Property)board[1]);
+        players[0].addProperty((Property)board[3]);
+        players[0].addProperty((Property)board[5]);
+        players[0].addProperty((Property)board[6]);
+        players[0].addProperty((Property)board[8]);
+        players[0].addProperty((Property)board[9]);
+        players[0].addProperty((Property)board[11]);
+        players[0].addProperty((Property)board[12]);
+        
+        players[1].addProperty((Property)board[13]);
+        players[1].addProperty((Property)board[14]);
+        players[1].addProperty((Property)board[15]);
+        players[1].addProperty((Property)board[16]);
+        players[1].addProperty((Property)board[18]);
+        players[1].addProperty((Property)board[19]);
+        players[1].addProperty((Property)board[21]);
+        players[1].addProperty((Property)board[23]);
+
+        // Start the game
+        currentPlayer = (int)Math.random()*players.length;
+        roll = 1;
+        play();
+    }        
+
+    public void play()
+    // POST: Starts a turn for player players[currentPlayer] if not bankrupt, setting up the initial menu
+    {
+        if(players[currentPlayer].getMoney() > 0) // If the player isn't bankrupt, start their turn
         {   
             addButtons(new String[] {"Roll dice", "Upgrade a property", "Sell a property"});              
         }
-        else
+        else                                      // If the player is bankrupt, skip them
+        {
             endTurn();
+        }
     }
 
     public void rollDice()
+    // POST: The current player is moved ahead on the board based on their dice roll,
+    //   and buttons are added to the UI for the possible actions available at the
+    //   player's new location
     {
-        roll = ((int)(Math.random() * 6) + 1) + ((int)(Math.random() * 6) + 1);
+        // Roll the dice
+        die1 = (int)(Math.random() * 6) + 1;
+        die2 = (int)(Math.random() * 6) + 1;
+        roll = die1 + die2;
+        JOptionPane.showMessageDialog(this, "You rolled " + die1 + " + " + die2 + " = " + roll);
 
         // Move the player
         players[currentPlayer].move(roll);
 
         // Get actions for current player's new location and display them
-        addButtons(board[players[currentPlayer].getPosition()].getPossibleActions(players[currentPlayer]));      
+        addButtons(board[players[currentPlayer].getPosition()].getPossibleActions(players[currentPlayer]));  
     }
 
     public void endTurn()
+    // POST: If a player is bankrupt, bankruptcy is processed. The turn is given to the next player.
     {
         // Check bankruptcy for current player
         if(players[currentPlayer].getMoney() <= 0)
         {
-            if(board[players[currentPlayer].getPosition()] instanceof Property)
-                players[currentPlayer].bankrupt(((Property)board[players[currentPlayer].getPosition()]).getOwner());
-            else
+            if(board[players[currentPlayer].getPosition()] instanceof Property) // The player was
+            {                                                                   // bankrupted by
+                                                                                // another player
+                players[currentPlayer].bankrupt
+                    (((Property)board[players[currentPlayer].getPosition()]).getOwner());
+            }
+            else                                             // The player was bankrupted by the bank 
+            {
                 players[currentPlayer].bankrupt(null);
+            }
         }
 
-        // Move to the next player's turn
-        currentPlayer = (currentPlayer + 1) % players.length; 
+        // Progress to the next turn
+        if(die1 != die2)                // If the player did not roll doubles, the next player goes
+        {
+            currentPlayer = (currentPlayer + 1) % players.length; 
+        }
         rolled = false;
         play();
     }
 
-    public void actionPerformed(ActionEvent e)
+    public void drawPlayerPanels(Graphics g)
+    // PRE: g is initiialized
+    // POST: draws player info panels at the top of the window for all players in the game
     {
-        if(e.getSource() == gameMode[0])    // Start button lets players choose tokens and amount of players with error checking
-        {            
-            remove(gameMode[0]);
-            remove(gameMode[1]);
-            add(showProperty);
-            int num = 0;
-            String s = "";
-            do {
-                s = JOptionPane.showInputDialog("How many players? (Between 2 to 4)");
-                num = Integer.parseInt(s);
-            }while (num > 4 || num < 2);
-            // Initialize players
-            players = new Player[num];
-            for (int i = 0; i < num; i++)
-            {
-                int temp;
-                players[i] = new Player("Player " + (i + 1));
-                do {
-                    s = JOptionPane.showInputDialog("Pick token for Player "+ (i+1) +" : (Between 1 to 4)");
-                    temp = Integer.parseInt(s);
-                    s = "token" + s + ".png";
-                    players[i].setToken(s);
-                }while (temp > 4 || temp < 1);
-            }
-            // Prepare game for start
-            currentPlayer = (int)Math.random()*players.length;
-            gameOver = false;
-            roll = 1;
-            play();
-        }
-        if(e.getSource() == gameMode[1])    // Demo Button
-        {
-            remove(gameMode[0]);
-            remove(gameMode[1]);
-            add(showProperty);
-            // Initialize players
-            players = new Player[2];
-            for (int i = 0; i < players.length; i++)
-            {
-                players[i] = new Player("Player " + (i + 1));
-            }
-            players[0].setToken("token1.png");
-            players[1].setToken("token2.png");
-            
-            players[0].addProperty((Property)board[1]);
-            players[0].addProperty((Property)board[3]);
-            players[0].addProperty((Property)board[5]);
-            players[0].addProperty((Property)board[6]);
-            players[0].addProperty((Property)board[8]);
-            players[0].addProperty((Property)board[9]);
-            players[0].addProperty((Property)board[11]);
-            players[0].addProperty((Property)board[12]);
-            
-            players[1].addProperty((Property)board[13]);
-            players[1].addProperty((Property)board[14]);
-            players[1].addProperty((Property)board[15]);
-            players[1].addProperty((Property)board[16]);
-            players[1].addProperty((Property)board[18]);
-            players[1].addProperty((Property)board[19]);
-            players[1].addProperty((Property)board[21]);
-            players[1].addProperty((Property)board[23]);
+        int padding;    // The padding between player panels in pixels
+        int width;      // The width of a player panel in pixels
+        int height;     // The height of a player panel in pixels
+        int x;          // The x-location of a player panel
+        int y;          // The y-location of a player panel
 
-            // Prepare game for start
-            currentPlayer = 0;
-            gameOver = false;
-            roll = 1;
-            play();
-        }
-        if(e.getSource() == showProperty)   // Button for showing property
+        padding = 10;
+        width = (UIPADDING - 100) * 2;
+        height = UIPADDING - 100;
+        x = this.getWidth()/2 - (players.length * width + (players.length - 1) * padding)/2;
+        y = 75;
+
+        for(int i = 0; i < players.length; i++)
         {
-            String s[] = {"Player 1", "Player 2", "Player 3", "Player 4"};
-            String s2[];
-            Property[][] temp = new Property[players.length][];
-            int option = JOptionPane.showOptionDialog(null, "Choose player", "PROPERTIES",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,null, s, s[0]);
-            for (int i = 0; i < players.length; i++)
+            // Indicate current player
+            if(i == currentPlayer)
             {
-                temp[i] = players[i].getProperties();
+                g.setColor(Color.GREEN);
+                g.fillRect(x - padding/2, y - padding/2, width + padding, height + padding);
             }
-            if (option == 0)
-            {
-                s2 = new String[temp[0].length];
-                for (int j = 0; j < temp[0].length; j++)
-                {
-                    s2[j] = temp[0][j].getName();
-                }
-                JList list = new JList(s2);
-                JOptionPane.showMessageDialog(null, list);
+
+            // Draw info panel
+            players[i].renderInfoPanel(g, x, y, width, height);
+            x += width + padding;
+        }
+    }
+
+    public void drawBoard(Graphics g)
+    //PRE: g is initialized
+    //POST: Draws all tiles on the game board, along with the players on them
+    {
+        int startX = 0;                       // start x of board
+        int startY = UIPADDING;               // start y of board
+        int width = getWidth();               // width of board
+        int height = getHeight() - startY;    // height of board        
+        int tileWidth = width/11;             // width of each tile
+        int tileHeight = height/11;           // height of each tile
+
+        for (int i = 0; i < 40; i++)
+        {
+            board[i].render(g, startX, startY, tileWidth, tileHeight);
+
+            if (i >= 0 && i < 10)
+            {                
+                startX = startX + tileWidth;
             }
-            if (option == 1)
-            {
-                s2 = new String[temp[1].length];
-                for (int j = 0; j < temp[1].length; j++)
-                {
-                    s2[j] = temp[1][j].getName();
-                }
-                JList list = new JList(s2);
-                JOptionPane.showMessageDialog(null, list);
+            if (i >= 10 && i < 20)
+            {                
+                startY = startY + tileHeight;
             }
-            if (option == 2)
-            {
-                s2 = new String[temp[2].length];
-                for (int j = 0; j < temp[2].length; j++)
-                {
-                    s2[j] = temp[2][j].getName();
-                }   
-                JList list = new JList(s2);
-                JOptionPane.showMessageDialog(null, list);
+            if (i >= 20 && i < 30)
+            {                
+                startX = startX - tileWidth;
             }
-            if (option == 3)
-            {
-                s2 = new String[temp[2].length];
-                for (int j = 0; j < temp[2].length; j++)
-                {
-                    s2[j] = temp[2][j].getName();
-                }    
-                JList list = new JList(s2);
-                JOptionPane.showMessageDialog(null, list);
+            if (i >= 30 && i < 40)
+            {                
+                startY = startY - tileHeight;
             }
         }
-        for(int i = 0; i < buttons.length; i++) // Handles buttons that deal with player options
-        {
-            if(e.getSource() == buttons[i])
-            {
-                if(!rolled)
-                {
-                    switch(i)
-                    {
-                        case 0: rolled = true; rollDice(); 
-                        break;
-                        case 1: players[currentPlayer].upgrade(); 
-                        break;
-                        case 2: players[currentPlayer].sell(); 
-                        break;
-                        default: break;
-                    }                    
-                }                
-                else
-                {
-                    board[players[currentPlayer].getPosition()].onLand(players[currentPlayer], i);
-                    if (board[players[currentPlayer].getPosition()].getName() == "Free Parking")
-                    {
-                        players[currentPlayer].changeMoney(TaxSquare.getPot());
-                        TaxSquare.resetPot();
-                    }
-                    endTurn();
-                }
-            }
-        }        
-        repaint();
-    }    
+    }         
 
     public static Player getCurrentPlayer()
     // POST: FCTVAL = Current Player instance
@@ -431,24 +506,35 @@ public class Monopoly extends JApplet implements ActionListener
     }
 
     public static Player getPlayer(int playerIndex)
+    // POST: FCTVAL = The player at index playerIndex
     {
         return players[playerIndex];
     }
 
     public static Player[] getPlayers()
+    // POST: FCTVAL = The list of players
     {
         return players;
     }
 
     public static int getBoardLength()
-    // POST: FCTVAL = number of positions on board
+    // POST: FCTVAL = number of positions on the board
     {
         return board.length;
     }
 
     public static int getCurrentRoll()
-    // POST: FCTVAL = amount of dice roll
+    // POST: FCTVAL = the current total dice roll
     {
         return roll;
+    }
+
+    public static void printBoardInfo()
+    // POST: Prints all information about each location the board to the command line
+    {
+        for(BoardLoc b : board)
+        {
+            System.out.println(b.toString());
+        }
     }
 }

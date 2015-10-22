@@ -26,20 +26,20 @@ public class Utility extends Property
     // PRE:  1 <= diceRoll <= 12
     // POST: FCTVAL == rent player owes 
     {
-        int numberOwned;        // keeps track of how many utility is owned
-        Property[] property;    // properties owned by the player
-        int roll;               // dice roll that landed 
+        int numberOwned;                                // keeps track of how many utility is owned
+        Property[] property;                            // properties owned by the player
+        int roll;                                       // dice roll that landed 
         
         numberOwned = 0;
         roll = Monopoly.getCurrentRoll();
         
-        if(owner != null)  // if utility is owned
+        if(owner != null)                               // if utility is owned
         {
             property = owner.getProperties();
         
-            for (int i = 0; i < property.length; i++)   // counts how many utility is owned
+            for (int i = 0; i < property.length; i++)   // count how many utilities are owned
             {
-                if (property[i] instanceof Utility)  // if player owns utility
+                if (property[i] instanceof Utility)
                 {
                     numberOwned++;
                 }
@@ -48,10 +48,30 @@ public class Utility extends Property
         
         switch(numberOwned)
         {
-            case 2: return roll * 10; // if owner has both utilities
-            case 1: return roll * 4;  // if owner has one utility
-            default: return 0;        // utility wasn't owned
+            case 2: return roll * 10;                   // if owner has both utilities
+            case 1: return roll * 4;                    // if owner has one utility
+            default: return 0;                          // no utilities owned
         }
+    }
+
+    public String[] getPossibleActions(Player player)
+    // PRE:  player is initialized
+    // POST: FCTVAL = array of options player has upon landing on this space, 
+    //       to be used in a menu in a user interface
+    {
+         if(owner == null && player.getMoney() > cost)          // if tile isn't owned,
+         {                                                      //   & player has enough money
+             return new String[] {"End Turn", "Buy"};
+         }
+         else if( owner == player ||                            // if player owns tile, or
+            (owner == null && player.getMoney() <= cost) )      //   if player can't buy tile
+         {
+             return new String[] {"End Turn"};
+         }
+         else                                                   // it is owned by another player
+         {
+             return new String[] {"Pay Rent"};
+         }
     }
         
     public void onLand(Player player, int option)
@@ -60,37 +80,23 @@ public class Utility extends Property
     // POST: if user buys instance: owner = player, && player loses money equivalent to Object cost
     //       if user uses instance: owner loses appropriate rent, & owner gains appropriate rent
     {
-        int rent; // amount to use the Object
+        int rent;                                       // rent for landing on this utility
                 
-        if(owner == null && option == 1)  // if player wants to buy utility
+        if(owner == null && option == 1)                // if player wants to buy utility
         {
-            player.changeMoney(-1 * super.getCost());  // take money and buy it
+            player.changeMoney(-1 * super.getCost());   // take money and buy it
             super.setOwner(player);
             player.addProperty(this);
         }
-        else if (owner != null && option == 0)  // if player has to use utility
+        else if (owner != null && option == 0)          // if player has to use utility
         {
             rent = getRent();
-            player.changeMoney(-1 * rent);  // take money, and give it to owner
+            player.changeMoney(-1 * rent);              // take money, and give it to owner
             owner.changeMoney(rent);
         }
         
         return;
-    }
-    
-    public String[] getPossibleActions(Player player)
-    // PRE:  player is initialized
-    // POST: FCTVAL = array of options player has upon landing on this space, 
-    //       to be used in a menu in a user interface
-    {
-         if(owner == null && player.getMoney() > cost) // if tile isn't owned, & player has enough money
-             return new String[] {"End Turn", "Buy"};
-         else if(owner == player ||                            // if player owns tile, or
-                 (owner == null && player.getMoney() <= cost)) // if player can't buy tile
-             return new String[] {"End Turn"};
-         else                                            // it is owned by another player
-             return new String[] {"Pay Rent"};
-    }
+    }    
         
     public String toString()
     // POST: FCTVAL = a String of the name, positions, cost, and owner
